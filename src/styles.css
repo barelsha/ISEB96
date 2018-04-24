@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+.mat-tab-labels{
+  float: right;
+}
+.mat-ink-bar{
+  height: 0px !important;
+}
+.mat-list .mat-list-item .mat-list-item-content .mat-list-text{
+  padding-right: 16px !important;
+  padding-left: 0 !important;
+}
+
+.mat-list-item .mat-list-item-content{
+  flex-direction: row-reverse !important;
+}

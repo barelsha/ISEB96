@@ -1,0 +1,32 @@
+/* .right{
+    flex-direction: row-reverse;
+  } */
+  
+  .mat-list .mat-list-item .mat-list-item-content .mat-list-text{
+    padding-right: 16px !important;
+    padding-left: 0 !important;
+  }
+
+  mat-list-item .mat-list-item-content{
+      flex-direction: column-reverse !important;
+  }
+
+
+.mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mat-subheader, .mat-line{
+      display: block;
+      text-align: right;
+  }
+
+  
+
+  .mat-list-item .mat-list-item-content{
+    flex-direction: row-reverse;
+  }
+  
+  
+  
+

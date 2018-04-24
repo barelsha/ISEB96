@@ -1,0 +1,24 @@
+.fill-remaining-space{
+    flex: 1 1 auto;
+    display: flex;
+}
+
+.logo{
+    height: 30px;
+    width: 100px;
+}
+
+.mat-toolbar{
+    z-index: 2;
+    position: fixed;
+}
+
+@media (max-width: 600px){
+    .mat-toolbar-row, .mat-toolbar-single-row {
+        height: 64px; 
+    }
+}
+
+
+
+

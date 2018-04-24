@@ -1,0 +1,33 @@
+.fill-remaining-space{
+  flex: 1 1 auto;
+}
+.is-mobile .toolbar {
+  position: relative;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  position: relative;
+  top: 64px;
+  margin-bottom: 64px;
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.mat-drawer{
+  position: fixed;
+  top: 64px;
+}
+
+.content{
+  width: 100%;
+}
+
+

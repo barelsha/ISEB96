@@ -1,0 +1,10 @@
+.mat-grid-list{
+    margin: 50px 50px 50px 50px;
+}
+
+.room:hover{
+    background-color: #7d8586 !important;
+    cursor: pointer;
+}
+  
+  
