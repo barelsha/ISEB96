@@ -31,7 +31,7 @@ import { RoomService } from './services/room/room.service';
   ],
   exports: [ ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ISEB96' }),
+    BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
     HttpClientModule,
