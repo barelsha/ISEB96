@@ -19,6 +19,11 @@ import { RoomRoutingModule } from './modules/routing/room-routing.module';
 import { ConfigComponent } from './components/config/config.component';
 import { HttpModule } from '@angular/http';
 import { RoomService } from './services/room/room.service';
+import { MemberComponent } from './components/member/member.component';
+import { EquipmentComponent } from './components/equipment/equipment.component';
+import { AddEquipmentComponent } from './components/dialogs/add-equipment/add-equipment.component';
+import { RemoveEquipmentComponent } from './components/dialogs/remove-equipment/remove-equipment.component';
+import { EditEquipmentComponent } from './components/dialogs/edit-equipment/edit-equipment.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,12 @@ import { RoomService } from './services/room/room.service';
     FloorComponent,
     SidenavComponent,
     RoomComponent,
-    ConfigComponent
+    ConfigComponent,
+    MemberComponent,
+    EquipmentComponent,
+    AddEquipmentComponent,
+    RemoveEquipmentComponent,
+    EditEquipmentComponent
   ],
   exports: [ ],
   imports: [
@@ -41,6 +51,9 @@ import { RoomService } from './services/room/room.service';
     RoomRoutingModule,
     AppRoutingModule
   ],
+  entryComponents: [
+    AddEquipmentComponent
+  ],
   providers: [
     FloorService,
     RoomService
@@ -48,11 +61,5 @@ import { RoomService } from './services/room/room.service';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
-      'in the browser' : 'on the server';
-    console.log(`Running ${platform} with appId=${appId}`);
-  }
+  constructor() {}
  }

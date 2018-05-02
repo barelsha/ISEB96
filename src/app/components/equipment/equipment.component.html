@@ -1,0 +1,18 @@
+<div id="member-details">
+    <ng-container>
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar><mat-icon mat-list-icon>build</mat-icon></div>
+                <mat-card-title></mat-card-title>
+                <mat-card-subtitle></mat-card-subtitle>
+                <div class="flex-spacer"></div>
+            </mat-card-header>
+            <img mat-card-image>
+            <mat-card-actions>
+              <mat-icon class="edit" mat-list-icon matTooltip="ערוך">edit</mat-icon>
+              <mat-icon class="delete" mat-list-icon matTooltip="מחק">delete</mat-icon>
+            </mat-card-actions>
+        </mat-card>
+    </ng-container>
+</div>
+<button mat-raised-button type="button" (click)="openDialog()"><mat-icon class="add" mat-list-icon matTooltip="הוסף">add</mat-icon></button>

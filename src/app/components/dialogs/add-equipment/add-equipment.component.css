@@ -1,0 +1,26 @@
+.inputs-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-header{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.inputs-container > *{
+    width: 100%;
+}
+
+.mat-input-element, .mat-dialog-title, .mat-form-field{
+    text-align: right;
+}
+
+.save-button{
+    background: #673ab7;
+    color: white;
+}
+
+.exit-icon:hover{
+    cursor: pointer !important;
+}

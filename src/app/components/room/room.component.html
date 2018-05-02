@@ -1,26 +1,10 @@
-<mat-tab-group>
+<mat-tab-group  [@.disabled]="true">
   <mat-tab label="ציוד">
-    fdgdfgfgfdgfdg
+
+    <app-equipment></app-equipment>
   </mat-tab>
   <mat-tab label="פרטים">
-      <mat-list>
-          <h3 mat-subheader>חברי סגל</h3>
-          <mat-list-item>
-            <mat-icon mat-list-icon>edit</mat-icon>
-          </mat-list-item>
-          <mat-list-item [ngClass]= "flex_direction" *ngFor="let folder of folders">
-            <mat-icon mat-list-icon>person</mat-icon>
-            <h4 mat-line>{{folder.name}}</h4>
-            <p mat-line> {{folder.updated}} </p>
-          </mat-list-item>
-          <mat-divider></mat-divider>
-          <h3 mat-subheader>כללי</h3>
-          <mat-list-item *ngFor="let note of notes">
-            <mat-icon mat-list-icon>note</mat-icon>
-            <h4 mat-line>{{note.name}}</h4>
-            <p mat-line> {{note.updated}} </p>
-          </mat-list-item>
-        </mat-list>
+      <app-member></app-member>
   </mat-tab>
 </mat-tab-group>
 

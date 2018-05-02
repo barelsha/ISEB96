@@ -1,0 +1,38 @@
+
+<div class="dialog-header" mat-dialog-title>
+  <p mat-line>הוסף ציוד</p>
+  <div class="flex-spacer"></div>
+  <mat-icon class="exit-icon" (click)="onNoClick()">cancel</mat-icon>
+</div>
+
+<div mat-dialog-content>
+    <div class="inputs-container">
+      <mat-form-field hintLabel="Max 10 characters">
+        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+      </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+  
+  <button class="save-button"  mat-button [mat-dialog-close]="data.animal">שמור</button>
+</div>
