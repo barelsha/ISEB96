@@ -24,6 +24,9 @@ import { EquipmentComponent } from './components/equipment/equipment.component';
 import { AddEquipmentComponent } from './components/dialogs/add-equipment/add-equipment.component';
 import { RemoveEquipmentComponent } from './components/dialogs/remove-equipment/remove-equipment.component';
 import { EditEquipmentComponent } from './components/dialogs/edit-equipment/edit-equipment.component';
+import { AddMemberComponent } from './components/dialogs/add-member/add-member.component';
+import { RemoveMemberComponent } from './components/dialogs/remove-member/remove-member.component';
+import { EditMemberComponent } from './components/dialogs/edit-member/edit-member.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { EditEquipmentComponent } from './components/dialogs/edit-equipment/edit
     EquipmentComponent,
     AddEquipmentComponent,
     RemoveEquipmentComponent,
-    EditEquipmentComponent
+    EditEquipmentComponent,
+    AddMemberComponent,
+    RemoveMemberComponent,
+    EditMemberComponent
   ],
   exports: [ ],
   imports: [
@@ -52,7 +58,12 @@ import { EditEquipmentComponent } from './components/dialogs/edit-equipment/edit
     AppRoutingModule
   ],
   entryComponents: [
-    AddEquipmentComponent
+    AddEquipmentComponent,
+    RemoveEquipmentComponent,
+    EditEquipmentComponent,
+    AddMemberComponent,
+    RemoveMemberComponent,
+    EditMemberComponent
   ],
   providers: [
     FloorService,

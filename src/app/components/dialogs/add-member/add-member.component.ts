@@ -2,13 +2,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
-  selector: 'app-add-equipment',
-  templateUrl: './add-equipment.component.html',
-  styleUrls: ['./add-equipment.component.css']
+  selector: 'app-add-member',
+  templateUrl: './add-member.component.html',
+  styleUrls: ['./add-member.component.css']
 })
-export class AddEquipmentComponent implements OnInit {
+export class AddMemberComponent implements OnInit {
+
   constructor(
-    public dialogRef: MatDialogRef<AddEquipmentComponent>,
+    public dialogRef: MatDialogRef<AddMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
@@ -18,6 +19,5 @@ export class AddEquipmentComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  
 
 }

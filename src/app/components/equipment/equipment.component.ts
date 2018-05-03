@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import{ AddEquipmentComponent } from '../dialogs/add-equipment/add-equipment.component'
+import{ RemoveEquipmentComponent } from '../dialogs/remove-equipment/remove-equipment.component'
+import{ EditEquipmentComponent } from '../dialogs/edit-equipment/edit-equipment.component'
 
 
 @Component({
@@ -16,8 +18,32 @@ export class EquipmentComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(): void {
+  openAddEquipmentDialog(): void {
     let dialogRef = this.dialog.open(AddEquipmentComponent, {
+      width: '500px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+  openRemoveEquipmentDialog(): void {
+    let dialogRef = this.dialog.open(RemoveEquipmentComponent, {
+      width: '500px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+  openEditEquipmentDialog(): void {
+    let dialogRef = this.dialog.open(EditEquipmentComponent, {
       width: '500px',
       data: { name: this.name, animal: this.animal }
     });

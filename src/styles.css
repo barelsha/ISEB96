@@ -24,4 +24,9 @@ html, body {
   flex-grow: 1;
 }
 
+.mat-form-field-hint-wrapper{
+  flex-direction: row-reverse !important;
+}
+
+
 

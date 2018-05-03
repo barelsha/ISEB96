@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-remove-equipment',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RemoveEquipmentComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<RemoveEquipmentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
   }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  
 
 }
