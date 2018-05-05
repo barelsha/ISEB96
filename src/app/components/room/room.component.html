@@ -1,10 +1,26 @@
-<mat-tab-group  [@.disabled]="true">
+<!--<mat-tab-group  [@.disabled]="true">
   <mat-tab label="ציוד">
-
     <app-equipment></app-equipment>
   </mat-tab>
   <mat-tab label="פרטים">
-      <app-member></app-member>
+      <app-member [details]= roomData></app-member>
   </mat-tab>
-</mat-tab-group>
+</mat-tab-group>-->
 
+<nav mat-tab-nav-bar>
+    <a mat-tab-link
+      routerLink="members"
+      routerLinkActive #rla="routerLinkActive"
+      [active]="rla.isActive">
+      פרטים
+    </a>
+    <a mat-tab-link
+      routerLink="equipment"
+      routerLinkActive #rla="routerLinkActive"
+      [active]="rla.isActive">
+      ציוד
+    </a>
+  </nav>
+
+  <router-outlet></router-outlet>
+  

@@ -28,5 +28,10 @@ html, body {
   flex-direction: row-reverse !important;
 }
 
+.mat-tab-links{
+  display: flex !important;
+  flex-direction: row-reverse !important;
+}
+
 
 

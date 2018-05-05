@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+
+
 //get all the equipment in the room
 // "response": [
 //     {
@@ -28,6 +30,8 @@ app.use(cors());
 //         "Status": "in use",
 //         "Warranty": "2019-02-03T00:00:00.000Z"
 //     }
+
+
 
 app.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
     var floorNum = req.param('floorId')

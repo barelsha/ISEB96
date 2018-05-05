@@ -4,19 +4,26 @@ import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/htt
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Observable } from 'rxjs/observable';
 import { catchError, retry } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Injectable()
 export class RoomService {
 
-  configUrl = 'http://localhost:4000/floors/1/rooms/1';
-  //configUrl = 'localhost:4000/floors/1/rooms/1';
-
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    
+  }
  
-  getRoomResponse(): Observable<HttpResponse<Room>> {
-    return this.http.get<Room>(
-      this.configUrl, { observe: 'response' }).pipe(
+  getPeopleInRoom(url: string): Observable<HttpResponse<PeopleRoom>> {
+    return this.http.get<PeopleRoom>(
+      url, { observe: 'response' }).pipe(
+        retry(3),
+        catchError(this.handleError)
+      );;
+  }
+
+  getRoomDetails(url: string): Observable<HttpResponse<PeopleRoom>> {
+    return this.http.get<RoomDetails>(
+      url, { observe: 'response' }).pipe(
         retry(3),
         catchError(this.handleError)
       );;
@@ -39,12 +46,20 @@ export class RoomService {
   };
 }
 
-export interface Room {
-    RoomNumber: number,
-    FloorNumber: number,
-    RoomName: string,
-    Tel: string,
-    Status: string,
+export interface PeopleRoom {
+    RoomNum: number,
+    FloorNum: number,
     FirstName: string,
-    LastName: string
+    LastName: string,
+    Supervisor: string,
+    Email: string
+}
+
+export interface RoomDetails {
+  RoomNumber: number,
+  FloorNumber: number,
+  RoomName: string,
+  Tel: string,
+  RoomType: string,
+  MaxOccupancy: string
 }

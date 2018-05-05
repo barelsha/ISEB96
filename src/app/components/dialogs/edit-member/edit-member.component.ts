@@ -7,10 +7,12 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
   styleUrls: ['./edit-member.component.css']
 })
 export class EditMemberComponent implements OnInit {
-
+  member: any;
   constructor(
     public dialogRef: MatDialogRef<EditMemberComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.member = data;
+     }
 
   ngOnInit() {
   }

@@ -19,7 +19,7 @@ export class SidenavComponent implements OnInit {
   shouldRun = true;
 
   ngOnInit() {
-    //console.log(this.route);
+    console.log(this.route);
     this.currentRoute = "/" + this.route.snapshot.url.toString().split(',')[0] + "/" + this.route.snapshot.url.toString().split(',')[1];
     this.getFloor();
   }

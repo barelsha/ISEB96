@@ -54,7 +54,6 @@ import { EditMemberComponent } from './components/dialogs/edit-member/edit-membe
     MaterialsModule,
     FormsModule,
     ReactiveFormsModule,
-    RoomRoutingModule,
     AppRoutingModule
   ],
   entryComponents: [

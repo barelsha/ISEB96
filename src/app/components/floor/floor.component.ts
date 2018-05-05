@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FloorService } from '../../services/floor/floor.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -13,17 +13,19 @@ import { Location } from '@angular/common';
 export class FloorComponent implements OnInit {
   position = 'below';
   color:string = 'room';
-  currentRoute: string;
+  floor: string;
 
   constructor(
       private route: ActivatedRoute,
-      private location: Location
+      private location: Location,
+      private router: Router
     ) {
+      this.router.routeReuseStrategy.shouldReuseRoute = function() {
+        return false;
+      };
   }
 
   ngOnInit() {
-    //console.log(this.route);
-    this.currentRoute = "/" + this.route.snapshot.url.toString().split(',')[0] + "/" + this.route.snapshot.url.toString().split(',')[1];
   }
 
   changeStyle($event, text){

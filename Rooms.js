@@ -10,6 +10,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
+
+
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname,'dist/index.html'));
+});
 
 //get the room detalis according to the floor and room. From "PeopleInRoom" table
 // "response": [
@@ -21,6 +28,7 @@ app.use(cors());
 //         "Supervisor": "no",
 //         "Email": ""
 //     }
+
 app.get('/floors/:floorId/rooms/:roomId', function (req, res) {
     var floorNum = req.param('floorId')
     var roomNum = req.param('roomId')

@@ -1,19 +1,26 @@
-<div id="member-details">
-    <ng-container>
-        <mat-card>
-            <mat-card-header>
-                <div mat-card-avatar><mat-icon mat-list-icon>person</mat-icon></div>
-                <mat-card-title></mat-card-title>
-                <mat-card-subtitle></mat-card-subtitle>
-                <div class="flex-spacer"></div>
-            </mat-card-header>
-            <img mat-card-image>
-            <mat-card-actions>
-              <mat-icon class="edit" (click)="openEditMemberDialog()" mat-list-icon matTooltip="ערוך">edit</mat-icon>
-              <mat-icon class="delete" (click)="openRemoveMemberDialog()" mat-list-icon matTooltip="מחק">delete</mat-icon>
-            </mat-card-actions>
-        </mat-card>
-    </ng-container>
+<div *ngIf="loading">
+    <mat-spinner></mat-spinner>
 </div>
+    
+<div *ngIf="!loading">
+    <div  id="member-details" *ngFor="let member of details.response">
+        <ng-container>
+            <mat-card>
+                <mat-card-header>
+                    <div mat-card-avatar><mat-icon mat-list-icon>person</mat-icon></div>
+                    <mat-card-title>{{member.FirstName}} {{member.LastName}}</mat-card-title>
+                    <mat-card-subtitle>{{member.Email}}</mat-card-subtitle>
+                    <div class="flex-spacer"></div>
+                </mat-card-header>
+                <img mat-card-image>
+                <mat-card-actions>
+                    <mat-icon class="edit" (click)="openEditMemberDialog(member)" mat-list-icon matTooltip="ערוך">edit</mat-icon>
+                    <mat-icon class="delete" (click)="openRemoveMemberDialog(member)" mat-list-icon matTooltip="מחק">delete</mat-icon>
+                </mat-card-actions>
+            </mat-card>
+        </ng-container>
+    </div>
+</div>
+
 <button mat-raised-button type="button" (click)="openAddMemberDialog()"><mat-icon class="add" mat-list-icon matTooltip="הוסף">add</mat-icon></button>
 

@@ -1,7 +1,7 @@
 <mat-grid-list cols="13" rowHeight="70px">
     <mat-grid-tile
         [ngClass] = "color"
-        (mouseover)="changeStyle($event, tile.text)" 
+        (mouseover)="changeStyle($event, tile.text)"
         (mouseout)="changeStyle($event, tile.text)"
         matTooltip="mail@mail.com מייל בעל חדר"
         [matTooltipDisabled] = "tile.text.length == 0"
@@ -10,7 +10,7 @@
         [colspan]="tile.cols"
         [rowspan]="tile.rows"
         [style.background]="tile.color"
-        routerLink= "{{currentRoute}}/rooms/{{tile.text}}">
+        routerLink= "rooms/{{tile.text}}">
         {{tile.text}}
     </mat-grid-tile>
     <mat-grid-tile
@@ -24,7 +24,7 @@
         [colspan]="tile.cols"
         [rowspan]="tile.rows"
         [style.background]="tile.color"
-        routerLink= "{{currentRoute}}/rooms/{{tile.text}}">
+        routerLink= "rooms/{{tile.text}}">
         {{tile.text}}
     </mat-grid-tile>
     <mat-grid-tile
@@ -38,10 +38,12 @@
         [colspan]="tile.cols"
         [rowspan]="tile.rows"
         [style.background]="tile.color"
-        routerLink= "{{currentRoute}}/rooms/{{tile.text}}">
+        routerLink= "rooms/{{tile.text}}">
         {{tile.text}}
     </mat-grid-tile>
 </mat-grid-list>
+
+
 
 <!--matTooltip = "חדר, מרצה: בדיקה {{tile.text}}"-->
 

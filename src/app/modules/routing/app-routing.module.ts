@@ -4,16 +4,33 @@ import { FloorComponent } from '../../components/floor/floor.component';
 import { AppComponent } from '../../app.component';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 import { RoomComponent } from '../../components/room/room.component';
+import { MemberComponent } from '../../components/member/member.component';
+import { EquipmentComponent } from '../../components/equipment/equipment.component';
 
 const routes: Routes = [
-  { path: 'floors/:id', component: SidenavComponent,
+  { path: 'floors/:floorid', component: SidenavComponent,
     children: [
       {
-        path: 'rooms/:id',
-        component: RoomComponent
+        path: 'rooms/:roomid',
+        component: RoomComponent,
+        children: [
+          {
+            path: 'members', 
+            component: MemberComponent
+          },
+          {
+            path: 'equipment', 
+            component: EquipmentComponent
+          },
+          {
+            path: '', 
+            redirectTo: 'members',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
-        path: '',
+        path: '', 
         component: FloorComponent
       }
     ]

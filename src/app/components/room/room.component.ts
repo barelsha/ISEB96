@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {RoomService, Room} from '../../services/room/room.service'
+import {RoomService, PeopleRoom} from '../../services/room/room.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-room',
@@ -7,42 +8,37 @@ import {RoomService, Room} from '../../services/room/room.service'
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-  constructor(private roomService: RoomService) { }
-  folders = [
-    {
-      name: 'רוברט מושקוביץ',
-      updated: /*new Date('1/1/16')*/'mail@mail.com'
-    },
-    {
-      name: 'שחר בראל',
-      updated: 'barelshahar2@gmail.com'
-      // updated: new Date('1/17/16'),
-    },
-    {
-      name: 'לינוי קלכמן',
-      updated: 'linoykal@gmail.com'
-    }
-  ];
-  notes = [
-    {
-      name: 'מספר אנשים מקסימלי',
-      updated: 3
-    },
-    {
-      name: 'אחראי חדר',
-      updated: 'רוברט מושקוביץ'
-    }
-  ];
 
-  roomData: Room;
+  roomNumber: string;
+  roomData: any;
   headers: any;
   error: any;
-  ngOnInit() {
-    this.getRoomData();
+
+
+  constructor(private roomService: RoomService, private route: ActivatedRoute) {
+    console.log(this.route);
+        this.roomNumber = this.route.snapshot.url.toString().split(',')[1];
+      console.log(this.roomNumber);
   }
 
+  
+  ngOnInit() {
+    //this.getRoomDetails();
+  }
+
+
+  //return room detailes from "Rooms" table
+  // "response": [
+  //     {
+  //         "RoomNumber": 1,
+  //         "FloorNumber": 1,
+  //         "RoomName": "prof", -can be NULL
+  //         "Tel": 111, -can be NULL
+  //         "RoomType": "Sminar",
+  //         "MaxOccupancy": 2
+  //     }
   getRoomData() {
-    this.roomService.getRoomResponse()
+    this.roomService.getRoomDetails('roomsDetails/' + this.roomNumber)
       // resp is of type `HttpResponse<Room>`
       .subscribe(resp => {
         // display its headers
@@ -51,13 +47,8 @@ export class RoomComponent implements OnInit {
           `${key}: ${resp.headers.get(key)}`);
   
         // access the body directly, which is typed as `Room`.
-        this.roomData = resp.body;
-        console.log(this.roomData);
+        //this.roomData = resp.body;
       }, error => this.error = error /*error path*/);
   }
-  
-  
-
-  
 
 }
