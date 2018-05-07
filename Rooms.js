@@ -33,7 +33,6 @@ app.get('/floors/:floorId/rooms/:roomId', function (req, res) {
     var floorNum = req.param('floorId')
     var roomNum = req.param('roomId')
     if (!floorNum || !roomNum) {
-
         res.send({ status: "Failed", response: "Invalid value" });
         res.end();
     }
