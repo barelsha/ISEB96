@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { RoomService } from '../../../services/room/room.service';
+import { RoomService, Member } from '../../../services/room/room.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -11,19 +12,20 @@ import { RoomService } from '../../../services/room/room.service';
 })
 export class AddMemberComponent implements OnInit {
   addMemberForm: FormGroup;
-  member: any;
+  member: Member;
+  url: string;
 
   constructor(
+    private route: ActivatedRoute,
     public dialogRef: MatDialogRef<AddMemberComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: string,
     private fb: FormBuilder,
     private roomService: RoomService) {
-
+      this.url = data;
   }
 
   ngOnInit() {
     this.createForm();
-    
   }
 
   createForm() {
@@ -40,20 +42,21 @@ export class AddMemberComponent implements OnInit {
 
   onSubmit(){
     this.member = this.prepareSaveMember();
-    //this.roomService.addMember(this.hero).subscribe(/* error handling */);
-    //this.rebuildForm();
-    console.log(this.member);
-    this.dialogRef.close();
+    this.roomService.addMember(this.url + '/addPerson', this.member)
+    .subscribe(resp => {
+      console.log(resp);
+    });
+    this.dialogRef.close(this.member);
   }
 
-  prepareSaveMember(): any {
+  prepareSaveMember(): Member {
     let formModel = this.addMemberForm.value;
-    let saveMember = {
-      firstName: formModel.firstName,
-      lastName: formModel.lastName,
-      email: formModel.email
+    let saveMember: Member = {
+      FirstName: formModel.firstName,
+      LastName: formModel.lastName,
+      Supervisor: "no",
+      Email: formModel.email
     };
     return saveMember;
   }
-
 }

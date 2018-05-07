@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import{ AddMemberComponent } from '../dialogs/add-member/add-member.component';
 import{ RemoveMemberComponent } from '../dialogs/remove-member/remove-member.component';
 import{ EditMemberComponent } from '../dialogs/edit-member/edit-member.component';
-import {RoomService, PeopleRoom} from '../../services/room/room.service';
+import { RoomService, PeopleRoom } from '../../services/room/room.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,44 +13,50 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MemberComponent implements OnInit {
 
-  details: PeopleRoom;
-  configUrl: string;
+  room: number;
+  floor: number;
+  details: any;
+  url: string;
   headers: any;
   error: any;
   loading: boolean;
 
-  constructor(public dialog: MatDialog, private roomService:RoomService, private route: ActivatedRoute) {
-    this.configUrl = this.route.parent.parent.snapshot.url.toString().split(',')[0] + "/" + this.route.parent.parent.snapshot.url.toString().split(',')[1] + "/"
-        + this.route.parent.snapshot.url.toString().split(',')[0] + "/" + this.route.parent.snapshot.url.toString().split(',')[1];
-      console.log(this.configUrl);
-      this.loading = true;
+  constructor(public dialog: MatDialog, 
+    private roomService:RoomService, 
+    private route: ActivatedRoute) {
+    this.setUrl();
+    this.setRoomAndFloor();
+    this.loading = true;
   }
 
   ngOnInit() {
-    this.getRoomDetails();
+    this.getPeopleInRoom();
   }
 
-  getRoomDetails() {
-    this.roomService.getPeopleInRoom(this.configUrl)
-      // resp is of type `HttpResponse<PeopleRoom>`
-      .subscribe(resp => {
-        // display its headers
-        const keys = resp.headers.keys();
-        this.headers = keys.map(key =>
-          `${key}: ${resp.headers.get(key)}`);
-        this.details = resp.body;
-        this.loading = false;
-        console.log(this.details);  
-        // access the body directly, which is typed as `PeopleRoom`.
-      }, error => this.error = error /*error path*/);
+  getPeopleInRoom() {
+    this.roomService.getPeopleInRoom(this.url)
+    .subscribe(resp => {
+        this.details = resp.body.response;
+        this.loading = false; 
+      }, error => this.error = error);
   }
 
   openAddMemberDialog(): void {
     let dialogRef = this.dialog.open(AddMemberComponent, {
-      width: '500px'
+      width: '500px',
+      data: this.url
     });
-
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log(this.details);
+      this.details.push({
+        FloorNum: this.floor,
+        RoomNum: this.room,
+        FirstName: result.FirstName,
+        LastName: result.LastName,
+        Supervisor: result.Supervisor,
+        Email: result.Email
+      });
       console.log('The dialog was closed');
     });
   }
@@ -60,7 +66,6 @@ export class MemberComponent implements OnInit {
       width: '500px',
       data: member
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
@@ -71,10 +76,21 @@ export class MemberComponent implements OnInit {
       width: '500px',
       data: member
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  setUrl(){
+    this.url = this.route.parent.parent.snapshot.url.toString().split(',')[0] + "/" 
+    + this.route.parent.parent.snapshot.url.toString().split(',')[1] + "/"
+    + this.route.parent.snapshot.url.toString().split(',')[0] + "/" 
+    + this.route.parent.snapshot.url.toString().split(',')[1];
+  }
+
+  setRoomAndFloor(){
+    this.room = +this.route.parent.snapshot.paramMap.get('roomid');
+    this.room = +this.route.parent.snapshot.paramMap.get('floorid');
   }
 
 }
