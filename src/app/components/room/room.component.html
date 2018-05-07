@@ -21,6 +21,12 @@
       ציוד
     </a>
   </nav>
-
+  <div *ngIf="!loading">
+    {{roomData.response[0].RoomNumber}}
+    {{roomData.response[0].RoomName}}
+    {{roomData.response[0].Tel}}
+    {{roomData.response[0].RoomType}}
+    {{roomData.response[0].MaxOccupancy}}
+  </div>
   <router-outlet></router-outlet>
   

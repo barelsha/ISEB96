@@ -33,5 +33,19 @@ html, body {
   flex-direction: row-reverse !important;
 }
 
+.mat-checkbox-layout{
+  display: flex !important;
+  flex-direction: row-reverse !important;
+}
+
+.mat-checkbox-inner-container{
+  margin-left: 10px !important;
+}
+
+.mat-checkbox-layout{
+  padding-top: 10px;
+}
+
+
 
 

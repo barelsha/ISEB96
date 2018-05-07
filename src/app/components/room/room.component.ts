@@ -13,17 +13,19 @@ export class RoomComponent implements OnInit {
   roomData: any;
   headers: any;
   error: any;
+  loading: boolean;
 
 
   constructor(private roomService: RoomService, private route: ActivatedRoute) {
     console.log(this.route);
-        this.roomNumber = this.route.snapshot.url.toString().split(',')[1];
-      console.log(this.roomNumber);
+    this.roomNumber = this.route.snapshot.url.toString().split(',')[1];
+    this.loading = true;
+    console.log(this.roomNumber);
   }
 
   
   ngOnInit() {
-    //this.getRoomDetails();
+    this.getRoomData();
   }
 
 
@@ -47,8 +49,11 @@ export class RoomComponent implements OnInit {
           `${key}: ${resp.headers.get(key)}`);
   
         // access the body directly, which is typed as `Room`.
-        //this.roomData = resp.body;
+        this.roomData = resp.body;
+        this.loading = false;
+        console.log(this.roomData);
       }, error => this.error = error /*error path*/);
+      
   }
 
 }

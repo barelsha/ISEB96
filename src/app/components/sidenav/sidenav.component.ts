@@ -48,7 +48,7 @@ export class SidenavComponent implements OnInit {
   private _mobileQueryListener: () => void;
   
   getFloor(): void {
-    this.floor = +this.route.snapshot.paramMap.get('id');
+    this.floor = +this.route.snapshot.paramMap.get('floorid');
   }
 
 }

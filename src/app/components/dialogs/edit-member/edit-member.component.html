@@ -6,32 +6,15 @@
   </div>
   <mat-divider></mat-divider>
   
-  <div mat-dialog-content>
+  <form [formGroup]="editMemberForm" mat-dialog-content>
       <div class="inputs-container">
-        <mat-form-field hintLabel="הערה">
-          <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+        <mat-form-field hintLabel="example@bgu.ac.il">
+          <input matInput formControlName="email" placeholder="Email">
         </mat-form-field>
-        <mat-form-field hintLabel="הערה">
-          <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-        </mat-form-field>
-        <mat-form-field hintLabel="הערה">
-          <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-        </mat-form-field>
-        <mat-form-field hintLabel="הערה">
-          <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-        </mat-form-field>
-        <mat-form-field hintLabel="הערה">
-          <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-        </mat-form-field>
+        <mat-checkbox>אחראי חדר</mat-checkbox>
       </div>
-  </div>
+  </form>
   <mat-divider></mat-divider>
   <div mat-dialog-actions>
-    
-    <button class="save-button"  mat-button [mat-dialog-close]="data.animal">שמור</button>
+    <button class="save-button" mat-button (click)="onSubmit()">שמור</button>
   </div>
