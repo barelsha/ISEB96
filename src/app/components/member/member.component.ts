@@ -3,8 +3,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import{ AddMemberComponent } from '../dialogs/add-member/add-member.component';
 import{ RemoveMemberComponent } from '../dialogs/remove-member/remove-member.component';
 import{ EditMemberComponent } from '../dialogs/edit-member/edit-member.component';
-import { RoomService, PeopleRoom } from '../../services/room/room.service';
+import { RoomService, PeopleRoom, RoomDetails } from '../../services/room/room.service';
 import { ActivatedRoute } from '@angular/router';
+import { isType } from '@angular/core/src/type';
 
 @Component({
   selector: 'app-member',
@@ -15,14 +16,14 @@ export class MemberComponent implements OnInit {
 
   room: number;
   floor: number;
-  details: any;
+  peopleInRoom: PeopleRoom[];
+  roomDetails: RoomDetails;
   url: string;
-  headers: any;
   error: any;
   loading: boolean;
 
-  constructor(public dialog: MatDialog, 
-    private roomService:RoomService, 
+  constructor(public dialog: MatDialog,
+    private roomService:RoomService,
     private route: ActivatedRoute) {
     this.setUrl();
     this.setRoomAndFloor();
@@ -30,15 +31,20 @@ export class MemberComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setRoomDetails();
     this.getPeopleInRoom();
   }
 
   getPeopleInRoom() {
     this.roomService.getPeopleInRoom(this.url)
     .subscribe(resp => {
-        this.details = resp.body.response;
-        this.loading = false; 
-      }, error => this.error = error);
+        console.log('next getPeopleInRoom');
+        this.peopleInRoom = this.isPeopleRoomArray(resp.body.response) ? resp.body.response : [];
+        this.loading = false;
+      }, error => {
+        this.error = error;
+        console.log('error getPeopleInRoom');
+      }, ()=> {console.log('complete getPeopleInRoom');});
   }
 
   openAddMemberDialog(): void {
@@ -46,17 +52,19 @@ export class MemberComponent implements OnInit {
       width: '500px',
       data: this.url
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      console.log(this.details);
-      this.details.push({
-        FloorNum: this.floor,
-        RoomNum: this.room,
-        FirstName: result.FirstName,
-        LastName: result.LastName,
-        Supervisor: result.Supervisor,
-        Email: result.Email
-      });
+    dialogRef.afterClosed().subscribe(res => {
+      if(res && res.resp.body.status === "ok"){
+        this.peopleInRoom.push({
+          FloorNum: this.floor,
+          RoomNum: this.room,
+          FirstName: res.newMember.FirstName,
+          LastName: res.newMember.LastName,
+          Supervisor: res.newMember.Supervisor,
+          Email: res.newMember.Email
+        });
+      }
+      else{
+      }
       console.log('The dialog was closed');
     });
   }
@@ -64,9 +72,19 @@ export class MemberComponent implements OnInit {
   openRemoveMemberDialog(member): void {
     let dialogRef = this.dialog.open(RemoveMemberComponent, {
       width: '500px',
-      data: member
+      data: {
+        member,
+        url: this.url
+      }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+      if(res.resp == "ok" && res.deletedMember){
+        this.peopleInRoom = this.peopleInRoom.filter((person => (person.FirstName !== res.deletedMember.FirstName) &&
+        (person.LastName !== res.deletedMember.LastName)));
+      }
+      else{
+      }
       console.log('The dialog was closed');
     });
   }
@@ -90,7 +108,38 @@ export class MemberComponent implements OnInit {
 
   setRoomAndFloor(){
     this.room = +this.route.parent.snapshot.paramMap.get('roomid');
-    this.room = +this.route.parent.snapshot.paramMap.get('floorid');
+    this.floor = +this.route.parent.snapshot.paramMap.get('floorid');
   }
 
+  setRoomDetails(){
+    this.route.parent.data.subscribe(
+      res => { 
+        this.roomDetails = res.roomDetailsResolver.body.response;
+      }, 
+      error => { this.error = error; console.log('error setRoomDetails')},
+      () => { console.log('complete setRoomDetails')});
+  }
+
+  private isPeopleRoomArray(response: any): boolean{
+    let isArray = response instanceof Array;
+    if(isArray){
+      let isAllPeopleRoom =  (<PeopleRoom[]>response).every(x=>
+        x.FirstName !== undefined
+        && x.LastName !== undefined
+        && x.Email !== undefined
+        && x.RoomNum !== undefined
+        && x.Supervisor !== undefined
+      );
+      return isAllPeopleRoom;
+    }
+    return false;
+  }
+
+  checkIfRoomIsFull(){
+    return this.loading ? true : (this.peopleInRoom.length >= +this.roomDetails.MaxOccupancy);
+  }
+
+  getToolTip(){
+    return this.checkIfRoomIsFull() ? "החדר מלא, לא ניתן להוסיף עוד אנשים" : "הוסף";
+  }
 }

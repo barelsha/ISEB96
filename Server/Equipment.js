@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
+var router= express.Router();
 
 //get all the equipment in the room
 // "response": [
@@ -31,9 +32,7 @@ app.use(cors());
 //         "Warranty": "2019-02-03T00:00:00.000Z"
 //     }
 
-
-
-app.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
+router.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
     var floorNum = req.param('floorId')
     var roomNum = req.param('roomId')
     if (!floorNum || !roomNum) {
@@ -48,7 +47,7 @@ app.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
             .toString();
         DBUtils.Select(query).then(function (resParam) {
             if (resParam.length == 0) {
-                res.send({ status: "failed", response: "No floor number or room number" });
+                res.send({ status: "failed", response: "there are no equipment at the room." });
             }
             else {
                 res.send({ status: "OK", response: resParam });
@@ -71,7 +70,7 @@ app.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
 //         "Status": "in use",
 //         "Warranty": "2017-02-03T00:00:00.000Z"
 //     },
-app.get('/floors/:floorId/equipUse', function (req, res) {
+router.get('/floors/:floorId/equipUse', function (req, res) {
     var floorNum = req.param('floorId');
     var status = "in use";
     if (!floorNum) {
@@ -107,7 +106,7 @@ app.get('/floors/:floorId/equipUse', function (req, res) {
 //         "Status": "not in use",
 //         "Warranty": "2017-02-05T00:00:00.000Z"
 //     },
-app.get('/floors/:floorId/equipNotUse', function (req, res) {
+router.get('/floors/:floorId/equipNotUse', function (req, res) {
     var floorNum = req.param('floorId');
     var status = "not in use";
     if (!floorNum) {
@@ -142,7 +141,7 @@ app.get('/floors/:floorId/equipNotUse', function (req, res) {
 //         "Status": "in use",
 //         "Warranty": "2017-02-03T00:00:00.000Z"
 //     },
-app.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
+router.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var status = "in use";
@@ -179,7 +178,7 @@ app.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
 //         "Status": "not in use",
 //         "Warranty": "2017-02-05T00:00:00.000Z"
 //     }
-app.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
+router.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var status = "not in use";
@@ -215,7 +214,7 @@ app.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
 //         "Status": "in use",
 //         "Warranty": "2017-02-03T00:00:00.000Z"- can be null
 //     },
-app.get('/floors/:floorId/equipment', function (req, res) {
+router.get('/floors/:floorId/equipment', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
         res.send({ status: "Failed", response: "Invalid value" });
@@ -247,7 +246,7 @@ app.get('/floors/:floorId/equipment', function (req, res) {
 // "Inventor":"2222",
 // "Status":"in use",
 // "Warranty":""- can be null
-app.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
+router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var equipmentName = req.body.EquipName;
@@ -304,7 +303,7 @@ app.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
 // 	"Status":"not in use",
 // 	"Warranty":"1.2.17"
 // }
-app.put('/floors/:floorId/rooms/:roomId/editEquiInRoom/:inventor', function (req, res) {
+router.put('/floors/:floorId/rooms/:roomId/editEquiInRoom/:inventor', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var inventor = req.param('inventor');
@@ -359,7 +358,7 @@ app.put('/floors/:floorId/rooms/:roomId/editEquiInRoom/:inventor', function (req
 });
 
 //delete equipment in room
-app.delete('/floors/:floorId/rooms/:roomId/deleteEquiInRoom/:invent', function (req, res) {
+router.delete('/floors/:floorId/rooms/:roomId/deleteEquiInRoom/:invent', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var inventor = req.param('invent');
@@ -398,10 +397,11 @@ app.delete('/floors/:floorId/rooms/:roomId/deleteEquiInRoom/:invent', function (
     }
 });
 
+module.exports = router;
 
 
 
-var port = 4000;
-app.listen(port, function () {
-    console.log('listening to port: ' + port);
-});
+// var port = 4000;
+// app.listen(port, function () {
+//     console.log('listening to port: ' + port);
+// });

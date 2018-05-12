@@ -10,13 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'dist')));
+var router= express.Router();
 
-
-
-app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname,'dist/index.html'));
-});
 
 //get the room detalis according to the floor and room. From "PeopleInRoom" table
 // "response": [
@@ -28,11 +23,11 @@ app.get('/', function(req, res){
 //         "Supervisor": "no",
 //         "Email": ""
 //     }
-
-app.get('/floors/:floorId/rooms/:roomId', function (req, res) {
+router.get('/floors/:floorId/rooms/:roomId', function (req, res) {
     var floorNum = req.param('floorId')
     var roomNum = req.param('roomId')
     if (!floorNum || !roomNum) {
+
         res.send({ status: "Failed", response: "Invalid value" });
         res.end();
     }
@@ -65,7 +60,7 @@ app.get('/floors/:floorId/rooms/:roomId', function (req, res) {
 //         "RoomType": "Sminar",
 //         "MaxOccupancy": 2
 //     }
-app.get('/roomsDetails/:roomId', function (req, res) {
+router.get('/roomsDetails/:roomId', function (req, res) {
     var roomNum = req.param('roomId')
     if (!roomNum) {
 
@@ -82,7 +77,7 @@ app.get('/roomsDetails/:roomId', function (req, res) {
             }
             else {
                 //           console.log(resParam[0]["MaxOccupancy"]);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "OK", response: resParam[0] });
             }
         }).catch(function (resParam) {
             console.log('Failed to excute');
@@ -98,7 +93,7 @@ app.get('/roomsDetails/:roomId', function (req, res) {
 // "Supervisor":"no",- need to be in check box
 // "email":""- can be NULL
 
-app.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
+router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var firstName = req.body.FirstName;
@@ -189,7 +184,7 @@ app.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
 // 	"FirstName":"mor",
 // 	"LastName":"shimon"
 // }
-app.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res) {
+router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res) {
     var floorNum=req.param('floorId');
     var roomNum=req.param('roomId');
     var firstName = req.body.FirstName;
@@ -244,7 +239,7 @@ app.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res) {
 // 	"Supervisor":"no",
 // 	"Email":""- can be null
 // }
-app.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', function (req, res) {
+router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var firstName = req.param('first');
@@ -315,7 +310,7 @@ app.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', function (
 //         "Supervisor": "no",
 //         "Email": "undefined"
 //     },
-app.get('/floors/:floorId/users', function (req, res) {
+router.get('/floors/:floorId/users', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
         res.send({ status: "Failed", response: "Invalid value" });
@@ -340,13 +335,121 @@ app.get('/floors/:floorId/users', function (req, res) {
     }
 });
 
-
-
-
-
-var port = 4000;
-app.listen(port, function () {
-    console.log('listening to port: ' + port);
+//return the rooms number at the floor
+// "response": [
+//     {
+//         "RoomNumber": 1
+//     },
+//     {
+//         "RoomNumber": 2
+router.get('/floors/:floorId/rooms', function (req, res) {
+    var floorNum = req.param('floorId')
+    if (!floorNum) {
+        res.send({ status: "Failed", response: "Invalid value." });
+        res.end();
+    }
+    else {
+        var query = squel.select().field("RoomNumber").from("Rooms")
+            .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
+            .toString();
+        DBUtils.Select(query).then(function (resParam) {
+            if (resParam.length == 0) {
+                res.send({ status: "failed", response: "floor number doesn't exist." });
+            }
+            else {
+                res.send({ status: "OK", response: resParam });
+            }
+        }).catch(function (resParam) {
+            console.log('Failed to excute.');
+            res.send({ status: "`failed", response: resParam });
+        });
+    }
 });
+
+//edit the room detail (not people in room)
+//using "Rooms" table
+//should get at the req the following:
+// {
+// 	"RoomNumber":"1",
+// 	"FloorNumber":"0",
+// 	"RoomName":"חדר", can be NULL
+// 	"Tel":"12", can be NULL
+// 	"RoomType":"seminar",
+// 	"MaxOccupancy":"10"
+// }
+router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res) {
+    var floorNum = req.param('floorId');
+    var roomNum = req.param('roomId');
+    var roomNumNew = req.body.RoomNumber;
+    var floorNumNew=req.body.FloorNumber;
+    var roomNameNew=req.body.RoomName;
+    var telNew=req.body.Tel;
+    var roomTypeNew=req.body.RoomType;
+    var maxOccNew=req.body.MaxOccupancy;
+    console.log(floorNum);
+    console.log(roomNum);
+
+    console.log(roomNumNew);
+    console.log(floorNumNew);
+    console.log(roomNameNew);
+    console.log(telNew);
+    console.log(roomTypeNew);
+    console.log(maxOccNew);
+
+
+
+    if (!floorNum || !roomNum || !roomNumNew || !floorNumNew  || !roomTypeNew || !maxOccNew) {
+        res.send({ status: "failed", response: "Invalid value." });
+    }
+    else {
+        var query = squel.select()
+            .from("Rooms")
+            .where("FloorNumber='" + floorNum + "'")
+            .where("RoomNumber='"+roomNum+"'")
+            .toString();
+            //check if the room exist in the system
+        DBUtils.Select(query).then(function (resParam) {
+            if (resParam.length == 0) {
+                res.send({ status: "failed", response: "Room doesn't exist in the system." });
+            }
+            else {
+                var query = (
+                    squel.update()
+                        .table("Rooms").where("RoomNumber='" + roomNum + "'")
+                        .where("FloorNumber='"+floorNum+"'")
+                        .set("RoomNumber", roomNumNew)
+                        .set("FloorNumber", floorNumNew)
+                        .set("RoomName", roomNameNew)
+                        .set("Tel", telNew)
+                        .set("RoomType",roomTypeNew)
+                        .set("MaxOccupancy", maxOccNew)
+                        .toString()
+                );
+                console.log(query);
+                DBUtils.Insert(query).then(function (resParam) {
+                    console.log("updated succesufuly.")
+                    res.send({ status: "ok", response: resParam });
+                }).catch(function (resParam) {
+                    console.log('Failed to update the room details.');
+                    res.send({ status: "failed", response: resParam });
+                });
+
+            }
+
+        }).catch(function (resParam) {
+            console.log('Failed to update the room details.');
+            res.send({ status: "failed", response: resParam });
+        });
+    }
+});
+
+module.exports = router;
+
+
+
+// var port = 4000;
+// app.listen(port, function () {
+//     console.log('listening to port: ' + port);
+// });
 
 

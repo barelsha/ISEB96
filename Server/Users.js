@@ -1,7 +1,6 @@
 //import { exists } from 'fs';
 
 var express = require('express');
-var router= express.Router();
 var bodyParser = require('body-parser');
 var squel = require("squel");
 var app = express();
@@ -12,7 +11,8 @@ var path = require('path');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-module.exports = router;
+
+var router= express.Router();
 
 //check if the user has premission to connect the system
 // "response": [
@@ -25,7 +25,7 @@ module.exports = router;
 //         "Email": null,
 //         "PermissionType": "admin"
 //     }
-app.get('/username/:user', function (req, res) {
+router.get('/username/:user', function (req, res) {
     var username = req.param('user');
     if (!username) {
         res.send({ status: "Failed", response: "Invalid value." });
@@ -62,8 +62,12 @@ app.get('/username/:user', function (req, res) {
 // 	"Email":"", -can be NULL
 // 	"PermissionType":"admin"
 // }
-app.post('/username/insertNew/new', function (req, res) {
+router.post('/username/insertNew/new', function (req, res) {
+    console.log("bla");
+
     var firstName = req.body.FirstName;
+    console.log(firstName);
+
     var lastName = req.body.LastName;
     var username = req.body.Username;
     var tel = req.body.Tel;
@@ -122,10 +126,13 @@ app.post('/username/insertNew/new', function (req, res) {
 // "ID":"", -can be NULL
 // "Email":"", -can be NULL
 // "PermissionType":"regular"- from scroll down list- ask Mendy
-app.put('/users/editUser/:username', function (req, res) {
+router.put('/users/editUser/:username', function (req, res) {
     var username = req.param('username');
+    console.log(username);
     var firstName = req.body.FirstName;
+console.log(firstName);
     var lastName = req.body.LastName;
+
     var newUsername = req.body.Username;
     var tel = req.body.Tel;
     var Id = req.body.ID;
@@ -175,7 +182,7 @@ app.put('/users/editUser/:username', function (req, res) {
 });
 
 //delete user from the system
-app.delete('/users/deleteUser/:username', function (req, res) {
+router.delete('/users/deleteUser/:username', function (req, res) {
     var username = req.param('username');
     if (!username) {
         res.send({ status: "failed", response: "Invalid value." });
@@ -211,8 +218,9 @@ app.delete('/users/deleteUser/:username', function (req, res) {
 });
 
 
+module.exports = router;
 
-var port = 4000;
-app.listen(port, function () {
-    console.log('listening to port: ' + port);
-});
+// var port = 4000;
+// app.listen(port, function () {
+//     console.log('listening to port: ' + port);
+// });

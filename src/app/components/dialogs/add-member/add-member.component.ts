@@ -16,7 +16,6 @@ export class AddMemberComponent implements OnInit {
   url: string;
 
   constructor(
-    private route: ActivatedRoute,
     public dialogRef: MatDialogRef<AddMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: string,
     private fb: FormBuilder,
@@ -41,15 +40,14 @@ export class AddMemberComponent implements OnInit {
   }
 
   onSubmit(){
-    this.member = this.prepareSaveMember();
+    this.member = this.prepareAddMember();
     this.roomService.addMember(this.url + '/addPerson', this.member)
     .subscribe(resp => {
-      console.log(resp);
+      this.dialogRef.close({resp: resp, newMember: this.member});
     });
-    this.dialogRef.close(this.member);
   }
 
-  prepareSaveMember(): Member {
+  prepareAddMember(): Member {
     let formModel = this.addMemberForm.value;
     let saveMember: Member = {
       FirstName: formModel.firstName,
@@ -59,4 +57,5 @@ export class AddMemberComponent implements OnInit {
     };
     return saveMember;
   }
+
 }

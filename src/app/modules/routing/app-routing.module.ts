@@ -6,6 +6,7 @@ import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 import { RoomComponent } from '../../components/room/room.component';
 import { MemberComponent } from '../../components/member/member.component';
 import { EquipmentComponent } from '../../components/equipment/equipment.component';
+import { RoomDetailsResolver } from '../../services/room/room.service';
 
 const routes: Routes = [
   { path: 'floors/:floorid', component: SidenavComponent,
@@ -13,6 +14,9 @@ const routes: Routes = [
       {
         path: 'rooms/:roomid',
         component: RoomComponent,
+        resolve: {
+          roomDetailsResolver: RoomDetailsResolver
+        },
         children: [
           {
             path: 'members', 

@@ -24,7 +24,6 @@ export class EditMemberComponent implements OnInit {
     }
   
     createForm() {
-      console.log(this.member);
       this.editMemberForm = this.fb.group({
         email: this.member.Email
       });

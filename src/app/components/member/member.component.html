@@ -3,7 +3,7 @@
 </div>
     
 <div *ngIf="!loading">
-    <div  id="member-details" *ngFor="let member of details">
+    <div  id="member-details" *ngFor="let member of peopleInRoom">
         <ng-container>
             <mat-card>
                 <mat-card-header>
@@ -22,5 +22,6 @@
     </div>
 </div>
 
-<button mat-raised-button type="button" (click)="openAddMemberDialog()"><mat-icon class="add" mat-list-icon matTooltip="הוסף">add</mat-icon></button>
+<button [disabled]="checkIfRoomIsFull()" mat-raised-button type="button" (click)="openAddMemberDialog()"><mat-icon class="add" 
+    mat-list-icon [matTooltipDisabled]="loading" [matTooltip]="getToolTip()">add</mat-icon></button>
 

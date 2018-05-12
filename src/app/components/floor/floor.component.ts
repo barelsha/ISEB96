@@ -22,7 +22,6 @@ export class FloorComponent implements OnInit {
 
   ngOnInit() {
     this.setFloor();
-    console.log(this.floor[0]);
   }
 
   changeStyle($event, text){

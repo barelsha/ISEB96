@@ -18,7 +18,7 @@ import { RoomComponent } from './components/room/room.component';
 import { RoomRoutingModule } from './modules/routing/room-routing.module';
 import { ConfigComponent } from './components/config/config.component';
 import { HttpModule } from '@angular/http';
-import { RoomService } from './services/room/room.service';
+import { RoomService, RoomDetailsResolver } from './services/room/room.service';
 import { MemberComponent } from './components/member/member.component';
 import { EquipmentComponent } from './components/equipment/equipment.component';
 import { AddEquipmentComponent } from './components/dialogs/add-equipment/add-equipment.component';
@@ -66,7 +66,8 @@ import { EditMemberComponent } from './components/dialogs/edit-member/edit-membe
   ],
   providers: [
     FloorService,
-    RoomService
+    RoomService,
+    RoomDetailsResolver
   ],
   bootstrap: [AppComponent]
 })
