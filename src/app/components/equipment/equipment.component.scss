@@ -14,7 +14,7 @@
     }
   }
   
-  #member-details {
+  #equip-details {
     width: 65%;
     @include push--auto();
     margin-top: 2rem;
@@ -26,8 +26,8 @@
   }
   
   @media (max-width: 600px) {
-    #member-details {
-      width: 90%;
+    #equip-details {
+      width: 100%;
     }
   }
   
@@ -38,4 +38,30 @@
   .mat-card-header{
     flex-direction: row-reverse;
   }
+
+  .mat-progress-spinner{
+    margin-top: 2rem;
+      margin-bottom: 2rem;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .mat-card-header-text{
+    flex-grow: 1;
+  }
+
+  .status{
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-grow: 1;
+    text-align: right;
+  }
+
+  .warranty{
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-grow: 1;
+    text-align: right;
+  }
+
   

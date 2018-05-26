@@ -9,12 +9,13 @@
   <form [formGroup]="editMemberForm" mat-dialog-content>
       <div class="inputs-container">
         <mat-form-field hintLabel="example@bgu.ac.il">
-          <input matInput formControlName="email" placeholder="Email">
+          <input required matInput formControlName="email" placeholder="Email">
+          <mat-error *ngIf="editMemberForm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-checkbox>אחראי חדר</mat-checkbox>
       </div>
   </form>
   <mat-divider></mat-divider>
   <div mat-dialog-actions>
-    <button class="save-button" mat-button (click)="onSubmit()">שמור</button>
+    <button [disabled]="checkFormStatus()" class="save-button" mat-button (click)="onSubmit()">שמור</button>
   </div>

@@ -88,7 +88,7 @@ router.get('/roomsDetails/:roomId', function (req, res) {
 
 
 //add people to room
-//	"FirstName":"miri",
+//  "FirstName":"miri",
 // "LastName":"Choen",
 // "Supervisor":"no",- need to be in check box
 // "email":""- can be NULL
@@ -101,7 +101,7 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
     var supervisor = req.body.Supervisor;
     var email = req.body.Email;
 
-    if (!floorNum || !roomNum || !firstName || !lastName || !supervisor) {
+    if (!floorNum || !roomNum || !firstName || !lastName || !supervisor || !email) {
         res.send({ status: "failed", response: "failed to add the person to the room." });
         res.end();
     }
@@ -112,6 +112,7 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
             .where("RoomNum='" + roomNum + "'")
             .where("FirstName='" + firstName + "'")
             .where("LastName='" + lastName + "'")
+            .where("Email='" + email + "'")
             .toString();
 
         DBUtils.Select(query).then(function (resParam) {
@@ -181,15 +182,18 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
 
 //delete person from the room- "PeopleInRoom" table
 // {
-// 	"FirstName":"mor",
-// 	"LastName":"shimon"
+//  "FirstName":"mor",
+//  "LastName":"shimon"
 // }
 router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res) {
     var floorNum=req.param('floorId');
     var roomNum=req.param('roomId');
     var firstName = req.body.FirstName;
     var lastName=req.body.LastName;
-    if (!firstName || !lastName) {
+    var email= req.body.Email;
+    console.log(firstName);
+    console.log(lastName);
+    if (!firstName || !lastName || !email) {
         res.send({ status: "failed", response: "Invalid value." });
     }
     else {
@@ -200,6 +204,7 @@ router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res)
             .where("RoomNum='"+roomNum+"'")
             .where("FirstName='" + firstName + "'")
             .where("LastName='"+lastName+"'")
+            .where("Email='"+email+"'")
             .toString();
         DBUtils.Select(query).then(function (resParam) {
             if (resParam.length == 0) {
@@ -212,6 +217,7 @@ router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res)
                     .where("RoomNum='"+roomNum+"'")
                     .where("FirstName='" + firstName + "'")
                     .where("LastName='"+lastName+"'")
+                    .where("Email='"+email+"'")
                     .toString();
                 DBUtils.Insert(query1).then(function (resParam) {
                     console.log("The person has been deleted from the room.")
@@ -234,22 +240,23 @@ router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res)
 //using "PeopleInRoom" table
 //should get at the req the following:
 // {
-// 	"FirstName":"dima",
-// 	"LastName":"med1",
-// 	"Supervisor":"no",
-// 	"Email":""- can be null
+//  "FirstName":"dima",
+//  "LastName":"med1",
+//  "Supervisor":"no",
+//  "Email":""- can be null
 // }
-router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', function (req, res) {
+router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', function (req, res) {
     var floorNum = req.param('floorId');
     var roomNum = req.param('roomId');
     var firstName = req.param('first');
     var lastName = req.param('last');
+    var email = req.param('email');
     var firstNameNew = req.body.FirstName;
     var lastNameNew = req.body.LastName;
     var supervisorNew = req.body.Supervisor;
     var emailNew = req.body.Email;
 
-    if (!floorNum || !roomNum || !firstName || !lastName  || !firstNameNew || !lastNameNew || !supervisorNew) {
+    if (!floorNum || !roomNum || !firstName || !lastName  || !firstNameNew || !lastNameNew || !supervisorNew || !emailNew) {
         res.send({ status: "failed", response: "Invalid value." });
     }
     else {
@@ -257,10 +264,13 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', functio
             .from("PeopleInRoom")
             .where("FirstName='" + firstName + "'")
             .where("LastName='"+lastName+"'")
+            .where("Email='"+email+"'")
             .toString();
             //check if the person exist in the room
+        console.log(query);
         DBUtils.Select(query).then(function (resParam) {
             if (resParam.length == 0) {
+                console.log("Person doesn't exist in the room.");
                 res.send({ status: "failed", response: "Person doesn't exist in the room." });
             }
             else {
@@ -268,6 +278,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last', functio
                     squel.update()
                         .table("PeopleInRoom").where("FirstName='" + firstName + "'")
                         .where("LastName='"+lastName+"'")
+                        .where("Email='"+email+"'")
                         .set("FirstName", firstNameNew)
                         .set("LastName", lastNameNew)
                         .set("Supervisor", supervisorNew)
@@ -342,14 +353,14 @@ router.get('/floors/:floorId/users', function (req, res) {
 //     },
 //     {
 //         "RoomNumber": 2
-router.get('/floors/:floorId/rooms', function (req, res) {
+router.get('/floors/:floorId', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
         res.send({ status: "Failed", response: "Invalid value." });
         res.end();
     }
     else {
-        var query = squel.select().field("RoomNumber").from("Rooms")
+        var query = squel.select().from("PeopleInRoom")
             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
             .toString();
         DBUtils.Select(query).then(function (resParam) {
@@ -370,12 +381,12 @@ router.get('/floors/:floorId/rooms', function (req, res) {
 //using "Rooms" table
 //should get at the req the following:
 // {
-// 	"RoomNumber":"1",
-// 	"FloorNumber":"0",
-// 	"RoomName":"חדר", can be NULL
-// 	"Tel":"12", can be NULL
-// 	"RoomType":"seminar",
-// 	"MaxOccupancy":"10"
+//  "RoomNumber":"1",
+//  "FloorNumber":"0",
+//  "RoomName":"חדר", can be NULL
+//  "Tel":"12", can be NULL
+//  "RoomType":"seminar",
+//  "MaxOccupancy":"10"
 // }
 router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res) {
     var floorNum = req.param('floorId');

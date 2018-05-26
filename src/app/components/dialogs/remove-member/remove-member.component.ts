@@ -28,9 +28,23 @@ export class RemoveMemberComponent implements OnInit {
   }
 
   onSubmit(){
-    this.roomService.deleteMember(this.url + '/deletePerson', {FirstName: this.member.FirstName, LastName: this.member.LastName})
+    this.roomService.deleteMember(this.url + '/deletePerson', 
+      {
+        FirstName: this.member.FirstName, 
+        LastName: this.member.LastName,
+        Email: this.member.Email
+      })
     .subscribe(resp => {
-      this.dialogRef.close({resp:resp.status, deletedMember: {FirstName: this.member.FirstName, LastName: this.member.LastName}});
+      this.dialogRef
+      .close(
+        {
+          resp:resp.status, 
+          deletedMember: 
+          {
+            FirstName: this.member.FirstName, 
+            LastName: this.member.LastName,
+            Email: this.member.Email
+          }});
     });
   }
 

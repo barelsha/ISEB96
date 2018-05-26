@@ -27,6 +27,7 @@ import { EditEquipmentComponent } from './components/dialogs/edit-equipment/edit
 import { AddMemberComponent } from './components/dialogs/add-member/add-member.component';
 import { RemoveMemberComponent } from './components/dialogs/remove-member/remove-member.component';
 import { EditMemberComponent } from './components/dialogs/edit-member/edit-member.component';
+import { StatusDirective } from './directives/status.directive';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EditMemberComponent } from './components/dialogs/edit-member/edit-membe
     EditEquipmentComponent,
     AddMemberComponent,
     RemoveMemberComponent,
-    EditMemberComponent
+    EditMemberComponent,
+    StatusDirective
   ],
   exports: [ ],
   imports: [

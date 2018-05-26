@@ -6,32 +6,37 @@
 </div>
 <mat-divider></mat-divider>
 
-<div mat-dialog-content>
-    <div class="inputs-container">
-      <mat-form-field hintLabel="הערה">
-        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-      <mat-form-field hintLabel="הערה">
-        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-      <mat-form-field hintLabel="הערה">
-        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-      <mat-form-field hintLabel="הערה">
-        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-      <mat-form-field hintLabel="הערה">
-        <input dir="rtl" matInput #input maxlength="10" placeholder="הכנס קלט">
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-    </div>
-</div>
+<form [formGroup]="addEquipmentForm" mat-dialog-content>
+  <div class="inputs-container">
+    <mat-form-field>
+      <input dir="rtl" required matInput formControlName="equipName" placeholder="שם פריט">
+      <mat-error *ngIf="addEquipmentForm.controls.equipName.invalid">{{getEquipNameErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input dir="rtl" required matInput formControlName="inventor" placeholder="אינוונטר">
+      <mat-error *ngIf="addEquipmentForm.controls.inventor.invalid">{{getInventorErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-radio-group required formControlName="status" (change)="statusChanged()">
+      <mat-radio-button value="1">תקין</mat-radio-button>
+      <mat-radio-button value="2">תקול</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field *ngIf="addEquipmentForm.controls.status.value === '2'" appearance="outline">
+      <mat-label>תיאור התקלה</mat-label>
+      <textarea dir="rtl" required matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="warranty" [matDatepicker]="picker" placeholder=":אחריות עד">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="addEquipmentForm.controls.warranty.invalid">{{getWarrantyErrorMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+</form>
+
 <mat-divider></mat-divider>
 <div mat-dialog-actions>
-  
-  <button class="save-button"  mat-button [mat-dialog-close]="data.animal">שמור</button>
+<button [disabled]="checkFormStatus()" class="save-button" mat-button (click)="onSubmit()">שמור</button>
 </div>

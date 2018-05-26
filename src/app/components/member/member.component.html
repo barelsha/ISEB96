@@ -22,6 +22,12 @@
     </div>
 </div>
 
-<button [disabled]="checkIfRoomIsFull()" mat-raised-button type="button" (click)="openAddMemberDialog()"><mat-icon class="add" 
-    mat-list-icon [matTooltipDisabled]="loading" [matTooltip]="getToolTip()">add</mat-icon></button>
+<button 
+    [matTooltip]="getToolTip()"
+    [matTooltipDisabled]="loading" 
+    [disabled]="checkIfRoomIsFull()" 
+    mat-raised-button type="button" 
+    (click)="openAddMemberDialog()">
+    <mat-icon class="add" mat-list-icon>add</mat-icon>
+</button>
 

@@ -29,3 +29,16 @@
     padding: 24px 24px;
 }
 
+.mat-radio-group{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.textarea.mat-input-element{
+    height: 100px;
+}
+
+
+

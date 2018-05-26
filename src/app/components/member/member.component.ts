@@ -38,19 +38,21 @@ export class MemberComponent implements OnInit {
   getPeopleInRoom() {
     this.roomService.getPeopleInRoom(this.url)
     .subscribe(resp => {
-        console.log('next getPeopleInRoom');
         this.peopleInRoom = this.isPeopleRoomArray(resp.body.response) ? resp.body.response : [];
         this.loading = false;
       }, error => {
         this.error = error;
-        console.log('error getPeopleInRoom');
-      }, ()=> {console.log('complete getPeopleInRoom');});
+      }, ()=> {/*complete*/});
   }
 
   openAddMemberDialog(): void {
     let dialogRef = this.dialog.open(AddMemberComponent, {
       width: '500px',
-      data: this.url
+      data:
+        {
+          url: this.url,
+          members: this.peopleInRoom
+        }
     });
     dialogRef.afterClosed().subscribe(res => {
       if(res && res.resp.body.status === "ok"){
@@ -65,7 +67,7 @@ export class MemberComponent implements OnInit {
       }
       else{
       }
-      console.log('The dialog was closed');
+    }, err =>{
     });
   }
 
@@ -73,29 +75,48 @@ export class MemberComponent implements OnInit {
     let dialogRef = this.dialog.open(RemoveMemberComponent, {
       width: '500px',
       data: {
-        member,
+        member: member,
         url: this.url
       }
     });
     dialogRef.afterClosed().subscribe(res => {
-      console.log(res);
-      if(res.resp == "ok" && res.deletedMember){
-        this.peopleInRoom = this.peopleInRoom.filter((person => (person.FirstName !== res.deletedMember.FirstName) &&
-        (person.LastName !== res.deletedMember.LastName)));
+      if(res && res.resp == "ok" && res.deletedMember){
+        this.peopleInRoom = this.peopleInRoom.filter((person => (
+          (person.Email !== res.deletedMember.Email) &&
+          (person.FirstName !== res.deletedMember.FirstName) &&
+          (person.LastName !== res.deletedMember.LastName) &&
+          (person.RoomNum !== res.deletedMember.RoomNum) &&
+          (person.FloorNum !== res.deletedMember.FloorNum))));
       }
       else{
       }
-      console.log('The dialog was closed');
     });
   }
 
   openEditMemberDialog(member): void {
     let dialogRef = this.dialog.open(EditMemberComponent, {
       width: '500px',
-      data: member
+      data: {
+        member: member,
+        url: this.url
+      }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(res => {
+      if(res && res.resp === "ok" && res.editedMember){
+        this.peopleInRoom.forEach(member =>{
+          if(member.Email === res.oldMember.Email &&
+          member.FirstName === res.oldMember.FirstName &&
+          member.LastName === res.oldMember.LastName &&
+          member.Supervisor === res.oldMember.Supervisor){
+            member.FirstName = res.editedMember.FirstName;
+            member.Email = res.editedMember.Email;
+            member.LastName = res.editedMember.LastName;
+            member.Supervisor = res.editedMember.Supervisor;
+          }
+        });
+      }
+      else{
+      }
     });
   }
 
@@ -116,8 +137,8 @@ export class MemberComponent implements OnInit {
       res => { 
         this.roomDetails = res.roomDetailsResolver.body.response;
       }, 
-      error => { this.error = error; console.log('error setRoomDetails')},
-      () => { console.log('complete setRoomDetails')});
+      error => { this.error = error; },
+      () => { });
   }
 
   private isPeopleRoomArray(response: any): boolean{

@@ -11,11 +11,16 @@
         [rowspan]="tile.rows"
         [style.background]="tile.color"
         routerLink= "rooms/{{tile.text}}">
-        {{tile.text}}
+        <div class="room-tile">
+            <div *ngIf="tile.text.length > 0">
+                <mat-icon class="icon">fiber_manual_record</mat-icon>
+            </div>
+            <div class="room-number">
+                {{tile.text}}
+            </div>
+        </div>
     </mat-grid-tile>
 </mat-grid-list>
-
-
 
 <!--matTooltip = "חדר, מרצה: בדיקה {{tile.text}}"-->
 

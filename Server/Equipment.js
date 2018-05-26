@@ -253,6 +253,7 @@ router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
     var inventor = req.body.Inventor;
     var warranty = req.body.Warranty;
     var status = req.body.Status;
+    var description = req.body.Description;
 
     if (!floorNum || !roomNum || !inventor || !status || !equipmentName) {
         res.send({ status: "failed", response: "failed to add new equipment to the room." });
@@ -277,6 +278,7 @@ router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
                     .set("Inventor", inventor)
                     .set("Warranty", warranty)
                     .set("Status", status)
+                    .set("Description", description)
                     .toString());
                 DBUtils.Insert(query1).then(function (resParam) {
 

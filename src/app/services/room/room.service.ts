@@ -30,7 +30,7 @@ export class RoomService {
       }) }).pipe(retry(3), catchError(this.handleError));
   }
 
-  deleteMember(url: string, member : { FirstName: string, LastName: string }): Observable<Response<any>> {
+  deleteMember(url: string, member : { FirstName: string, LastName: string, Email: string }): Observable<Response<any>> {
     let options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=UTF-8',
@@ -41,6 +41,49 @@ export class RoomService {
       url , options).pipe(retry(3), catchError(this.handleError));
   }
 
+  putMember(url: string, member: Member): Observable<HttpResponse<Response<any>>> {
+    return this.http.put<Response<any>>(
+      url, member ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }) }).pipe(retry(3), catchError(this.handleError));
+  }
+
+  getEquipmenteInRoom(url: string): Observable<HttpResponse<Response<EquipmentRoom>>> {
+    return this.http.get<Response<EquipmentRoom>>( url, { observe: 'response' })
+    .pipe(retry(3), catchError(this.handleError));
+  }
+
+  addEquipment(url: string, equip: Equipment): Observable<HttpResponse<Response<any>>> {
+    return this.http.post<Response<any>>(
+      url, equip ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }) }).pipe(retry(3), catchError(this.handleError));
+  }
+
+  deleteEquipment(url: string, equip : {
+    EquipName: string, 
+    Inventor: number, 
+    Status: string, 
+    Warranty: Date | string,
+    Description: string
+  }): Observable<HttpResponse<Response<any>>> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
+      body: equip
+    };
+    return this.http.delete<Response<any>>(
+      url , options).pipe(retry(3), catchError(this.handleError));
+  }
+
+  putEquipment(url: string, equip: Equipment): Observable<HttpResponse<Response<any>>> {
+    return this.http.put<Response<any>>(
+      url, equip ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      })}).pipe(retry(3), catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
@@ -48,7 +91,7 @@ export class RoomService {
       console.error(`Backend returned code ${error.status}, `+`body was: ${error.error}`);
     }
     return new ErrorObservable('Something bad happened; please try again later.');
-  };
+  }
 
 }
 
@@ -70,11 +113,29 @@ export interface RoomDetails {
   MaxOccupancy: string
 }
 
+export interface EquipmentRoom {
+  RoomNum: number,
+  FloorNum: number,
+  EquipName: string,
+  Inventor: string,
+  Status: string,
+  Warranty: string,
+  Description: string
+}
+
 export interface Member {
   FirstName: string,
   LastName: string,
   Supervisor: string,
   Email: string
+}
+
+export interface Equipment {
+  EquipName: string,
+  Inventor: number,
+  Status: string,
+  Warranty: Date | string,
+  Description: string
 }
 
 export interface Response<T> {

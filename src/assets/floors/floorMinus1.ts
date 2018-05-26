@@ -16,7 +16,7 @@ export let floorMinus1 = {
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
-    {"text": "-103", "cols": 2, "rows": 2, "color": "lightblue"},
+    {"text": "-103", "cols": 2, "rows": 3, "color": "lightblue"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
@@ -35,12 +35,23 @@ export let floorMinus1 = {
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
     {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    
+    
     {"text": "-101", "cols": 2, "rows": 3, "color": "lightblue"},
-    {"text": "-103A", "cols": 1, "rows": 2, "color": "lightblue"},
-    {"text": "-153", "cols": 2, "rows": 2, "color": "lightblue"},
-    {"text": "-152", "cols": 1, "rows": 2, "color": "lightblue"},
-    {"text": "-151", "cols": 3, "rows": 2, "color": "lightblue"},
-    {"text": "-102", "cols": 4, "rows": 2, "color": "lightblue"}
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "", "cols": 1, "rows": 1, "color": "rgba(250,250,250)"},
+    {"text": "-103A", "cols": 1, "rows": 1, "color": "lightblue"},
+    {"text": "-153", "cols": 2, "rows": 1, "color": "lightblue"},
+    {"text": "-152", "cols": 1, "rows": 1, "color": "lightblue"},
+    {"text": "-151", "cols": 3, "rows": 1, "color": "lightblue"},
+    {"text": "-102", "cols": 4, "rows": 1, "color": "lightblue"}
 ],
 "columns": 13
 }

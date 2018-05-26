@@ -1,18 +1,37 @@
-<div id="member-details">
-    <ng-container>
-        <mat-card>
-            <mat-card-header>
-                <div mat-card-avatar><mat-icon mat-list-icon>build</mat-icon></div>
-                <mat-card-title></mat-card-title>
-                <mat-card-subtitle></mat-card-subtitle>
-                <div class="flex-spacer"></div>
-            </mat-card-header>
-            <img mat-card-image>
-            <mat-card-actions>
-              <mat-icon class="edit" (click)="openEditEquipmentDialog()" mat-list-icon matTooltip="ערוך">edit</mat-icon>
-              <mat-icon class="delete" (click)="openRemoveEquipmentDialog()" mat-list-icon matTooltip="מחק">delete</mat-icon>
-            </mat-card-actions>
-        </mat-card>
-    </ng-container>
+<div *ngIf="loading">
+    <mat-spinner></mat-spinner>
 </div>
-<button mat-raised-button type="button" (click)="openAddEquipmentDialog()"><mat-icon class="add" mat-list-icon matTooltip="הוסף">add</mat-icon></button>
+    
+<div *ngIf="!loading">
+    <div  id="equip-details" *ngFor="let equip of equipmentInRoom">
+        <ng-container>
+            <mat-card [appStatus] status="{{equip.Status}}">
+                <mat-card-header>
+                    <div mat-card-avatar><mat-icon mat-list-icon>build</mat-icon></div>
+                    <mat-card-title dir="rtl">{{equip.EquipName}}</mat-card-title>
+                    <mat-card-subtitle>{{equip.Inventor}}</mat-card-subtitle>
+                    <p mat-card-header dir="rtl" class="status">סטטוס: {{equip.Status === '1'? 'תקין' : 'תקול'}}</p>
+                    <p mat-card-header dir="rtl" class="warranty">אחריות עד: {{equip.Warranty}}</p>
+                </mat-card-header>
+                <mat-card-content>
+                    <p *ngIf="equip.Status === '2'" dir="rtl" class="warranty"> תיאור התקלה: {{equip.Description}}</p>
+                </mat-card-content>
+                <img mat-card-image>
+                <mat-card-actions>
+                    <mat-icon class="edit" (click)="openEditEquipmentDialog(equip)" mat-list-icon matTooltip="ערוך">edit</mat-icon>
+                    <mat-icon class="delete" (click)="openRemoveEquipmentDialog(equip)" mat-list-icon matTooltip="מחק">delete</mat-icon>
+                </mat-card-actions>
+            </mat-card>
+        </ng-container>
+    </div>
+</div>
+
+<button 
+    matTooltip="הוסף"
+    [matTooltipDisabled]="loading" 
+    [disabled]="loading" 
+    mat-raised-button type="button" 
+    (click)="openAddEquipmentDialog()">
+    <mat-icon class="add" mat-list-icon>add</mat-icon>
+</button>
+
