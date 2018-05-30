@@ -1,22 +1,22 @@
 <mat-grid-list cols="{{floor.columns}}" rowHeight="90px" gutterSize="5px">
     <mat-grid-tile
         [ngClass] = "color"
-        (mouseover)="changeStyle($event, tile.text)"
-        (mouseout)="changeStyle($event, tile.text)"
-        matTooltip="mail@mail.com מייל בעל חדר"
-        [matTooltipDisabled] = "tile.text.length == 0"
+        (mouseover)="changeStyle($event, tile.RoomNumber)"
+        (mouseout)="changeStyle($event, tile.RoomNumber)"
+        matTooltip="{{tile.tooltip | async}}"
+        [matTooltipDisabled] = "tile.RoomNumber === null"
         [matTooltipPosition]="position"
-        *ngFor="let tile of floor.parts"
-        [colspan]="tile.cols"
-        [rowspan]="tile.rows"
-        [style.background]="tile.color"
-        routerLink= "rooms/{{tile.text}}">
+        *ngFor="let tile of floor.parts | async"
+        [colspan]="tile.Cols"
+        [rowspan]="tile.Rows"
+        [style.background]="tile.color | async"
+        routerLink= "rooms/{{tile.RoomNumber}}">
         <div class="room-tile">
-            <div *ngIf="tile.text.length > 0">
+            <div *ngIf="tile.RoomNumber !== null">
                 <mat-icon class="icon">fiber_manual_record</mat-icon>
             </div>
             <div class="room-number">
-                {{tile.text}}
+                {{tile.RoomNumber }}
             </div>
         </div>
     </mat-grid-tile>

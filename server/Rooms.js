@@ -360,7 +360,8 @@ router.get('/floors/:floorId', function (req, res) {
         res.end();
     }
     else {
-        var query = squel.select().from("PeopleInRoom")
+        var query = squel.select().from("(" + squel.select().from("PeopleInRoom")/*.where("Supervisor = 'yes'")*/ + ") pir")
+        .right_join("Rooms", null, "Rooms.FloorNumber = pir.FloorNum and Rooms.RoomNumber = pir.RoomNum")
             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
             .toString();
         DBUtils.Select(query).then(function (resParam) {

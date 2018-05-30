@@ -8,13 +8,17 @@ import { ActivatedRoute, ParamMap, RouterStateSnapshot, Resolve, ActivatedRouteS
 
 @Injectable()
 export class FloorService {
-  roomDetails: FloorDetails;
 
   constructor(private http: HttpClient) {}
 
-  getFloorDetails(url: string): Observable<HttpResponse<Response<FloorDetails>>> {
-    return this.http.get<Response<FloorDetails>>(url, { observe: 'response' }).pipe(
-        retry(3), catchError(this.handleError));
+  getPeopleFloorDetails(url: string): Observable<HttpResponse<Response<FloorPeopleDetails>>> {
+    return this.http.get<Response<FloorPeopleDetails>>(url, { observe: 'response' })
+    .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getEquipmentFloorDetails(url: string): Observable<HttpResponse<Response<FloorEquipmentDetails>>> {
+    return this.http.get<Response<FloorEquipmentDetails>>(url, { observe: 'response' })
+    .pipe(retry(3), catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -30,13 +34,19 @@ export class FloorService {
 }
 
 
-export interface FloorDetails {
+export interface FloorPeopleDetails {
   RoomNumber: number,
   FloorNumber: number,
   RoomName: string,
   Tel: string,
   RoomType: string,
   MaxOccupancy: string
+}
+
+export interface FloorEquipmentDetails {
+  RoomNumber: number,
+  FloorNumber: number,
+  RoomName: string
 }
 
 export interface Response<T> {
