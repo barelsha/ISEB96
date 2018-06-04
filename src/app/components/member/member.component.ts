@@ -82,11 +82,8 @@ export class MemberComponent implements OnInit {
     dialogRef.afterClosed().subscribe(res => {
       if(res && res.resp == "ok" && res.deletedMember){
         this.peopleInRoom = this.peopleInRoom.filter((person => (
-          (person.Email !== res.deletedMember.Email) &&
-          (person.FirstName !== res.deletedMember.FirstName) &&
-          (person.LastName !== res.deletedMember.LastName) &&
-          (person.RoomNum !== res.deletedMember.RoomNum) &&
-          (person.FloorNum !== res.deletedMember.FloorNum))));
+          (person.Email !== res.deletedMember.Email)
+        )));
       }
       else{
       }

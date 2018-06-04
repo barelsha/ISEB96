@@ -4,9 +4,10 @@
 }
 
 .logo{
-    height: 30px;
-    width: 100px;
-}
+    height: 50px;
+    width: 170px;
+  }
+  
 
 .mat-toolbar{
     z-index: 2;

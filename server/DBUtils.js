@@ -22,13 +22,13 @@ exports.Select = function(query) {
         var connection;
         connection.on('connect', function(err) {
             if (err) {
-                console.error('error connecting: ' + err.message);
+                //console.error('error connecting: ' + err.message);
                 reject(err);
             }
-            console.log('connection on');
+            //console.log('connection on');
             var dbReq = new Request(query, function (err, rowCount) {
                 if (err) {
-                    console.log(err);
+                    //console.log(err);
                     reject(err);
                 }
             });
@@ -48,8 +48,8 @@ exports.Select = function(query) {
             });
 
             dbReq.on('requestCompleted', function () {
-                console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
-                console.log(ans);
+                //console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
+                //console.log(ans);
                 connection.close();
                 resolve(ans);
 
@@ -67,10 +67,10 @@ exports.Insert = function(query) {
         var connection;
         connection.on('connect', function(err) {
             if (err) {
-                console.error('error connecting: ' + err.message);
+                //console.error('error connecting: ' + err.message);
                 reject(err);
             }
-            console.log('connection on');
+            //console.log('connection on');
             var dbReq=new Request(query, function(err,rowCount){
                 if(err){
                     console.log(err);
@@ -79,7 +79,7 @@ exports.Insert = function(query) {
             });
 
             dbReq.on('requestCompleted',function(){
-                console.log('request completed!');
+                //console.log('request completed!');
                 connection.close();
                 var ans=[];
                 resolve(ans);

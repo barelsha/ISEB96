@@ -28,6 +28,7 @@ import { AddMemberComponent } from './components/dialogs/add-member/add-member.c
 import { RemoveMemberComponent } from './components/dialogs/remove-member/remove-member.component';
 import { EditMemberComponent } from './components/dialogs/edit-member/edit-member.component';
 import { StatusDirective } from './directives/status.directive';
+import { RoomSidenavService } from './services/room-sidenav/room-sidenav.service';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { StatusDirective } from './directives/status.directive';
   providers: [
     FloorService,
     RoomService,
+    RoomSidenavService,
     RoomDetailsResolver
   ],
   bootstrap: [AppComponent]

@@ -202,8 +202,6 @@ router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res)
             .from("PeopleInRoom")
             .where("FloorNum='"+floorNum+"'")
             .where("RoomNum='"+roomNum+"'")
-            .where("FirstName='" + firstName + "'")
-            .where("LastName='"+lastName+"'")
             .where("Email='"+email+"'")
             .toString();
         DBUtils.Select(query).then(function (resParam) {
@@ -215,8 +213,6 @@ router.delete('/floors/:floorId/rooms/:roomId/deletePerson', function (req, res)
                     .from("PeopleInRoom")
                     .where("FloorNum='"+floorNum+"'")
                     .where("RoomNum='"+roomNum+"'")
-                    .where("FirstName='" + firstName + "'")
-                    .where("LastName='"+lastName+"'")
                     .where("Email='"+email+"'")
                     .toString();
                 DBUtils.Insert(query1).then(function (resParam) {
@@ -362,6 +358,32 @@ router.get('/floors/:floorId', function (req, res) {
     else {
         var query = squel.select().from("(" + squel.select().from("PeopleInRoom")/*.where("Supervisor = 'yes'")*/ + ") pir")
         .right_join("Rooms", null, "Rooms.FloorNumber = pir.FloorNum and Rooms.RoomNumber = pir.RoomNum")
+            .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
+            .toString();
+        DBUtils.Select(query).then(function (resParam) {
+            if (resParam.length == 0) {
+                res.send({ status: "failed", response: "floor number doesn't exist." });
+            }
+            else {
+                res.send({ status: "OK", response: resParam });
+            }
+        }).catch(function (resParam) {
+            console.log('Failed to excute.');
+            res.send({ status: "`failed", response: resParam });
+        });
+    }
+});
+
+
+router.get('/floors/:floorId/equipment', function (req, res) {
+    var floorNum = req.param('floorId')
+    if (!floorNum) {
+        res.send({ status: "Failed", response: "Invalid value." });
+        res.end();
+    }
+    else {
+        var query = squel.select().from("(" + squel.select().from("EquipmentInRoom")/*.where("Supervisor = 'yes'")*/ + ") eir")
+        .right_join("Rooms", null, "Rooms.FloorNumber = eir.FloorNum and Rooms.RoomNumber = eir.RoomNum")
             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
             .toString();
         DBUtils.Select(query).then(function (resParam) {
