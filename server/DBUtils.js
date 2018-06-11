@@ -5,6 +5,14 @@ var Request = require('tedious').Request;
 //var data=fs.readFileSync
 
 // Create connection to database
+// var config = {
+//     userName: 'ise96',
+//     password: 'nBah9azm',
+//     server: 'ise96building.database.windows.net',
+//     requestTimeout: 30000,
+//     options: {encrypt: true,database: 'ISE96'}
+// };
+
 var config = {
     userName: 'ise96',
     password: 'nBah9azm',

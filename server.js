@@ -27,7 +27,7 @@ app.use('/', equip);
 app.use('/', rooms);
 app.use('/', users);
 
-var port = 4000;
+var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log('listening to port: ' + port);
 });
