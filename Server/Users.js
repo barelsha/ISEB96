@@ -8,10 +8,11 @@ var moment = require('moment');
 var DBUtils = require('./DBUtils');
 var cors = require('cors');
 var path = require('path');
+var soap = require('soap');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-var soap = require('soap');
+
 
 
 var router = express.Router();
@@ -21,11 +22,11 @@ var router = express.Router();
 //"Username":"linoykal"
 //"Password":"swws",
 //"ID":"2222"
-router.post('/username/login', function (req, res,next) {
+router.post('/login', function (req, res,next) {
     var username = req.body.Username;
     var password = req.body.Password;
     var id = req.body.ID;
-
+    console.log(username);
     if (!username || !password || !id) {
         res.send({ status: "Failed", response: "Missing arguments." });
         res.end();
@@ -65,7 +66,7 @@ router.post('/username/login', function (req, res,next) {
 //check if the user has permission to our system in Users table
 //"Username":"linoykal",
 //"ID":"33299"
-router.post('/username/login', function (req, res) {
+router.post('/login', function (req, res) {
     var username = req.body.Username;
     var id = req.body.ID;
 

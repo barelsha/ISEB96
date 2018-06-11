@@ -40,6 +40,8 @@ const routes: Routes = [
     ]
   },
   { path: '', redirectTo: '/floors/0', pathMatch: 'full' }
+  // ,
+  // { path: '', redirectTo: '/lo', pathMatch: 'full' }
 ];
 
 @NgModule({

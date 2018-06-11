@@ -22,10 +22,12 @@ app.get('/', function(req, res){
 var equip = require('./Server/Equipment');
 var rooms = require('./Server/Rooms');
 var users = require('./Server/Users');
+var schedule = require('./Server/Schedule');
 
 app.use('/', equip);
 app.use('/', rooms);
 app.use('/', users);
+app.use('/', schedule);
 
 var port = process.env.PORT || 4000;
 app.listen(port, function () {

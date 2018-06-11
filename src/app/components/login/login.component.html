@@ -1,0 +1,32 @@
+<div class="card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>התחבר</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="loginForm">
+      <div class="inputs-container">
+        <mat-form-field>
+          <input required matInput formControlName="Username" placeholder="שם משתמש">
+          <mat-error *ngIf="loginForm.controls.Username.invalid">{{getUsernameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input required matInput formControlName="Password" placeholder="סיסמא">
+          <mat-error *ngIf="loginForm.controls.Password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input required matInput formControlName="ID" placeholder="ת.ז">
+          <mat-error *ngIf="loginForm.controls.ID.invalid">{{getIDErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+    <mat-card-content>
+      <p>
+        לא מצליח להכנס? פנה למנדי
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="login-button" [disabled]="checkFormStatus()" (click)="onSubmit()" mat-button>התחבר</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

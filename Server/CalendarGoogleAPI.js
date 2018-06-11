@@ -80,19 +80,15 @@ function getAccessToken(oAuth2Client, callback) {
 //  * Lists the next 10 events on the user's primary calendar.
 //  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 //  */
-exports.listEvents= function(day,auth, callback) {
+exports.listEvents= function(day,calId,auth, callback) {
   const calendar = google.calendar({version: 'v3', auth});
   // //events for 6.6
   // var day1="2018-06-06"; 
   //  var day2="2018-06-07";
   var minDay=moment(day).format("YYYY-MM-DDTHH:mm:ssZ");
   var maxDay =moment(day).add(1, 'days').format("YYYY-MM-DDTHH:mm:ssZ");
-  // // var maxDay=moment(day2).format("YYYY-MM-DDTHH:mm:ssZ");
-  // console.log(minDay);
-  // console.log(maxDay);
   calendar.events.list({
-    calendarId: 'primary',
-   // timeMin: (new Date()).toISOString(),
+    calendarId: calId,
     timeMin:minDay,
     timeMax:maxDay, 
     maxResults:2500,
@@ -110,80 +106,69 @@ exports.listEvents= function(day,auth, callback) {
       });
       callback(events);
     } else {
+      callback(events);
       console.log('No upcoming events found.');
     }
   });
 }
 
-// exports.listEvents= function(auth,callback) {
-//   const calendar = google.calendar({version: 'v3', auth});
-//   calendar.events.list({
-//     calendarId: 'primary',
-//     timeMin: (new Date()).toISOString(),
-//     maxResults: 10,
-//     singleEvents: true,
-//     orderBy: 'startTime',
-  
-//   }, function(err, response) {
-//     if (err) {
-//       console.log('The API returned an error: ' + err);
-//       return callback(err);
-//     }
-//     console.log(response); 
-//     var events = response.items;
-//     if (events.length == 0) {
-//       console.log('No upcoming events found.');
-//     } else {
-//       console.log('Upcoming 10 events:');
-//       for (var i = 0; i < events.length; i++) {
-//         var event = events[i];
-//         var start = event.start.dateTime || event.start.date;
-//         console.log('%s - %s', start, event.summary);
-//       }
-//     }
-//   });
-
-// }
-
-exports.creteEvents=function (auth){
-    var event = {
-        'summary': 'Google I/O 2015',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-          'dateTime': '2018-06-28T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles',
-        },
-        'end': {
-          'dateTime': '2018-06-28T17:00:00-08:00',
-          'timeZone': 'America/Los_Angeles',
-        },
-        'recurrence': [
-          'RRULE:FREQ=DAILY;COUNT=2'
-        ],
-        'attendees': [
-          {'email': 'lpage@example.com'},
-          {'email': 'sbrin@example.com'},
-        ],
-        'reminders': {
-          'useDefault': false,
-          'overrides': [
-            {'method': 'email', 'minutes': 24 * 60},
-            {'method': 'popup', 'minutes': 10},
-          ],
-        },
-      };
+exports.creteEvents=function (event, calId, auth){
+    // var event = {
+    //     'summary': 'Google I/O 2015',
+    //     'location': '800 Howard St., San Francisco, CA 94103',
+    //     'description': 'A chance to hear more about Google\'s developer products.',
+    //     'start': {
+    //       'dateTime': '2018-06-28T09:00:00-07:00',
+    //       'timeZone': 'America/Los_Angeles',
+    //     },
+    //     'end': {
+    //       'dateTime': '2018-06-28T17:00:00-08:00',
+    //       'timeZone': 'America/Los_Angeles',
+    //     },
+    //     'recurrence': [
+    //       'RRULE:FREQ=DAILY;COUNT=2'
+    //     ],
+    //     'attendees': [
+    //       {'email': 'lpage@example.com'},
+    //       {'email': 'sbrin@example.com'},
+    //     ],
+    //     'reminders': {
+    //       'useDefault': false,
+    //       'overrides': [
+    //         {'method': 'email', 'minutes': 24 * 60},
+    //         {'method': 'popup', 'minutes': 10},
+    //       ],
+    //     },
+    //   };
       
     const calendar = google.calendar({version: 'v3', auth});
     calendar.events.insert({
         auth: auth,
-        calendarId: 'primary',
+        calendarId: calId,
         resource: event,
       }, function(err, event) {
         if (err) {
           console.log('There was an error contacting the Calendar service: ' + err);
-          return;
+          return '0';
         }
         console.log('Event created: %s', event.htmlLink);
+        return '1';
       });
+}
+
+exports.deleteEvent=function (eventId,calId,auth){
+  var params = {
+    auth:auth,
+    calendarId: calId,
+    eventId: eventId,
+  };
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.delete(params, function(err) {
+    if (err) {
+      console.log('The API returned an error: ' + err);
+      return '0';
+    }
+    console.log('Event deleted.');
+    return '1';
+  });
 }
