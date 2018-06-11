@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router /*ParamMap*/ } from '@angular/router';
 //import 'rxjs/add/operator/switchMap';
 //import { NavigationStart } from '@angular/router';
@@ -20,7 +21,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   floor: number;
   currentRoute: string;
   shouldRun = true;
-  roomDetails: RoomDetails;
+  roomDetails: Observable<RoomDetails>;
   subscription: Subscription;
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   ) 
     
     {
-      this.subscription = this.roomSidenavService.getData().subscribe(x => {this.roomDetails = x;});
+    this.roomDetails = this.roomSidenavService.getData();
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -50,7 +51,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 
   fillerNav = Array(19).fill(0).map((_, i) => `${i + 1}`);

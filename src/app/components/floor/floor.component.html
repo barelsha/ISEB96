@@ -5,42 +5,17 @@
         (mouseout)="changeStyle($event, tile.RoomNumber)"
         [matTooltipDisabled] = "tile.RoomNumber === null"
         [matTooltipPosition]="position"
-        
         [colspan]="tile.Cols"
         [rowspan]="tile.Rows"
         [style.background]="tile.color | async"
-        routerLink= "rooms/{{tile.RoomNumber}}"
+        [routerLink]= "tile.RoomNumber !== null ? tile.route : null"
         [matTooltip]="tile.tooltip">
         <div class="room-tile">
-            <div *ngIf="tile.RoomNumber !== null && (tile.RoomNumber === 1 
-            || tile.RoomNumber === 3
-             || tile.RoomNumber === 17 
-             || tile.RoomNumber === 5
-              || tile.RoomNumber === 13)">
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 1" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 13" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 13" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 13" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 17" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 17" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 17" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 3" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 3" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 5" class="icon">fiber_manual_record</mat-icon>
-                <mat-icon *ngIf="tile.RoomNumber === 3" class="icon">fiber_manual_record</mat-icon>
+            <div *ngIf="tile.faultyEquip | async as faultyEquipment">
+                <mat-icon class="icon"
+                    *ngFor="let equip of faultyEquipment">
+                    fiber_manual_record
+                </mat-icon>
             </div>
             <div class="room-number">
                 {{tile.RoomNumber }}

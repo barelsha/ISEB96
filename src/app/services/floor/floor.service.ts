@@ -11,13 +11,13 @@ export class FloorService {
 
   constructor(private http: HttpClient) {}
 
-  getPeopleFloorDetails(url: string): Observable<HttpResponse<Response<FloorPeopleDetails>>> {
-    return this.http.get<Response<FloorPeopleDetails>>(url, { observe: 'response' })
+  getPeopleFloorDetails(url: string): Observable<HttpResponse<Response<FloorPeopleDBData>>> {
+    return this.http.get<Response<FloorPeopleDBData>>(url, { observe: 'response' })
     .pipe(retry(3), catchError(this.handleError));
   }
 
-  getEquipmentFloorDetails(url: string): Observable<HttpResponse<Response<FloorEquipmentDetails>>> {
-    return this.http.get<Response<FloorEquipmentDetails>>(url, { observe: 'response' })
+  getEquipmentFloorDetails(url: string): Observable<HttpResponse<Response<FloorEquipmentDBData>>> {
+    return this.http.get<Response<FloorEquipmentDBData>>(url, { observe: 'response' })
     .pipe(retry(3), catchError(this.handleError));
   }
 
@@ -34,19 +34,31 @@ export class FloorService {
 }
 
 
-export interface FloorPeopleDetails {
-  RoomNumber: number,
-  FloorNumber: number,
+export interface FloorPeopleDBData {
+  Cols: number
+  Email: string,
+  FirstName: string,
+  FloorNum: number, // from PeopleInRoom
+  FloorNumber: number, // From Rooms
+  LastName: string,
+  MaxOccupancy: number,
   RoomName: string,
-  Tel: string,
+  RoomNum: number, // from PeopleInRoom
+  RoomNumber: number, // From Rooms
   RoomType: string,
-  MaxOccupancy: string
+  Rows: number,
+  Supervisor: string,
+  Tel: string
 }
 
-export interface FloorEquipmentDetails {
-  RoomNumber: number,
-  FloorNumber: number,
-  RoomName: string
+export interface FloorEquipmentDBData {
+  Description: string,
+  EquipName: string,
+  FloorNum: number,
+  Inventor: number,
+  RoomNum: number,
+  Status: string,
+  Warranty: string
 }
 
 export interface Response<T> {

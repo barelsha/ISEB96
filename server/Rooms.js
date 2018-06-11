@@ -356,7 +356,7 @@ router.get('/floors/:floorId', function (req, res) {
         res.end();
     }
     else {
-        var query = squel.select().from("(" + squel.select().from("PeopleInRoom")/*.where("Supervisor = 'yes'")*/ + ") pir")
+        var query = squel.select().from("(" + squel.select().from("PeopleInRoom") + ") pir")
         .right_join("Rooms", null, "Rooms.FloorNumber = pir.FloorNum and Rooms.RoomNumber = pir.RoomNum")
             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
             .toString();
@@ -375,30 +375,32 @@ router.get('/floors/:floorId', function (req, res) {
 });
 
 
-router.get('/floors/:floorId/equipment', function (req, res) {
-    var floorNum = req.param('floorId')
-    if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
-        res.end();
-    }
-    else {
-        var query = squel.select().from("(" + squel.select().from("EquipmentInRoom")/*.where("Supervisor = 'yes'")*/ + ") eir")
-        .right_join("Rooms", null, "Rooms.FloorNumber = eir.FloorNum and Rooms.RoomNumber = eir.RoomNum")
-            .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
-            .toString();
-        DBUtils.Select(query).then(function (resParam) {
-            if (resParam.length == 0) {
-                res.send({ status: "failed", response: "floor number doesn't exist." });
-            }
-            else {
-                res.send({ status: "OK", response: resParam });
-            }
-        }).catch(function (resParam) {
-            console.log('Failed to excute.');
-            res.send({ status: "`failed", response: resParam });
-        });
-    }
-});
+// router.get('/floors/:floorId/equipment', function (req, res) {
+//     console.log(req);
+//     var floorNum = req.param('floorId')
+//     if (!floorNum) {
+//         res.send({ status: "Failed", response: "Invalid value." });
+//         res.end();
+//         console.log(floorNum);
+//     }
+//     else {
+//         var query = squel.select().from("(" + squel.select().from("EquipmentInRoom") + ") eir")
+//         .right_join("Rooms", null, "Rooms.FloorNumber = eir.FloorNum and Rooms.RoomNumber = eir.RoomNum")
+//             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
+//             .toString();
+//         DBUtils.Select(query).then(function (resParam) {
+//             if (resParam.length == 0) {
+//                 res.send({ status: "failed", response: "floor number doesn't exist." });
+//             }
+//             else {
+//                 res.send({ status: "OK", response: resParam });
+//             }
+//         }).catch(function (resParam) {
+//             console.log('Failed to excute.');
+//             res.send({ status: "`failed", response: resParam });
+//         });
+//     }
+// });
 
 //edit the room detail (not people in room)
 //using "Rooms" table

@@ -14,7 +14,7 @@
       <mat-toolbar color="primary" class="toolbar">
         <mat-toolbar-row>
           <span class="fill-remaining-space"></span>
-          <p *ngIf="roomDetails" mat-line dir="rtl"> - חדר {{roomDetails.RoomNumber}}: {{roomDetails.RoomName}} </p><pre> </pre><p>{{floor}} </p><pre> </pre> <p mat-line dir="rtl"> קומה  </p>
+          <p *ngIf="roomDetails | async as room" mat-line dir="rtl"> - חדר {{room.RoomNumber}}: {{room.RoomName}} </p><pre> </pre><p>{{floor}} </p><pre> </pre> <p mat-line dir="rtl"> קומה  </p>
           <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         </mat-toolbar-row>
       </mat-toolbar>
