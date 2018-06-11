@@ -6,6 +6,8 @@ var moment = require('moment');
 var DBUtils = require('./DBUtils');
 var cors = require('cors');
 var path = require('path');
+var help = require('./HelpFunc');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -41,6 +43,19 @@ router.get('/floors/:floorId/rooms/:roomId', function (req, res) {
                 res.send({ status: "failed", response: "No floor number or room number" });
             }
             else {
+                //removing N from db
+                // var user={
+                //     RoomNum:roomNum,
+                //     FloorNum:floorNum,
+                //     FirstName:removeFirst(resParam[0]['FirstName']),
+                //     LastName:removeFirst(resParam[0]['LastName']),
+                //     Supervisor:resParam[0]['Supervisor'],
+                //     Email:resParam[0]['Email']
+                // }
+                // console.log(user.FirstName);
+                // console.log(user.LastName);
+                resParam=help.changeJSON(resParam);
+                //console.log(JSON.stringify(user))
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -77,6 +92,7 @@ router.get('/roomsDetails/:roomId', function (req, res) {
             }
             else {
                 //           console.log(resParam[0]["MaxOccupancy"]);
+                resParam=help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam[0] });
             }
         }).catch(function (resParam) {
@@ -107,11 +123,12 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
     }
 
     else {
+    
         var query = squel.select().from("PeopleInRoom")
             .where("FloorNum='" + floorNum + "'")
             .where("RoomNum='" + roomNum + "'")
-            .where("FirstName='" + firstName + "'")
-            .where("LastName='" + lastName + "'")
+            .where("FirstName='" + '$'+firstName + "'")
+            .where("LastName='" + '$'+lastName + "'")
             .where("Email='" + email + "'")
             .toString();
 
@@ -146,8 +163,8 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
                         var query4 = (squel.insert().into("PeopleInRoom")
                             .set("RoomNum", roomNum)
                             .set("FloorNum", floorNum)
-                            .set("FirstName", firstName)
-                            .set("LastName", lastName)
+                            .set("FirstName", '$'+firstName)
+                            .set("LastName", '$'+lastName)
                             .set("Supervisor", supervisor)
                             .set("Email", email)
                             .toString());
@@ -258,8 +275,8 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
     else {
         var query = squel.select()
             .from("PeopleInRoom")
-            .where("FirstName='" + firstName + "'")
-            .where("LastName='"+lastName+"'")
+            .where("FirstName='" + '$'+firstName + "'")
+            .where("LastName='"+'$'+lastName+"'")
             .where("Email='"+email+"'")
             .toString();
             //check if the person exist in the room
@@ -272,11 +289,11 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
             else {
                 var query = (
                     squel.update()
-                        .table("PeopleInRoom").where("FirstName='" + firstName + "'")
-                        .where("LastName='"+lastName+"'")
+                        .table("PeopleInRoom").where("FirstName='" + 'N'+firstName + "'")
+                        .where("LastName='"+'$'+lastName+"'")
                         .where("Email='"+email+"'")
-                        .set("FirstName", firstNameNew)
-                        .set("LastName", lastNameNew)
+                        .set("FirstName",'$'+ firstNameNew)
+                        .set("LastName", '$'+lastNameNew)
                         .set("Supervisor", supervisorNew)
                         .set("Email", emailNew)
                         .toString()
@@ -333,6 +350,7 @@ router.get('/floors/:floorId/users', function (req, res) {
                 res.send({ status: "failed", response: "floor number doesn't exist." });
             }
             else {
+                resParam=help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -356,8 +374,35 @@ router.get('/floors/:floorId', function (req, res) {
         res.end();
     }
     else {
-        var query = squel.select().from("(" + squel.select().from("PeopleInRoom") + ") pir")
+        var query = squel.select().from("(" + squel.select().from("PeopleInRoom")/*.where("Supervisor = 'yes'")*/ + ") pir")
         .right_join("Rooms", null, "Rooms.FloorNumber = pir.FloorNum and Rooms.RoomNumber = pir.RoomNum")
+            .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
+            .toString();
+        DBUtils.Select(query).then(function (resParam) {
+            if (resParam.length == 0) {
+                res.send({ status: "failed", response: "floor number doesn't exist." });
+            }
+            else {
+                resParam = help.changeJSON(resParam);
+                res.send({ status: "OK", response: resParam });
+            }
+        }).catch(function (resParam) {
+            console.log('Failed to excute.');
+            res.send({ status: "`failed", response: resParam });
+        });
+    }
+});
+
+
+router.get('/floors/:floorId/equipment', function (req, res) {
+    var floorNum = req.param('floorId')
+    if (!floorNum) {
+        res.send({ status: "Failed", response: "Invalid value." });
+        res.end();
+    }
+    else {
+        var query = squel.select().from("(" + squel.select().from("EquipmentInRoom")/*.where("Supervisor = 'yes'")*/ + ") eir")
+        .right_join("Rooms", null, "Rooms.FloorNumber = eir.FloorNum and Rooms.RoomNumber = eir.RoomNum")
             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
             .toString();
         DBUtils.Select(query).then(function (resParam) {
@@ -373,34 +418,6 @@ router.get('/floors/:floorId', function (req, res) {
         });
     }
 });
-
-
-// router.get('/floors/:floorId/equipment', function (req, res) {
-//     console.log(req);
-//     var floorNum = req.param('floorId')
-//     if (!floorNum) {
-//         res.send({ status: "Failed", response: "Invalid value." });
-//         res.end();
-//         console.log(floorNum);
-//     }
-//     else {
-//         var query = squel.select().from("(" + squel.select().from("EquipmentInRoom") + ") eir")
-//         .right_join("Rooms", null, "Rooms.FloorNumber = eir.FloorNum and Rooms.RoomNumber = eir.RoomNum")
-//             .where("FloorNumber='" + floorNum + "'").order("RoomNumber")
-//             .toString();
-//         DBUtils.Select(query).then(function (resParam) {
-//             if (resParam.length == 0) {
-//                 res.send({ status: "failed", response: "floor number doesn't exist." });
-//             }
-//             else {
-//                 res.send({ status: "OK", response: resParam });
-//             }
-//         }).catch(function (resParam) {
-//             console.log('Failed to excute.');
-//             res.send({ status: "`failed", response: resParam });
-//         });
-//     }
-// });
 
 //edit the room detail (not people in room)
 //using "Rooms" table
@@ -455,7 +472,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res)
                         .where("FloorNumber='"+floorNum+"'")
                         .set("RoomNumber", roomNumNew)
                         .set("FloorNumber", floorNumNew)
-                        .set("RoomName", roomNameNew)
+                        .set("RoomName", '$'+roomNameNew)
                         .set("Tel", telNew)
                         .set("RoomType",roomTypeNew)
                         .set("MaxOccupancy", maxOccNew)

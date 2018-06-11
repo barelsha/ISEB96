@@ -4,6 +4,7 @@ var squel = require("squel");
 var app = express();
 var moment = require('moment');
 var DBUtils = require('./DBUtils');
+var help = require('./HelpFunc');
 var cors = require('cors');
 var path = require('path');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,6 +51,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
                 res.send({ status: "failed", response: "there are no equipment at the room." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -87,6 +89,7 @@ router.get('/floors/:floorId/equipUse', function (req, res) {
                 res.send({ status: "failed", response: "floor number doesn't exist." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -122,6 +125,7 @@ router.get('/floors/:floorId/equipNotUse', function (req, res) {
                 res.send({ status: "failed", response: "floor number doesn't exist." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -159,6 +163,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
                 res.send({ status: "failed", response: "floor number or room number doesn't exist." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -195,6 +200,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
                 res.send({ status: "failed", response: "floor number or room number doesn't exist." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -229,6 +235,7 @@ router.get('/floors/:floorId/equipment', function (req, res) {
                 res.send({ status: "failed", response: "floor number doesn't exist." });
             }
             else {
+                resParam= help.changeJSON(resParam);
                 res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
@@ -262,7 +269,7 @@ router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
     //need to check type of for the db???
     else {
         var query = squel.select().from("EquipmentInRoom")
-            .where("EquipName='" + equipmentName + "'")
+            .where("EquipName='" + '$'+equipmentName + "'")
             .where("Inventor='" + inventor + "'")
             .toString();
 
@@ -274,7 +281,7 @@ router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
                 var query1 = (squel.insert().into("EquipmentInRoom")
                     .set("RoomNum", roomNum)
                     .set("FloorNum", floorNum)
-                    .set("EquipName", equipmentName)
+                    .set("EquipName",'$'+ equipmentName)
                     .set("Inventor", inventor)
                     .set("Warranty", warranty)
                     .set("Status", status)
@@ -335,7 +342,7 @@ router.put('/floors/:floorId/rooms/:roomId/editEquiInRoom/:inventor', function (
                         .table("EquipmentInRoom").where("FloorNum='" + floorNum + "'")
                         .where("RoomNum='"+roomNum+"'")
                         .where("Inventor='"+inventor+"'")
-                        .set("EquipName", equipNameNew)
+                        .set("EquipName", '$'+equipNameNew)
                         .set("Inventor", inventorNew)
                         .set("Status", status)
                         .set("Warranty", warranty)

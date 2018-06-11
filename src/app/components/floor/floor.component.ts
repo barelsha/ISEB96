@@ -35,14 +35,12 @@ export class FloorComponent implements OnInit, OnDestroy {
     let url = this.getUrl(this.route);
     this.floor = this.getFloor();
     this.floorPeopleObservable = this.floorService.getPeopleFloorDetails(url);
-    console.log(url + '/equipment');
     this.floorEquipmentObservable = this.floorService.getEquipmentFloorDetails(url + '/equipment');
     this.floorPeopleObservable.subscribe(x => {
       let newFloorPeopleDetails = this.setNewFloorPeopleDetails(x.body.response, this.floor.parts);
       this.floor.parts = newFloorPeopleDetails;
     });
     this.floorEquipmentObservable.subscribe(x => {
-      console.log(x.body.response);
       let newFloorEquipmentDetails = this.setNewFloorEquipmentDetails(x.body.response, this.floor.parts);
       this.floor.parts = newFloorEquipmentDetails;
     });
