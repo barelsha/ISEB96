@@ -31,6 +31,7 @@ import { StatusDirective } from './directives/status.directive';
 import { RoomSidenavService } from './services/room-sidenav/room-sidenav.service';
 import { LoginService } from './services/login/login.service';
 import { LoginComponent } from './components/login/login.component';
+import {Ng2Webstorage} from 'ngx-webstorage';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { LoginComponent } from './components/login/login.component';
     MaterialsModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    Ng2Webstorage
   ],
   entryComponents: [
     AddEquipmentComponent,

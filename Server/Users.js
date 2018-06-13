@@ -9,6 +9,7 @@ var DBUtils = require('./DBUtils');
 var cors = require('cors');
 var path = require('path');
 var soap = require('soap');
+var jwt = require('jsonwebtoken');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -26,6 +27,7 @@ router.post('/login', function (req, res,next) {
     var username = req.body.Username;
     var password = req.body.Password;
     var id = req.body.ID;
+    
     console.log(username);
     if (!username || !password || !id) {
         res.send({ status: "Failed", response: "Missing arguments." });
@@ -54,7 +56,7 @@ router.post('/login', function (req, res,next) {
                             //res.send({ status: "OK", response: "The username exist in the system." });
                         }
                         else {
-                            res.send({ status: "Failed", response: "The username or password or ID dosen't exist in the system."});
+                            res.send({ status: "Failed", response: false});
                         }
                     }
                 });
@@ -69,6 +71,7 @@ router.post('/login', function (req, res,next) {
 router.post('/login', function (req, res) {
     var username = req.body.Username;
     var id = req.body.ID;
+    var password = req.body.Password;
 
     if (!username || !id) {
         res.send({ status: "Failed", response: "Missing arguments." });
@@ -84,7 +87,11 @@ router.post('/login', function (req, res) {
             }
             //save the permission type to know what action the user can do
             else {
-                res.send({ status: "OK", response: resParam });
+                jwt.sign(resParam[0], password, (err, token) => {
+                        res.send(token);
+                    }
+                );
+                //res.send({ status: "OK", response: resParam });
             }
         }).catch(function (resParam) {
             console.log('Failed to excute');

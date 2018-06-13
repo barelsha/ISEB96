@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Observable } from 'rxjs/observable';
 import { catchError, retry, map } from 'rxjs/operators';
+import { LocalStorageService } from 'ngx-webstorage';
+import * as moment from "moment";
 
 @Injectable()
 export class LoginService {
@@ -15,9 +17,35 @@ export class LoginService {
         headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=UTF-8',
       })
-    })
-    .pipe(retry(3), catchError(this.handleError));
+    }).do(res => this.setSession)
+    .pipe(retry(3), catchError(this.handleError)).shareReplay();
   }
+
+  private setSession(authResult) {
+    const expiresAt = moment().add(authResult.expiresIn,'second');
+
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+  }          
+
+  logout() {
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("expires_at");
+  }
+
+  public isLoggedIn() {
+      return moment().isBefore(this.getExpiration());
+  }
+
+  isLoggedOut() {
+      return !this.isLoggedIn();
+  }
+
+  getExpiration() {
+      const expiration = localStorage.getItem("expires_at");
+      const expiresAt = JSON.parse(expiration);
+      return moment(expiresAt);
+  }    
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
