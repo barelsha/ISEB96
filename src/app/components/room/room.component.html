@@ -11,6 +11,13 @@
       [active]="rla.isActive">
       ציוד
     </a>
+    <a mat-tab-link
+      *ngIf ="roomDetails.RoomNumber === 5 || roomDetails.RoomNumber === 1"
+      routerLink="schedule"
+      routerLinkActive #rla="routerLinkActive"
+      [active]="rla.isActive">
+      לוח זמנים
+    </a>
   </nav>
   <router-outlet></router-outlet>
   

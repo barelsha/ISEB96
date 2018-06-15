@@ -32,6 +32,9 @@ import { RoomSidenavService } from './services/room-sidenav/room-sidenav.service
 import { LoginService } from './services/login/login.service';
 import { LoginComponent } from './components/login/login.component';
 import {Ng2Webstorage} from 'ngx-webstorage';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { ScheduleService } from './services/schedule/schedule.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,8 @@ import {Ng2Webstorage} from 'ngx-webstorage';
     RemoveMemberComponent,
     EditMemberComponent,
     StatusDirective,
-    LoginComponent
+    LoginComponent,
+    ScheduleComponent
   ],
   exports: [ ],
   imports: [
@@ -62,7 +66,8 @@ import {Ng2Webstorage} from 'ngx-webstorage';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    Ng2Webstorage
+    Ng2Webstorage,
+    FullCalendarModule
   ],
   entryComponents: [
     AddEquipmentComponent,
@@ -77,7 +82,8 @@ import {Ng2Webstorage} from 'ngx-webstorage';
     RoomService,
     RoomSidenavService,
     RoomDetailsResolver,
-    LoginService
+    LoginService,
+    ScheduleService
   ],
   bootstrap: [AppComponent]
 })

@@ -80,22 +80,27 @@ function getAccessToken(oAuth2Client, callback) {
 //  * Lists the next 10 events on the user's primary calendar.
 //  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 //  */
-exports.listEvents= function(day,calId,auth, callback) {
+exports.listEvents= function(/*day,*/calId,auth, callback) {
+  console.log('3');
+
   const calendar = google.calendar({version: 'v3', auth});
   // //events for 6.6
   // var day1="2018-06-06"; 
   //  var day2="2018-06-07";
-  var minDay=moment(day).format("YYYY-MM-DDTHH:mm:ssZ");
-  var maxDay =moment(day).add(1, 'days').format("YYYY-MM-DDTHH:mm:ssZ");
+  //var minDay=moment(day).format("YYYY-MM-DDTHH:mm:ssZ");
+  //var maxDay =moment(day).add(1, 'days').format("YYYY-MM-DDTHH:mm:ssZ");
   calendar.events.list({
     calendarId: calId,
-    timeMin:minDay,
-    timeMax:maxDay, 
+    // timeMin:minDay,
+    // timeMax:maxDay, 
     maxResults:2500,
     singleEvents: true,
     orderBy: 'startTime',
     timeZone:'Asia/Jerusalem',
+
   }, (err, {data}) => {
+    console.log('4');
+
     if (err) return console.log('The API returned an error: ' + err);
     const events = data.items;
     if (events.length) {

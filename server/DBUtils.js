@@ -5,25 +5,25 @@ var Request = require('tedious').Request;
 //var data=fs.readFileSync
 
 // Create connection to database
-var config = {
-    userName: 'sa',
-    password: '123abcd',
-    server: 'ISE-B96',
-    requestTimeout: 30000,
-    options: {
-        instanceName: 'SQLEXPRESS',
-        encrypt: true,
-        database: 'master'
-    }
-};
-
 // var config = {
-//     userName: 'ise96',
-//     password: 'nBah9azm',
-//     server: 'ise96building.database.windows.net',
+//     userName: 'sa',
+//     password: '123abcd',
+//     server: 'ISE-B96',
 //     requestTimeout: 30000,
-//     options: {encrypt: true,database: 'ISE96'}
+//     options: {
+//         instanceName: 'SQLEXPRESS',
+//         encrypt: true,
+//         database: 'master'
+//     }
 // };
+
+var config = {
+    userName: 'ise96',
+    password: 'nBah9azm',
+    server: 'ise96building.database.windows.net',
+    requestTimeout: 30000,
+    options: {encrypt: true,database: 'ISE96'}
+};
 
 
 exports.Select = function(query) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import {RoomService, PeopleRoom, RoomDetails } from '../../services/room/room.service';
+import { RoomService, PeopleRoom, RoomDetails } from '../../services/room/room.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoomSidenavService } from './../../services/room-sidenav/room-sidenav.service';
 
@@ -30,13 +30,13 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnDestroy(){
-      // clear message
-      this.roomSidenavService.clearData();
+    // clear message
+    this.roomSidenavService.clearData();
   }
 
   clearData(){
     // clear message
-      this.roomSidenavService.clearData();
+    this.roomSidenavService.clearData();
   }
 
 }
