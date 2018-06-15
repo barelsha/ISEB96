@@ -35,6 +35,9 @@ import {Ng2Webstorage} from 'ngx-webstorage';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ScheduleService } from './services/schedule/schedule.service';
+import { AuthModule } from 'angular2-jwt';
+import { HomeComponent } from './components/home/home.component';
+import { LoginGuardService } from './services/login-guard/login-guard.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ import { ScheduleService } from './services/schedule/schedule.service';
     EditMemberComponent,
     StatusDirective,
     LoginComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    HomeComponent
   ],
   exports: [ ],
   imports: [
@@ -67,7 +71,8 @@ import { ScheduleService } from './services/schedule/schedule.service';
     ReactiveFormsModule,
     AppRoutingModule,
     Ng2Webstorage,
-    FullCalendarModule
+    FullCalendarModule,
+    AuthModule
   ],
   entryComponents: [
     AddEquipmentComponent,
@@ -83,7 +88,8 @@ import { ScheduleService } from './services/schedule/schedule.service';
     RoomSidenavService,
     RoomDetailsResolver,
     LoginService,
-    ScheduleService
+    ScheduleService,
+    LoginGuardService
   ],
   bootstrap: [AppComponent]
 })

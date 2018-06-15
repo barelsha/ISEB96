@@ -1,5 +1,7 @@
 <div class="card">
+  <mat-progress-bar [style.visibility]="loading ? 'visible' : 'hidden'" mode="indeterminate"></mat-progress-bar>
   <mat-card>
+    <img class="logo" src="../../../assets/images/logo2.png">
     <mat-card-header>
       <mat-card-title>התחבר</mat-card-title>
       <mat-card-subtitle></mat-card-subtitle>
@@ -21,12 +23,14 @@
       </div>
     </form>
     <mat-card-content>
-      <p>
-        לא מצליח להכנס? פנה למנדי
-      </p>
+        <mat-error>{{getLoginErrorReason()}}</mat-error>
     </mat-card-content>
     <mat-card-actions>
+        
       <button class="login-button" [disabled]="checkFormStatus()" (click)="onSubmit()" mat-button>התחבר</button>
+      
     </mat-card-actions>
+    
   </mat-card>
+  
 </div>

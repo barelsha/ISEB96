@@ -23,3 +23,9 @@
 .login-button{
     width: 100%;
 }
+
+.logo{
+    height: 50px;
+    width: 170px;
+    background-color: #c8b4ea;
+}

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { LoginService, LoginData, LoginRes } from '../../services/login/login.service';
+import { LoginService, LoginData, LoginError } from '../../services/login/login.service';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-login',
@@ -10,9 +13,11 @@ import { LoginService, LoginData, LoginRes } from '../../services/login/login.se
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  loading: Boolean = false;
 
   constructor(private fb: FormBuilder,
-    private loginService: LoginService) { }
+    private loginService: LoginService,
+    private router: Router) { }
 
   ngOnInit() {
     this.createForm();
@@ -27,14 +32,41 @@ export class LoginComponent implements OnInit {
   }
   
   onSubmit(){
+    this.loading = true;
     let loginData = this.getLoginData();
-    this.loginService.login('/login', loginData).subscribe(x=>console.log(x));
-    // this.member = this.prepareAddMember();
-    // this.roomService.addMember(this.url + '/addPerson', this.member)
-    // .subscribe(resp => {
-    //   this.dialogRef.close({resp: resp, newMember: this.member});
-    // }, err =>{
-    // });
+    this.loginService.login('/login', loginData).subscribe(
+      loginResponse => {
+        this.loading = false;
+        this.router.navigateByUrl('/');
+      },
+      loginError => {
+        this.loading = false;
+      }
+      // this.handleLoginResponse, 
+      // this.handleLoginError
+    );
+  }
+
+  getLoginErrorReason() : string{
+    let error = this.loginService.loginError;
+    if(error === null) return "";
+    if(error === LoginError.EnteredCatch) return "שגיאה";
+    if(error === LoginError.MissingParameters) return "שגיאה";
+    if(error === LoginError.SystemAuthorization) return "אין לך הרשאות גישה למערכת, פנה למנדי";
+    if(error === LoginError.UniversityAuthorization) return "אחד או יותר מהפרטים המזהים שהקלדת שגוי";
+    return "";
+  }
+
+  handleLoginResponse(loginResponse){
+    if(loginResponse === LoginError.EnteredCatch || loginResponse === LoginError.MissingParameters
+      ||loginResponse === LoginError.EnteredCatch ||loginResponse === LoginError.EnteredCatch){
+
+    }
+    this.loading = false;
+  }
+
+  handleLoginError(err){
+    this.loading = false;
   }
 
   getLoginData(): LoginData {
@@ -47,7 +79,6 @@ export class LoginComponent implements OnInit {
     return login;
   }
 
-  
 
   getUsernameErrorMessage(){
     return this.loginForm.controls.Username.hasError('required') ? 'הנך חייב להזין שם משתמש' : '';
@@ -59,7 +90,6 @@ export class LoginComponent implements OnInit {
 
   getIDErrorMessage(){
     return this.loginForm.controls.ID.hasError('required') ? 'הנך חייב להזין ת.ז' : '';
-    
   }
 
   checkFormStatus(){

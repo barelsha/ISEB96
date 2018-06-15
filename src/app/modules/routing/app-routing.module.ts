@@ -8,45 +8,53 @@ import { MemberComponent } from '../../components/member/member.component';
 import { EquipmentComponent } from '../../components/equipment/equipment.component';
 import { RoomDetailsResolver } from '../../services/room/room.service';
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
+import { HomeComponent } from '../../components/home/home.component';
+import { LoginComponent } from '../../components/login/login.component';
+import { LoginGuardService } from '../../services/login-guard/login-guard.service';
 
 const routes: Routes = [
-  { path: 'floors/:floorid', component: SidenavComponent,
+  { path: '', component: HomeComponent,
+    canActivate: [LoginGuardService],
     children: [
-      {
-        path: 'rooms/:roomid',
-        component: RoomComponent,
-        resolve: {
-          roomDetailsResolver: RoomDetailsResolver
-        },
+      { path: 'floors/:floorid', component: SidenavComponent,
         children: [
           {
-            path: 'members', 
-            component: MemberComponent
-          },
-          {
-            path: 'equipment', 
-            component: EquipmentComponent
-          },
-          {
-            path: 'schedule', 
-            component: ScheduleComponent
+            path: 'rooms/:roomid',
+            component: RoomComponent,
+            resolve: {
+              roomDetailsResolver: RoomDetailsResolver
+            },
+            children: [
+              {
+                path: 'members', 
+                component: MemberComponent
+              },
+              {
+                path: 'equipment', 
+                component: EquipmentComponent
+              },
+              {
+                path: 'schedule', 
+                component: ScheduleComponent
+              },
+              {
+                path: '', 
+                redirectTo: 'members',
+                pathMatch: 'full'
+              }
+            ]
           },
           {
             path: '', 
-            redirectTo: 'members',
-            pathMatch: 'full'
+            component: FloorComponent
           }
         ]
       },
-      {
-        path: '', 
-        component: FloorComponent
-      }
+      { path: '', redirectTo:'floors/0', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: '/floors/0', pathMatch: 'full' }
-  // ,
-  // { path: '', redirectTo: '/lo', pathMatch: 'full' }
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

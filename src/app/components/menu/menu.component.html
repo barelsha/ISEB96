@@ -1,5 +1,7 @@
 <mat-toolbar color="primary" class="menu">
   <mat-toolbar-row class="mat-elevation-z4">
+    <span><a mat-button (click)="exit()">יציאה</a></span>
+    <span style="font-size: 15px; padding-left: 10px;">{{loggedInUser.Username}}</span>
     <span class="fill-remaining-space"></span>
     <span><a mat-button routerLink="/floors/3" RouterLinkActive="active">3 קומה</a></span>
     <span><a mat-button routerLink="/floors/2" RouterLinkActive="active">2 קומה</a></span>

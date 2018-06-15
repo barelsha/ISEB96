@@ -1,0 +1,26 @@
+.footer,
+.push {
+  height: 64px;
+}
+
+.mat-app-background{
+  min-height: 100%;
+  margin: 0 auto -64px;
+}
+
+@media (max-width: 600px){
+  .mat-toolbar-row, .mat-toolbar-single-row {
+    height: 64px; 
+  }
+  /*.mat-app-background{
+    position: absolute;
+    top: 0px;
+    min-height: 100%;
+    margin: 0 auto -64px;
+  }*/
+}
+
+.logo{
+  height: 50px;
+  width: 170px;
+}
