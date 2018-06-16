@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, retry, map } from 'rxjs/operators';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
@@ -12,6 +12,15 @@ export class ScheduleService {
   getEvents(url: string): Observable<FullCalendarEvent[]> {
       return this.http.get<Response<any>>( url, { observe: 'response' })
       .pipe(extractResponse, transferToFullCalendarFormat, retry(3), catchError(this.handleError));
+  }
+
+  addEvent(url: string, event: FullCalendarEvent): Observable<Response<any>> {
+    let googleAPIEvent : GoogleAPIEvent = getGoogleAPIEventFormat(event);
+    return this.http.post<Response<any>>(
+      url, googleAPIEvent ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }) 
+    }).pipe(retry(3), catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -34,9 +43,34 @@ export const transferToFullCalendarFormat = map((googleAPIEvents: GoogleAPIEvent
     start: googleAPIEvent.start.dateTime,
     end: googleAPIEvent.end.dateTime
   }))
+});
+
+export function getGoogleAPIEventFormat(fullCalendarEvent: FullCalendarEvent){
+  let googleAPIEvent : GoogleAPIEvent = {
+    end: {
+      dateTime: fullCalendarEvent.end
+    },
+    start: {
+     dateTime: fullCalendarEvent.start
+    },
+    summary: fullCalendarEvent.title,
+    created: null,
+    creator: null,
+    etag: null,
+    htmlLink: null,
+    iCalUID: null,
+    id: null,
+    kind: null,
+    organizer: null,
+    reminders: null,
+    sequence: null,
+    extendedProperties: null,
+    status: null,
+    updated: null
+  }
+  return googleAPIEvent;
 }
   
-);
 
 export interface Response<T> {
   status: string;

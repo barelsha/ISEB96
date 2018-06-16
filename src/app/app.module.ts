@@ -38,6 +38,9 @@ import { ScheduleService } from './services/schedule/schedule.service';
 import { AuthModule } from 'angular2-jwt';
 import { HomeComponent } from './components/home/home.component';
 import { LoginGuardService } from './services/login-guard/login-guard.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { AddEventComponent } from './components/dialogs/add-event/add-event.component';
+import { EditEventComponent } from './components/dialogs/edit-event/edit-event.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,9 @@ import { LoginGuardService } from './services/login-guard/login-guard.service';
     StatusDirective,
     LoginComponent,
     ScheduleComponent,
-    HomeComponent
+    HomeComponent,
+    AddEventComponent,
+    EditEventComponent
   ],
   exports: [ ],
   imports: [
@@ -72,7 +77,8 @@ import { LoginGuardService } from './services/login-guard/login-guard.service';
     AppRoutingModule,
     Ng2Webstorage,
     FullCalendarModule,
-    AuthModule
+    AuthModule,
+    NgxPermissionsModule.forRoot()
   ],
   entryComponents: [
     AddEquipmentComponent,
@@ -80,7 +86,9 @@ import { LoginGuardService } from './services/login-guard/login-guard.service';
     EditEquipmentComponent,
     AddMemberComponent,
     RemoveMemberComponent,
-    EditMemberComponent
+    EditMemberComponent,
+    EditEventComponent,
+    AddEventComponent
   ],
   providers: [
     FloorService,

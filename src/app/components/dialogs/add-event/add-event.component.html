@@ -1,0 +1,34 @@
+
+<div class="dialog-header" mat-dialog-title>
+  <p mat-line>אירוע חדש</p>
+  <div class="flex-spacer"></div>
+  <mat-icon class="exit-icon" (click)="onNoClick()">cancel</mat-icon>
+</div>
+<mat-divider></mat-divider>
+  
+<form [formGroup]="addEventForm" mat-dialog-content>
+    <div class="inputs-container">
+      <mat-form-field>
+        <input dir="rtl" required matInput formControlName="title" placeholder="כותרת">
+        <mat-error *ngIf="addEventForm.controls.title.invalid">{{getTitleErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+          <input  matInput formControlName="date" [matDatepicker]="picker" placeholder="תאריך">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="addEventForm.controls.date.invalid">{{getDateErrorMessage()}}</mat-error>
+        </mat-form-field>
+      <mat-form-field>
+        <input type="time" matInput formControlName="start" placeholder="שעת התחלה">
+        <mat-error *ngIf="addEventForm.controls.start.invalid">{{getStartErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="time" matInput formControlName="end" placeholder="שעת סיום">
+        <mat-error *ngIf="addEventForm.controls.end.invalid">{{getEndErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+</form>
+<mat-divider></mat-divider>
+<div mat-dialog-actions>
+  <button [disabled]="checkFormStatus()" class="save-button" mat-button (click)="onSubmit()">הוסף</button>
+</div>

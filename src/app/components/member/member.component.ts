@@ -7,6 +7,7 @@ import { RoomService, PeopleRoom, RoomDetails } from '../../services/room/room.s
 import { ActivatedRoute } from '@angular/router';
 import { isType } from '@angular/core/src/type';
 
+
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',

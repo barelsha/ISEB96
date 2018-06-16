@@ -19,19 +19,23 @@
                 <img mat-card-image>
                 <mat-card-actions>
                     <mat-icon class="edit" (click)="openEditEquipmentDialog(equip)" mat-list-icon matTooltip="ערוך">edit</mat-icon>
-                    <mat-icon class="delete" (click)="openRemoveEquipmentDialog(equip)" mat-list-icon matTooltip="מחק">delete</mat-icon>
+                    <ng-template ngxPermissionsOnly="ADMIN">
+                        <mat-icon class="delete" (click)="openRemoveEquipmentDialog(equip)" mat-list-icon matTooltip="מחק">delete</mat-icon>
+                    </ng-template>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
     </div>
 </div>
 
-<button 
-    matTooltip="הוסף"
-    [matTooltipDisabled]="loading" 
-    [disabled]="loading" 
-    mat-raised-button type="button" 
-    (click)="openAddEquipmentDialog()">
-    <mat-icon class="add" mat-list-icon>add</mat-icon>
-</button>
+<ng-template ngxPermissionsOnly="ADMIN">
+    <button 
+        matTooltip="הוסף"
+        [matTooltipDisabled]="loading" 
+        [disabled]="loading" 
+        mat-raised-button type="button" 
+        (click)="openAddEquipmentDialog()">
+        <mat-icon class="add" mat-list-icon>add</mat-icon>
+    </button>
+</ng-template>
 

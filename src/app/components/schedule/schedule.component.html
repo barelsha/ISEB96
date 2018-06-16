@@ -1,29 +1,29 @@
-<p>Display event : {{displayEvent | json}}</p>
+<!-- <p>Display event : {{displayEvent | json}}</p>
 <a (click)="clearEvents()">clearEvents</a>
 <br/>
-<a (click)="loadAgain()">loadAgain</a>
-<div *ngIf="calendarOptions">
+<a (click)="loadAgain()">loadAgain</a> -->
+<div class="calendar-wrapper" *ngIf="calendarOptions">
     <ng-fullcalendar #ucCalendar 
-    [options]="calendarOptions" 
-    (eventClick)="eventClick($event.detail)" 
+    [options]="calendarOptions"
+    (eventClick)="eventClick($event.detail)"
     (eventDrop)="updateEvent($event.detail)"
     (viewRender)="viewRender($event.detail)" 
     (initialized)="initialized()" 
-    (eventRender)="eventRender($event.detail)" 
+    (eventRender)="eventRender($event.detail)"
     (select)="select($event.detail)"
     (unselect)="unselect($event.detail)" 
     (eventResize)="updateEvent($event.detail)" 
     (clickButton)="clickButton($event.detail)"
-    (windowResize)="windowResize($event.detail)" 
+    (windowResize)="windowResize($event.detail)"
     [(eventsModel)]="events">
     </ng-fullcalendar>
 </div>
 
-<h4> eventRender: </h4>
+<!-- <h4> eventRender: </h4>
 <div class="logger">
     <p *ngFor="let log of logger">
         {{log.event?.title}}
         {{log.event?.end}}
         {{log.event?.start}}
     </p>
-</div>
+</div> -->

@@ -1,64 +1,52 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var squel = require("squel");
-var app = express();
-var moment = require('moment');
-var DBUtils = require('./DBUtils');
-var cors = require('cors');
-var path = require('path');
-var CalendarGoogleAPI = require('./CalendarGoogleAPI');
-var helpFunc = require('./HelpFunc');
+const express = require('express');
+const bodyParser = require('body-parser');
+const squel = require("squel");
+const app = express();
+const moment = require('moment');
+const DBUtils = require('./DBUtils');
+const cors = require('cors');
+const path = require('path');
+const CalendarGoogleAPI = require('./CalendarGoogleAPI');
+const helpFunc = require('./HelpFunc');
+const router = express.Router();
+const fs = require('fs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-var router = express.Router();
-
-const fs = require('fs');
-
-
 
 //router.get('/floors/:floorId/rooms/:roomId/Schedule/:day', function (req, res) {
-    router.get('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
-
+router.get('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
    // var day = req.param('day');
-    var floorNum = req.param('floorId')
-    var roomNum = req.param('roomId')
+    let floorNum = req.param('floorId')
+    let roomNum = req.param('roomId')
     if (!floorNum || !roomNum /*|| !day*/) {
         res.send({ status: "Failed", response: "Invalid value" });
         res.end();
     }
     else {
-
-        var query = squel.select().from("Rooms")
+        let query = squel.select().from("Rooms")
             .where("RoomNumber='" + roomNum + "'").where("FloorNumber='" + floorNum + "'")
             .toString();
         console.log(query);
-
         DBUtils.Select(query).then(function (resParam) {
             console.log("1");
             if (resParam.length == 0) {
-
                 res.send({ status: "failed", response: "The room number doesn't exist at the system." });
             }
             else {
                 console.log("2");
-
                 //get the calendar Id 
-                var calId = resParam[0]["CalId"];
-
+                let calId = resParam[0]["CalId"];
                 //var calId = helpFunc.getRoomCalId(floorNum, roomNum);
                 console.log(calId);
-
                 //there is no calendar for the room
                 if (calId == null) {
                     res.send({ status: "failed", response: "The room number doesn't have calendar." });
                 }
-
                 else {
                     try {
                         //var day="2018-06-06"; 
-
                         const content = fs.readFileSync(path.join(__dirname, 'client_secret.json'));
                         console.log("3");
                         CalendarGoogleAPI.authorize(JSON.parse(content), function (response) {
@@ -83,8 +71,6 @@ const fs = require('fs');
                     }
                 }
             }
-
-
         }).catch(function (resParam) {
             console.log('Failed to excute');
             res.send({ status: "`failed", response: resParam });
@@ -98,20 +84,20 @@ const fs = require('fs');
 // "Start":"2018-06-09T06:00:00+03:00",
 // "End":"2018-06-09T07:00:00+03:00", 
 // "Description":"משהו משהו"
-router.post('/floors/:floorId/rooms/:roomId/schedule/insert', function (req, res) {
-    var summary = req.body.Summary;
-    var location = req.body.Location;
-    var description = req.body.Description;
-    var start = req.body.Start;
-    var end = req.body.End;
-    var floorNum = req.param('floorId')
-    var roomNum = req.param('roomId')
-    if (!floorNum || !roomNum || !summary || !location || !start || !end) {
+router.post('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
+    let summary = req.body.summary;
+    //let location = req.body.Location;
+    //let description = req.body.Description;
+    let start = req.body.start;
+    let end = req.body.end;
+    let floorNum = req.param('floorId')
+    let roomNum = req.param('roomId')
+    if (!floorNum || !roomNum || !summary || /*!location ||*/ !start || !end) {
         res.send({ status: "Failed", response: "Invalid value" });
         res.end();
     }
     else {
-        var query = squel.select().from("Rooms")
+        let query = squel.select().from("Rooms")
             .where("RoomNumber='" + roomNum + "'").where("FloorNumber='" + floorNum + "'")
             .toString();
         console.log(query);
@@ -122,7 +108,7 @@ router.post('/floors/:floorId/rooms/:roomId/schedule/insert', function (req, res
             }
             else {
                 //get the calendar Id 
-                var calId = resParam[0]["CalId"];
+                let calId = resParam[0]["CalId"];
                 //var calId = helpFunc.getRoomCalId(floorNum, roomNum);
                 console.log(calId);
 
@@ -131,25 +117,27 @@ router.post('/floors/:floorId/rooms/:roomId/schedule/insert', function (req, res
                     res.send({ status: "failed", response: "The room number doesn't have calendar." });
                 }
                 else {
-                    var event = {
+                    let event = {
                         "summary": summary,
-                        "location": location,
-                        "start": {
-                            'dateTime': start,
-                            'timeZone': 'Asia/Jerusalem'
-                        },
-                        "end": {
-                            'dateTime': end,
-                            'timeZone': 'Asia/Jerusalem'
-                        },
-                        "description": description
+                        // "location": location,
+                        "start": start,
+                        //  {
+                        //     'dateTime': start,
+                        //     'timeZone': 'Asia/Jerusalem'
+                        // },
+                        "end": end,
+                        // {
+                        //     'dateTime': end,
+                        //     'timeZone': 'Asia/Jerusalem'
+                        // },
+                        "description": "description"
                     }
-                    const content = fs.readFileSync('client_secret.json');
+                    const content = fs.readFileSync(path.join(__dirname, 'client_secret.json'));
                     CalendarGoogleAPI.authorize(JSON.parse(content), function (response) {
                         CalendarGoogleAPI.creteEvents(event, calId, response, function (ans) {
                             console.log(ans);
                             if (ans == 1) {
-                                res.send({ status: "OK", response: JSON.stringify(event) });
+                                res.send({ status: "OK", response: JSON.stringify(event)});
                             }
                             if (ans == 0) {
                                 res.send({ status: "Failed", response: "Can't insert event to calendar" });
@@ -169,7 +157,7 @@ router.post('/floors/:floorId/rooms/:roomId/schedule/insert', function (req, res
 
 //Delete event. Request with the event id (id)
 //"EventID":"127semvqr381qq3h9rjfsgs8v4"
-router.delete('/floors/:floorId/rooms/:roomId/schedule/delete', function (req, res) {
+router.delete('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
     var eventId = req.body.EventID;
     var floorNum = req.param('floorId')
     var roomNum = req.param('roomId')
@@ -220,10 +208,4 @@ router.delete('/floors/:floorId/rooms/:roomId/schedule/delete', function (req, r
 });
 
 module.exports = router;
-
-
-// var port = 4000;
-// app.listen(port, function () {
-//     console.log('listening to port: ' + port);
-// });
 

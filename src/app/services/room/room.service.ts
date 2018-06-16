@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/observable';
 import { catchError, retry, map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap, RouterStateSnapshot, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
+
 @Injectable()
 export class RoomService {
 

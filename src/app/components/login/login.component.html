@@ -1,3 +1,4 @@
+
 <div class="card">
   <mat-progress-bar [style.visibility]="loading ? 'visible' : 'hidden'" mode="indeterminate"></mat-progress-bar>
   <mat-card>
@@ -13,7 +14,7 @@
           <mat-error *ngIf="loginForm.controls.Username.invalid">{{getUsernameErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input required matInput formControlName="Password" placeholder="סיסמא">
+          <input required matInput formControlName="Password" type="password" placeholder="סיסמא">
           <mat-error *ngIf="loginForm.controls.Password.invalid">{{getPasswordErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -26,11 +27,7 @@
         <mat-error>{{getLoginErrorReason()}}</mat-error>
     </mat-card-content>
     <mat-card-actions>
-        
       <button class="login-button" [disabled]="checkFormStatus()" (click)="onSubmit()" mat-button>התחבר</button>
-      
     </mat-card-actions>
-    
   </mat-card>
-  
 </div>

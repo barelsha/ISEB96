@@ -13,21 +13,25 @@
                     <div class="flex-spacer"></div>
                 </mat-card-header>
                 <img mat-card-image>
-                <mat-card-actions>
-                    <mat-icon class="edit" (click)="openEditMemberDialog(member)" mat-list-icon matTooltip="ערוך">edit</mat-icon>
-                    <mat-icon class="delete" (click)="openRemoveMemberDialog(member)" mat-list-icon matTooltip="מחק">delete</mat-icon>
-                </mat-card-actions>
+                <ng-template ngxPermissionsOnly="ADMIN">
+                    <mat-card-actions>
+                        <mat-icon class="edit" (click)="openEditMemberDialog(member)" mat-list-icon matTooltip="ערוך">edit</mat-icon>
+                        <mat-icon class="delete" (click)="openRemoveMemberDialog(member)" mat-list-icon matTooltip="מחק">delete</mat-icon>
+                    </mat-card-actions>
+                </ng-template>
             </mat-card>
         </ng-container>
     </div>
 </div>
 
-<button 
-    [matTooltip]="getToolTip()"
-    [matTooltipDisabled]="loading" 
-    [disabled]="checkIfRoomIsFull()" 
-    mat-raised-button type="button" 
-    (click)="openAddMemberDialog()">
-    <mat-icon class="add" mat-list-icon>add</mat-icon>
-</button>
+<ng-template ngxPermissionsOnly="ADMIN">
+    <button 
+        [matTooltip]="getToolTip()"
+        [matTooltipDisabled]="loading" 
+        [disabled]="checkIfRoomIsFull()" 
+        mat-raised-button type="button" 
+        (click)="openAddMemberDialog()">
+        <mat-icon class="add" mat-list-icon>add</mat-icon>
+    </button>
+</ng-template>
 

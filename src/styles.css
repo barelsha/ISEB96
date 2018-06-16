@@ -76,7 +76,17 @@ html, body {
   margin: 0 !important;
 }
 
+.fc{
+  font-family: Roboto,"Helvetica Neue",sans-serif !important;
+}
 
+.calendar-wrapper{
+  padding-top: 10px;
+}
 
+.fc-toolbar.fc-header-toolbar{
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 
