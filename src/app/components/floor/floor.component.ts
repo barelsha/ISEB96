@@ -7,7 +7,7 @@ import { Observer, Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { share } from 'rxjs/operator/share';
-import { RoomSidenavService } from './../../services/room-sidenav/room-sidenav.service';
+import { FloorSidenavService } from './../../services/floor-sidenav/floor-sidenav.service';
 
 @Component({
   selector: 'app-floor',
@@ -19,21 +19,21 @@ export class FloorComponent implements OnInit, OnDestroy {
   test = true;
   position = 'below';
   color:string = 'room';
-  tileColor: Observable<string>;
   floor: any;
-  floorDetails: any;
   floorPeopleObservable: Observable<HttpResponse<Response<FloorPeopleDBData>>>;
   floorEquipmentObservable: Observable<HttpResponse<Response<FloorEquipmentDBData>>>;
   sub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private floorService: FloorService
+    private floorService: FloorService,
+    private floorSidenavService: FloorSidenavService
   ) {}
 
   ngOnInit() {
     let url = this.getUrl(this.route);
     this.floor = this.getFloor();
+    this.sendData();
     this.floorPeopleObservable = this.floorService.getPeopleFloorDetails(url);
     this.floorEquipmentObservable = this.floorService.getEquipmentFloorDetails(url + '/equipment');
     this.floorPeopleObservable.subscribe(x => {
@@ -81,11 +81,25 @@ export class FloorComponent implements OnInit, OnDestroy {
     ));
     return floorTs;
   }
+
+  sendData(){
+    this.floor.parts.subscribe(floorParts => {
+      let onlyRoomNumbers = floorParts.map(room => room.RoomNumber);
+      let onlyRoomNumbersWithoutNulls = onlyRoomNumbers.filter(room => room);
+      this.floorSidenavService.sendData(onlyRoomNumbersWithoutNulls.reverse());
+    })
+    
+  }
+
+  clearData(){
+    this.floorSidenavService.clearData();
+  }
  
 
   ngOnDestroy(){
     if(this.sub !== undefined)
       this.sub.unsubscribe();
+    this.floorSidenavService.clearData();
   }
 
 

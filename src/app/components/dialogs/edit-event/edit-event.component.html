@@ -1,3 +1,12 @@
-<p>
-  edit-event works!
-</p>
+
+<div class="dialog-header" mat-dialog-title>
+    <p mat-line dir="rtl">{{ data.event.event.title }}</p>
+    <div class="flex-spacer"></div>
+    <mat-icon class="exit-icon" (click)="onNoClick()">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions>
+    <mat-icon class="delete" (click)="openRemoveEventDialog()" mat-list-icon matTooltip="מחק">delete</mat-icon>
+</div>

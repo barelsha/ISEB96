@@ -22,7 +22,7 @@ export class RoomComponent implements OnInit {
       this.roomDetails = res.roomDetailsResolver.body.response;
       this.roomService.roomDetails = this.roomDetails;
       this.sendData();
-    })
+    });
   }
 
   sendData(){

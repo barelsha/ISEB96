@@ -21,7 +21,7 @@ export class ScheduleComponent implements OnInit {
   events: any;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
-  constructor(private scheduleService: ScheduleService, 
+  constructor(private scheduleService: ScheduleService,
     public dialog: MatDialog,
     private route: ActivatedRoute) {
       this.setUrl();
@@ -40,7 +40,7 @@ export class ScheduleComponent implements OnInit {
         header: {
           left: 'prev,next today',
           center: 'title',
-          right: 'month,agendaWeek,agendaDay,listMonth'
+          right: 'agendaWeek, agendaDay'
         },
         buttonText:{
           today: 'היום',
@@ -76,68 +76,38 @@ export class ScheduleComponent implements OnInit {
   }
 
   clickButton(model: any) {
-    console.log(model);
     this.displayEvent = model;
   }
 
   eventClick(model: any) {
-    console.log(model);
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title,
-        allDay: model.event.allDay
-      },
-      duration: {}
-    }
-    this.displayEvent = model;
+    this.openEditEventDialog(model);
   }
 
   updateEvent(model: any) {
-    console.log(model);
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title
-        // other params
-      },
-      duration: {
-        _data: model.duration._data
-      }
-    }
-    this.displayEvent = model;
+    
   }
 
   windowResize(model: any) {
-    console.log(model);
-    //console.log('The calendar has adjusted to a window resize');
   }
 
   viewRender(model: any) {
-    console.log(model);
-    //console.log('viewRender');
+    
   }
 
   eventRender(model: any) {
-    console.log(model);
-    this.logger.push(model);
+
   }
 
   initialized() {
-    //console.log('Initialized compleate');
+    
   }
 
   select(model: any) {
-    console.log(model);
     this.openAddEventDialog(model);
   }
 
   unselect(model: any) {
-    console.log(model);
+
   }
 
   openAddEventDialog(model: any): void {
@@ -155,22 +125,44 @@ export class ScheduleComponent implements OnInit {
         let fullCalendarEvent: FullCalendarEvent = {
           title: event.title,
           start: startDateTime,
-          end: endDateTime
+          end: endDateTime,
+          id: event.id
         };
-        this.events.push(
-          {
-            title: event.title,
-            start: startDateTime,
-            end: endDateTime
-          }
-        );
-        this.ucCalendar.renderEvents(this.events);
-        this.scheduleService.addEvent(this.url, fullCalendarEvent).subscribe(x=> console.log(x));
-        
+        this.scheduleService.addEvent(this.url, fullCalendarEvent).subscribe(
+          x=> {
+            this.events.push(
+              {
+                title: event.title,
+                start: startDateTime,
+                end: endDateTime,
+                id: x.body.response.id
+              }
+            );
+            this.ucCalendar.renderEvents(this.events);
+        });
       }
     }, 
     err =>{
+      console.log('error adding event');
+    });
+  }
 
+  openEditEventDialog(model: any): void {
+    let dialogRef = this.dialog.open(EditEventComponent, {
+      width: '500px',
+      data:{
+        url: this.url,
+        event: model
+      } 
+    });
+    dialogRef.afterClosed().subscribe(id => {
+      if(id !== undefined){
+        this.events = this.events.filter(event => event.id !== id)
+        this.ucCalendar.renderEvents(this.events);
+      }
+    }, 
+    err =>{
+      console.log('error when closing edit event modal');
     });
   }
 

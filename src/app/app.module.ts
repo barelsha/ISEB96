@@ -1,13 +1,12 @@
 import './polyfills'
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { MaterialsModule } from './modules/materials.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { FloorComponent } from './components/floor/floor.component';
@@ -29,9 +28,10 @@ import { RemoveMemberComponent } from './components/dialogs/remove-member/remove
 import { EditMemberComponent } from './components/dialogs/edit-member/edit-member.component';
 import { StatusDirective } from './directives/status.directive';
 import { RoomSidenavService } from './services/room-sidenav/room-sidenav.service';
+import { FloorSidenavService } from './services/floor-sidenav/floor-sidenav.service';
 import { LoginService } from './services/login/login.service';
 import { LoginComponent } from './components/login/login.component';
-import {Ng2Webstorage} from 'ngx-webstorage';
+import { Ng2Webstorage } from 'ngx-webstorage';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ScheduleService } from './services/schedule/schedule.service';
@@ -41,6 +41,7 @@ import { LoginGuardService } from './services/login-guard/login-guard.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { AddEventComponent } from './components/dialogs/add-event/add-event.component';
 import { EditEventComponent } from './components/dialogs/edit-event/edit-event.component';
+import { RemoveEventComponent } from './components/dialogs/remove-event/remove-event.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { EditEventComponent } from './components/dialogs/edit-event/edit-event.c
     ScheduleComponent,
     HomeComponent,
     AddEventComponent,
-    EditEventComponent
+    EditEventComponent,
+    RemoveEventComponent
   ],
   exports: [ ],
   imports: [
@@ -88,12 +90,14 @@ import { EditEventComponent } from './components/dialogs/edit-event/edit-event.c
     RemoveMemberComponent,
     EditMemberComponent,
     EditEventComponent,
-    AddEventComponent
+    AddEventComponent,
+    RemoveEventComponent
   ],
   providers: [
     FloorService,
     RoomService,
     RoomSidenavService,
+    FloorSidenavService,
     RoomDetailsResolver,
     LoginService,
     ScheduleService,

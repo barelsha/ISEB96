@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { ActivatedRoute, Router /*ParamMap*/ } from '@angular/router';
 //import { NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { RoomSidenavService } from './../../services/room-sidenav/room-sidenav.service';
+import { FloorSidenavService } from './../../services/floor-sidenav/floor-sidenav.service';
 import { RoomDetails } from '../../services/room/room.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnInit, OnDestroy {
+export class SidenavComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   mobileQuery: MediaQueryList;
   floor: number;
@@ -23,24 +24,21 @@ export class SidenavComponent implements OnInit, OnDestroy {
   shouldRun = true;
   roomDetails: Observable<RoomDetails>;
   subscription: Subscription;
-
-  ngOnInit() {
-    this.currentRoute = "/" + this.route.snapshot.url.toString().split(',')[0] + "/"
-    + this.route.snapshot.url.toString().split(',')[1];
-    this.getFloor();
-  }
+  roomNumbers: Observable<number[]>;
 
   constructor(
-    changeDetectorRef: ChangeDetectorRef, 
+    private changeDetectorRef: ChangeDetectorRef, 
     media: MediaMatcher,
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
-    private roomSidenavService: RoomSidenavService
+    private roomSidenavService: RoomSidenavService,
+    private floorSidenavService: FloorSidenavService
   ) 
     
     {
     this.roomDetails = this.roomSidenavService.getData();
+    
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -48,6 +46,25 @@ export class SidenavComponent implements OnInit, OnDestroy {
       return false;
     };
   }
+
+  ngOnInit() {
+    this.currentRoute = "/" + this.route.snapshot.url.toString().split(',')[0] + "/"
+    + this.route.snapshot.url.toString().split(',')[1];
+    this.getFloor();
+    this.roomNumbers = this.floorSidenavService.getData();
+    
+  }
+
+  ngAfterViewInit(){
+    
+  }
+
+  ngAfterViewChecked(){
+    this.changeDetectorRef.detectChanges();
+    
+  }
+
+  
   
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

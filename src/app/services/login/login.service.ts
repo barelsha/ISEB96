@@ -26,7 +26,6 @@ export class LoginService {
 
   private setSession(authResult) {
     if(userIsAuthorized(authResult)){
-      console.log(authResult);
       localStorage.setItem('token', authResult.token);
       this.setUser(localStorage.getItem('token'));
     }

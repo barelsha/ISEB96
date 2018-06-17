@@ -42,12 +42,6 @@ export class AddEventComponent implements OnInit {
   onSubmit(){
     let event = this.prepareAddEvent();
     this.dialogRef.close(event);
-    // this.member = this.prepareAddEvent();
-    // this.roomService.addMember(this.url + '/addPerson', this.member)
-    // .subscribe(resp => {
-    //   this.dialogRef.close({resp: resp, newMember: this.member});
-    // }, err =>{
-    // });
   }
 
   prepareAddEvent() {
@@ -61,11 +55,7 @@ export class AddEventComponent implements OnInit {
     return saveEvent;
   }
 
-  getEmailErrorMessage(){
-    // return this.addMemberForm.controls.email.hasError('required') ? 'הנך חייב להזין אימייל' : 
-    // this.addMemberForm.controls.email.hasError('email') ? 'האימייל שהזנת אינו תקין' : '';
-  }
-
+  
   getTitleErrorMessage(){
     return this.addEventForm.controls.title.hasError('required') ? 'הנך חייב להזין כותרת לאירוע' : '';
   }
@@ -87,8 +77,5 @@ export class AddEventComponent implements OnInit {
     return this.addEventForm.status === "INVALID";
   }
 
-  isEmailExist(){
-    // return this.members.map(x => x.Email).includes(this.addMemberForm.value.email);  
-  }
 
 }

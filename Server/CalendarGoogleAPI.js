@@ -117,63 +117,83 @@ exports.listEvents= function(/*day,*/calId,auth, callback) {
   });
 }
 
-exports.creteEvents=function (event, calId, auth){
-    // var event = {
-    //     'summary': 'Google I/O 2015',
-    //     'location': '800 Howard St., San Francisco, CA 94103',
-    //     'description': 'A chance to hear more about Google\'s developer products.',
-    //     'start': {
-    //       'dateTime': '2018-06-28T09:00:00-07:00',
-    //       'timeZone': 'America/Los_Angeles',
-    //     },
-    //     'end': {
-    //       'dateTime': '2018-06-28T17:00:00-08:00',
-    //       'timeZone': 'America/Los_Angeles',
-    //     },
-    //     'recurrence': [
-    //       'RRULE:FREQ=DAILY;COUNT=2'
-    //     ],
-    //     'attendees': [
-    //       {'email': 'lpage@example.com'},
-    //       {'email': 'sbrin@example.com'},
-    //     ],
-    //     'reminders': {
-    //       'useDefault': false,
-    //       'overrides': [
-    //         {'method': 'email', 'minutes': 24 * 60},
-    //         {'method': 'popup', 'minutes': 10},
-    //       ],
-    //     },
-    //   };
-      
-    const calendar = google.calendar({version: 'v3', auth});
-    calendar.events.insert({
-        auth: auth,
-        calendarId: calId,
-        resource: event,
-      }, function(err, event) {
-        if (err) {
-          console.log('There was an error contacting the Calendar service: ' + err);
-          return '0';
-        }
-        console.log('Event created: %s', event.htmlLink);
-        return '1';
-      });
+exports.creteEvents=function (event, calId, auth, callback){
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.insert({
+      auth: auth,
+      calendarId: calId,
+      resource: event
+    }, function(err, event) {
+      if (err) {
+        console.log('There was an error contacting the Calendar service: ' + err);
+        callback(err);
+      }
+      console.log('Event created: %s', event);
+      callback(event);
+  });
 }
 
-exports.deleteEvent=function (eventId,calId,auth){
+exports.deleteEvent=function (eventId, calId, auth, callback){
   var params = {
     auth:auth,
     calendarId: calId,
     eventId: eventId,
   };
   const calendar = google.calendar({version: 'v3', auth});
-  calendar.events.delete(params, function(err) {
+  calendar.events.delete(params, function(err, event) {
     if (err) {
       console.log('The API returned an error: ' + err);
-      return '0';
+      callback(err);
     }
     console.log('Event deleted.');
-    return '1';
+    callback(event);
   });
 }
+
+exports.updateEvent=function (eId, calId, auth, callback){
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.update({
+      auth: auth,
+      calendarId: calId,
+      eventId: eId
+    }, function(err, event) {
+      if (err) {
+        console.log('There was an error contacting the Calendar service: ' + err);
+        callback(err);
+      }
+      console.log(event);
+      console.log('Event updated: %s', event);
+      callback(event);
+  });
+}
+
+
+
+//// event structure example
+// var event = {
+//         'summary': 'Google I/O 2015',
+//         'location': '800 Howard St., San Francisco, CA 94103',
+//         'description': 'A chance to hear more about Google\'s developer products.',
+//         'start': {
+//           'dateTime': '2018-06-28T09:00:00-07:00',
+//           'timeZone': 'America/Los_Angeles',
+//         },
+//         'end': {
+//           'dateTime': '2018-06-28T17:00:00-08:00',
+//           'timeZone': 'America/Los_Angeles',
+//         },
+//         'recurrence': [
+//           'RRULE:FREQ=DAILY;COUNT=2'
+//         ],
+//         'attendees': [
+//           {'email': 'lpage@example.com'},
+//           {'email': 'sbrin@example.com'},
+//         ],
+//         'reminders': {
+//           'useDefault': false,
+//           'overrides': [
+//             {'method': 'email', 'minutes': 24 * 60},
+//             {'method': 'popup', 'minutes': 10},
+//           ],
+//         },
+//       };

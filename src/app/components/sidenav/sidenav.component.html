@@ -6,7 +6,7 @@
                   position="end"
                   fixedTopGap="56">
       <mat-nav-list>
-        <a mat-list-item *ngFor="let nav of fillerNav" routerLink= "{{currentRoute}}/rooms/{{nav.toString()}}">{{nav}} חדר</a>
+        <a mat-list-item *ngFor="let roomNum of roomNumbers | async" routerLink= "{{currentRoute}}/rooms/{{roomNum.toString()}}">{{roomNum}} חדר</a>
       </mat-nav-list>
     </mat-sidenav>
   

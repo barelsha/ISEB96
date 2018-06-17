@@ -14,14 +14,28 @@ export class ScheduleService {
       .pipe(extractResponse, transferToFullCalendarFormat, retry(3), catchError(this.handleError));
   }
 
-  addEvent(url: string, event: FullCalendarEvent): Observable<Response<any>> {
+  addEvent(url: string, event: FullCalendarEvent): Observable<HttpResponse<any>> {
     let googleAPIEvent : GoogleAPIEvent = getGoogleAPIEventFormat(event);
-    return this.http.post<Response<any>>(
-      url, googleAPIEvent ,{ observe: 'response', headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=UTF-8',
-      }) 
-    }).pipe(retry(3), catchError(this.handleError));
+    return this.http.post<Response<any>>(url, googleAPIEvent, { observe: 'response'}).pipe();
   }
+
+  // url, googleAPIEvent ,{ observe: 'response', headers: new HttpHeaders({
+  //   'Content-Type': 'application/json; charset=UTF-8'
+  // })
+
+  deleteEvent(url: string, id : string): Observable<HttpResponse<any>> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
+      body: {
+        eventId: id
+      }
+    };
+    return this.http.delete<Response<any>>(url, options).pipe(retry(3), catchError(this.handleError));
+  }
+
+  
 
   private handleError(error: HttpErrorResponse) {
       if (error.error instanceof ErrorEvent) {
@@ -41,7 +55,8 @@ export const transferToFullCalendarFormat = map((googleAPIEvents: GoogleAPIEvent
   return googleAPIEvents.map(googleAPIEvent  => ({
     title: googleAPIEvent.summary,
     start: googleAPIEvent.start.dateTime,
-    end: googleAPIEvent.end.dateTime
+    end: googleAPIEvent.end.dateTime,
+    id: googleAPIEvent.id
   }))
 });
 
@@ -59,7 +74,7 @@ export function getGoogleAPIEventFormat(fullCalendarEvent: FullCalendarEvent){
     etag: null,
     htmlLink: null,
     iCalUID: null,
-    id: null,
+    id: fullCalendarEvent.id,
     kind: null,
     organizer: null,
     reminders: null,
@@ -103,6 +118,7 @@ export interface GoogleAPIEvent{
 export interface FullCalendarEvent{
   title: string,
   start:  string,
-  end: string
+  end: string,
+  id: string
 }
 

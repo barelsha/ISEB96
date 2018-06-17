@@ -28,7 +28,7 @@ export class RoomService {
     return this.http.post<Response<any>>(
       url, member ,{ observe: 'response', headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=UTF-8',
-      }) }).pipe(retry(3), catchError(this.handleError));
+      }) }).pipe(/*retry(3),*/ catchError(this.handleError));
   }
 
   deleteMember(url: string, member : { FirstName: string, LastName: string, Email: string }): Observable<Response<any>> {

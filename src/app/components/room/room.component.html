@@ -1,3 +1,5 @@
+
+
 <nav mat-tab-nav-bar>
     <a mat-tab-link
       routerLink="members"
@@ -11,13 +13,15 @@
       [active]="rla.isActive">
       ציוד
     </a>
-    <a mat-tab-link
-      *ngIf ="roomDetails.RoomNumber === 5 || roomDetails.RoomNumber === 1"
-      routerLink="schedule"
-      routerLinkActive #rla="routerLinkActive"
-      [active]="rla.isActive">
-      לוח זמנים
-    </a>
+    <ng-template ngxPermissionsOnly="ADMIN">
+      <a mat-tab-link
+        *ngIf ="roomDetails.RoomNumber === 5 || roomDetails.RoomNumber === 1"
+        routerLink="schedule"
+        routerLinkActive #rla="routerLinkActive"
+        [active]="rla.isActive">
+        לוח זמנים
+      </a>
+    </ng-template>
   </nav>
   <router-outlet></router-outlet>
   

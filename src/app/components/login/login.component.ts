@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     if(error === null) return "";
     if(error === LoginError.EnteredCatch) return "שגיאה";
     if(error === LoginError.MissingParameters) return "שגיאה";
-    if(error === LoginError.SystemAuthorization) return "אין לך הרשאות גישה למערכת, פנה למנדי";
+    if(error === LoginError.SystemAuthorization) return "אין לך הרשאות גישה למערכת, פנה לאחראי מחשוב של המחלקה";
     if(error === LoginError.UniversityAuthorization) return "אחד או יותר מהפרטים המזהים שהקלדת שגוי";
     return "";
   }

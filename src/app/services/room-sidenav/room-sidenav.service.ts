@@ -5,7 +5,7 @@ import { RoomDetails } from '../room/room.service';
 
 @Injectable()
 export class RoomSidenavService {
-  private subject = new Subject<any>();
+    private subject = new Subject<any>();
  
     sendData(data: RoomDetails) {
         this.subject.next(data);
