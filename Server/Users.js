@@ -100,6 +100,7 @@ router.post('/login', function (req, res) {
             }
             //save the permission type to know what action the user can do
             else {
+                console.log(resParam);
                 jwt.sign(resParam[0], RSA_PRIVATE_KEY, { expiresIn: '30 days' } ,(err, token) => {
                         res.json({token});
                     }

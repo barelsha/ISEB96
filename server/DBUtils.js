@@ -7,7 +7,7 @@ var Request = require('tedious').Request;
 // Create connection to database
 var config = {
     userName: 'sa',
-    password: '123abcd',
+    password: '5t6y7u8i',
     server: 'ISE-B96',
     requestTimeout: 30000,
     options: {
