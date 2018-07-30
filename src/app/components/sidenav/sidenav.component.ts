@@ -7,6 +7,7 @@ import { ActivatedRoute, Router /*ParamMap*/ } from '@angular/router';
 //import { NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { RoomSidenavService } from './../../services/room-sidenav/room-sidenav.service';
+import { UsersManageSidenavService } from './../../services/users-manage-sidenav/users-manage-sidenav.service';
 import { FloorSidenavService } from './../../services/floor-sidenav/floor-sidenav.service';
 import { RoomDetails } from '../../services/room/room.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -25,6 +26,7 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewInit, After
   roomDetails: Observable<RoomDetails>;
   subscription: Subscription;
   roomNumbers: Observable<number[]>;
+  a;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef, 
@@ -33,11 +35,13 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewInit, After
     private location: Location,
     private router: Router,
     private roomSidenavService: RoomSidenavService,
-    private floorSidenavService: FloorSidenavService
+    private floorSidenavService: FloorSidenavService,
+    private usersManageSidenavService: UsersManageSidenavService
   ) 
     
     {
     this.roomDetails = this.roomSidenavService.getData();
+    this.a = this.usersManageSidenavService.getData();
     
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -64,8 +68,6 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewInit, After
     
   }
 
-  
-  
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
     //this.subscription.unsubscribe();

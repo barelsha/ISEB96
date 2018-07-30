@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
 
+  selectedAction:string;
   loggedInUser: User;
   constructor(private loginService: LoginService, private router: Router) { }
 
@@ -20,5 +21,11 @@ export class MenuComponent implements OnInit {
     this.loginService.logout();
     this.router.navigate(['login']);
   }
+
+  users(){
+
+  }
+
+  equ(){}
 
 }

@@ -1,14 +1,55 @@
 <mat-toolbar color="primary" class="menu">
   <mat-toolbar-row class="mat-elevation-z4">
-    <span><a mat-button (click)="exit()">יציאה</a></span>
+    <!-- <span><mat-icon mat-button (click)="exit()">more_vert</mat-icon></span> -->
+    <span>
+      <!-- <button mat-icon-button>
+          <mat-icon>more_vert</mat-icon>
+          <mat-select [(ngModel)]="selectedAction">
+              <mat-option *ngFor="let action of actions">{{action}}</mat-option>
+          </mat-select>
+      </button> -->
+
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <span>
+          <a mat-button routerLink="/userManage" RouterLinkActive="active">ניהול משתמשים</a>
+        </span>
+        <!-- 
+          <button mat-menu-item routerLink="/userManage" RouterLinkActive="active">
+            <span>ניהול משתמשים</span>
+          </button> -->
+        <!-- <button mat-menu-item (click)="equ()">
+          <span>חיפוש ציוד</span>
+        </button> -->
+      </mat-menu>
+    </span>
+
+    <span>
+      <a mat-button (click)="exit()">יציאה</a>
+    </span>
     <span style="font-size: 15px; padding-left: 10px;">{{loggedInUser.Username}}</span>
     <span class="fill-remaining-space"></span>
-    <span><a mat-button routerLink="/floors/3" RouterLinkActive="active">3 קומה</a></span>
-    <span><a mat-button routerLink="/floors/2" RouterLinkActive="active">2 קומה</a></span>
-    <span><a mat-button routerLink="/floors/1" RouterLinkActive="active">1 קומה</a></span>
-    <span><a mat-button routerLink="/floors/0" RouterLinkActive="active">0 קומה</a></span>
-    <span><a mat-button routerLink="/floors/-1" RouterLinkActive="active">-1 קומה</a></span>
-    <span><a mat-button routerLink="/floors/0"><img class="logo" src="/assets/images/logo.png"></a></span>
+    <span>
+      <a mat-button routerLink="/floors/3" RouterLinkActive="active">3 קומה</a>
+    </span>
+    <span>
+      <a mat-button routerLink="/floors/2" RouterLinkActive="active">2 קומה</a>
+    </span>
+    <span>
+      <a mat-button routerLink="/floors/1" RouterLinkActive="active">1 קומה</a>
+    </span>
+    <span>
+      <a mat-button routerLink="/floors/0" RouterLinkActive="active">0 קומה</a>
+    </span>
+    <span>
+      <a mat-button routerLink="/floors/-1" RouterLinkActive="active">-1 קומה</a>
+    </span>
+    <span>
+      <a mat-button routerLink="/floors/0">
+        <img class="logo" src="/assets/images/logo.png">
+      </a>
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
-

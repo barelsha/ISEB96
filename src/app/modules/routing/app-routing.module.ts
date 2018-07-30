@@ -11,13 +11,26 @@ import { ScheduleComponent } from '../../components/schedule/schedule.component'
 import { HomeComponent } from '../../components/home/home.component';
 import { LoginComponent } from '../../components/login/login.component';
 import { LoginGuardService } from '../../services/login-guard/login-guard.service';
+import { UsersManageComponent } from '../../components/users-manage/users-manage.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
     canActivate: [LoginGuardService],
     children: [
+      {
+        path:'userManage',
+        component: SidenavComponent,
+        children: [
+          {
+            path:'',
+            component: UsersManageComponent
+          }
+        ]
+      },
       { path: 'floors/:floorid', component: SidenavComponent,
         children: [
+          
           {
             path: 'rooms/:roomid',
             component: RoomComponent,
@@ -50,6 +63,10 @@ const routes: Routes = [
           }
         ]
       },
+      
+
+    
+
       { path: '', redirectTo:'floors/0', pathMatch: 'full' }
     ]
   },

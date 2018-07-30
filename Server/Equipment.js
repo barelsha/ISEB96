@@ -38,7 +38,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
     var roomNum = req.param('roomId')
     if (!floorNum || !roomNum) {
 
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -52,10 +52,10 @@ router.get('/floors/:floorId/rooms/:roomId/equipment', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -76,7 +76,7 @@ router.get('/floors/:floorId/equipUse', function (req, res) {
     var floorNum = req.param('floorId');
     var status = "in use";
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -90,10 +90,10 @@ router.get('/floors/:floorId/equipUse', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -113,7 +113,7 @@ router.get('/floors/:floorId/equipNotUse', function (req, res) {
     var floorNum = req.param('floorId');
     var status = "not in use";
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -126,10 +126,10 @@ router.get('/floors/:floorId/equipNotUse', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -150,7 +150,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
     var roomNum = req.param('roomId');
     var status = "in use";
     if (!floorNum || !roomNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -164,10 +164,10 @@ router.get('/floors/:floorId/rooms/:roomId/equipUse', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -188,7 +188,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
     var roomNum = req.param('roomId');
     var status = "not in use";
     if (!floorNum || !roomNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -201,10 +201,10 @@ router.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -223,7 +223,7 @@ router.get('/floors/:floorId/rooms/:roomId/equipNotUse', function (req, res) {
 router.get('/floors/:floorId/equipment', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -236,10 +236,10 @@ router.get('/floors/:floorId/equipment', function (req, res) {
             }
             else {
                 resParam= help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -292,13 +292,13 @@ router.post('/floors/:floorId/rooms/:roomId/addEquipment', function (req, res) {
                     console.log("The equipment at the room has been added succesfuly to the system.");
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to add the equipment to the system.');
+                    console.log('failed to add the equipment to the system.');
                     res.send({ status: "failed", response: resParam });
 
                 });
             }
         }).catch(function (resParam) {
-            console.log('Failed to add the equipment to the system.');
+            console.log('failed to add the equipment to the system.');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -353,14 +353,14 @@ router.put('/floors/:floorId/rooms/:roomId/editEquiInRoom/:inventor', function (
                     console.log("updated succesufuly.")
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to update the equipment in the room.2');
+                    console.log('failed to update the equipment in the room.2');
                     res.send({ status: "failed", response: resParam });
                 });
 
             }
 
         }).catch(function (resParam) {
-            console.log('Failed to update the equipment in the room3');
+            console.log('failed to update the equipment in the room3');
             res.send({ status: "failed", response: resParam });
         });
     }

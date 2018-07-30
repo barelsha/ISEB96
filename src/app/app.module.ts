@@ -1,7 +1,7 @@
 import './polyfills'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { MaterialsModule } from './modules/materials.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
@@ -42,6 +42,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { AddEventComponent } from './components/dialogs/add-event/add-event.component';
 import { EditEventComponent } from './components/dialogs/edit-event/edit-event.component';
 import { RemoveEventComponent } from './components/dialogs/remove-event/remove-event.component';
+import { UsersManageSidenavService } from './services/users-manage-sidenav/users-manage-sidenav.service';
+import { UsersManageComponent } from './components/users-manage/users-manage.component';
+import { UsersManageService } from './services/users-manage/users-manage.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,8 @@ import { RemoveEventComponent } from './components/dialogs/remove-event/remove-e
     HomeComponent,
     AddEventComponent,
     EditEventComponent,
-    RemoveEventComponent
+    RemoveEventComponent,
+    UsersManageComponent
   ],
   exports: [ ],
   imports: [
@@ -98,10 +102,12 @@ import { RemoveEventComponent } from './components/dialogs/remove-event/remove-e
     RoomService,
     RoomSidenavService,
     FloorSidenavService,
+    UsersManageSidenavService,
     RoomDetailsResolver,
     LoginService,
     ScheduleService,
-    LoginGuardService
+    LoginGuardService,
+    UsersManageService
   ],
   bootstrap: [AppComponent]
 })

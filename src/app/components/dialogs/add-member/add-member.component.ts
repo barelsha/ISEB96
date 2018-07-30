@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RoomService, Member, PeopleRoom } from '../../../services/room/room.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class AddMemberComponent implements OnInit {
   members: PeopleRoom[];
 
   constructor(
+    public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -47,6 +49,7 @@ export class AddMemberComponent implements OnInit {
     .subscribe(resp => {
       this.dialogRef.close({resp: resp, newMember: this.member});
     }, err =>{
+      this.openSnackBar('test', 'test');
     });
   }
 
@@ -59,6 +62,12 @@ export class AddMemberComponent implements OnInit {
       Email: formModel.email
     };
     return saveMember;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   getEmailErrorMessage(){

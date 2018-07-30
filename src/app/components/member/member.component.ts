@@ -4,6 +4,7 @@ import{ AddMemberComponent } from '../dialogs/add-member/add-member.component';
 import{ RemoveMemberComponent } from '../dialogs/remove-member/remove-member.component';
 import{ EditMemberComponent } from '../dialogs/edit-member/edit-member.component';
 import { RoomService, PeopleRoom, RoomDetails } from '../../services/room/room.service';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { isType } from '@angular/core/src/type';
 
@@ -25,7 +26,8 @@ export class MemberComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     private roomService:RoomService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public snackBar: MatSnackBar) {
     this.setUrl();
     this.setRoomAndFloor();
     this.loading = true;
@@ -56,6 +58,7 @@ export class MemberComponent implements OnInit {
         }
     });
     dialogRef.afterClosed().subscribe(res => {
+      this.openSnackBar('sdf', 'sdf');
       if(res && res.resp.body.status === "ok"){
         this.peopleInRoom.push({
           FloorNum: this.floor,
@@ -69,6 +72,7 @@ export class MemberComponent implements OnInit {
       else{
       }
     }, err =>{
+      this.openSnackBar(err.toString(), 'sdf');
     });
   }
 
@@ -152,6 +156,12 @@ export class MemberComponent implements OnInit {
       return isAllPeopleRoom;
     }
     return false;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   checkIfRoomIsFull(){

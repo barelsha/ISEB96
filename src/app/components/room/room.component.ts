@@ -12,8 +12,8 @@ export class RoomComponent implements OnInit {
 
   roomDetails: RoomDetails;
 
-  constructor(private roomService: RoomService, 
-    private route: ActivatedRoute, 
+  constructor(private roomService: RoomService,
+    private route: ActivatedRoute,
     private roomSidenavService: RoomSidenavService) {
   }
 

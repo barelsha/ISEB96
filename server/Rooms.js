@@ -14,6 +14,32 @@ app.use(cors());
 
 var router= express.Router();
 
+const RoomError = {
+    RoomIsNotExist: 1,
+    ConnectionError: 2,
+    MissingInput: 3,
+    Error: 4,
+    properties: {
+      1: { description: "this room doesn't exist in db", value: 1 },
+      2: { description: "connection error", value: 2 },
+      3: { description: "bad input", value: 3 },
+      4: { description: "error", value: 4 }
+    }
+};
+
+const MemberError = {
+    MemberAlreadyExist: 1,
+    ConnectionError: 2,
+    MissingInput: 3,
+    Error: 4,
+    properties: {
+      1: { description: "member with that email adress already exist", value: 1 },
+      2: { description: "connection error", value: 2 },
+      3: { description: "bad input", value: 3 },
+      4: { description: "error", value: 4 }
+    }
+};
+
 
 //get the room detalis according to the floor and room. From "PeopleInRoom" table
 // "response": [
@@ -26,11 +52,10 @@ var router= express.Router();
 //         "Email": ""
 //     }
 router.get('/floors/:floorId/rooms/:roomId', function (req, res) {
-    var floorNum = req.param('floorId')
-    var roomNum = req.param('roomId')
+    var floorNum = req.param('floorId');
+    var roomNum = req.param('roomId');
     if (!floorNum || !roomNum) {
-
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: RoomError.MissingInput });
         res.end();
     }
     else {
@@ -40,7 +65,7 @@ router.get('/floors/:floorId/rooms/:roomId', function (req, res) {
             .toString();
         DBUtils.Select(query).then(function (resParam) {
             if (resParam.length == 0) {
-                res.send({ status: "failed", response: "No floor number or room number" });
+                res.send({ status: "failed", response: RoomError.RoomIsNotExist });
             }
             else {
                 //removing N from db
@@ -56,11 +81,11 @@ router.get('/floors/:floorId/rooms/:roomId', function (req, res) {
                 // console.log(user.LastName);
                 resParam=help.changeJSON(resParam);
                 //console.log(JSON.stringify(user))
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
-            res.send({ status: "`failed", response: resParam });
+            console.log('failed to excute');
+            res.send({ status: "failed", response: resParam });
         });
     }
 });
@@ -79,7 +104,7 @@ router.get('/roomsDetails/:roomId', function (req, res) {
     var roomNum = req.param('roomId')
     if (!roomNum) {
 
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -93,10 +118,10 @@ router.get('/roomsDetails/:roomId', function (req, res) {
             else {
                 //           console.log(resParam[0]["MaxOccupancy"]);
                 resParam=help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam[0] });
+                res.send({ status: "ok", response: resParam[0] });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -172,25 +197,25 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
                             console.log("The person been added to the room.");
                             res.send({ status: "ok", response: resParam });
                         }).catch(function (resParam) {
-                            console.log('Failed to add the person to the room.1');
+                            console.log('failed to add the person to the room.1');
                             res.send({ status: "failed", response: resParam });
 
                         });
                     }
                 }).catch(function (resParam) {
-                    console.log('Failed to add the person to the room.3');
+                    console.log('failed to add the person to the room.3');
                     res.send({ status: "failed", response: resParam });
                 });
       
                 }).catch(function (resParam) {
-                    console.log('Failed to add the person to the room.3');
+                    console.log('failed to add the person to the room.3');
                     res.send({ status: "failed", response: resParam });
                 });
             }
 
 
         }).catch(function (resParam) {
-            console.log('Failed to add the person to the room.4');
+            console.log('failed to add the person to the room.4');
             res.send({ status: "failed", response: resParam });
         });
 
@@ -289,7 +314,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
             else {
                 var query = (
                     squel.update()
-                        .table("PeopleInRoom").where("FirstName='" + 'N'+firstName + "'")
+                        .table("PeopleInRoom").where("FirstName='" + '$'+firstName + "'")
                         .where("LastName='"+'$'+lastName+"'")
                         .where("Email='"+email+"'")
                         .set("FirstName",'$'+ firstNameNew)
@@ -303,14 +328,14 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
                     console.log("updated succesufuly.")
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to update the person in the room.2');
+                    console.log('failed to update the person in the room.2');
                     res.send({ status: "failed", response: resParam });
                 });
 
             }
 
         }).catch(function (resParam) {
-            console.log('Failed to update the person in the room3');
+            console.log('failed to update the person in the room3');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -337,7 +362,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
 router.get('/floors/:floorId/users', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -351,10 +376,10 @@ router.get('/floors/:floorId/users', function (req, res) {
             }
             else {
                 resParam=help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -370,7 +395,7 @@ router.get('/floors/:floorId/users', function (req, res) {
 router.get('/floors/:floorId', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -384,10 +409,10 @@ router.get('/floors/:floorId', function (req, res) {
             }
             else {
                 resParam = help.changeJSON(resParam);
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute.');
+            console.log('failed to excute.');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -397,7 +422,7 @@ router.get('/floors/:floorId', function (req, res) {
 router.get('/floors/:floorId/equipment', function (req, res) {
     var floorNum = req.param('floorId')
     if (!floorNum) {
-        res.send({ status: "Failed", response: "Invalid value." });
+        res.send({ status: "failed", response: "Invalid value." });
         res.end();
     }
     else {
@@ -410,10 +435,10 @@ router.get('/floors/:floorId/equipment', function (req, res) {
                 res.send({ status: "failed", response: "floor number doesn't exist." });
             }
             else {
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute.');
+            console.log('failed to excute.');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -483,14 +508,14 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res)
                     console.log("updated succesufuly.")
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to update the room details.');
+                    console.log('failed to update the room details.');
                     res.send({ status: "failed", response: resParam });
                 });
 
             }
 
         }).catch(function (resParam) {
-            console.log('Failed to update the room details.');
+            console.log('failed to update the room details.');
             res.send({ status: "failed", response: resParam });
         });
     }

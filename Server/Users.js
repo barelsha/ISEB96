@@ -49,7 +49,6 @@ router.post('/login', function (req, res,next) {
         let args = {
             uname: username, pwd: password, id: id
         }
-
         soap.createClient(url, function (err, client) {
             if (err) {
                 throw err;
@@ -68,7 +67,6 @@ router.post('/login', function (req, res,next) {
                         else {
                             console.log(LoginError.properties[LoginError.UniversityAuthorization]);
                             res.json(LoginError.UniversityAuthorization);
-                            //res.send(LoginError.UniversityAuthorization);
                         }
                     }
                 });
@@ -117,7 +115,7 @@ router.post('/login', function (req, res) {
 router.get('/username/:username', function (req, res) {
     let username = req.param('username');
     if(!username){
-        res.send({ status: "Failed", response: "Missing arguments." });
+        res.send({ status: "failed", response: "Missing arguments." });
         res.end();
     }
     else {
@@ -129,10 +127,10 @@ router.get('/username/:username', function (req, res) {
                 res.send({ status: "failed", response: "The username dosen't exist in the system." });
             }
             else {
-                res.send({ status: "OK", response: resParam });
+                res.send({ status: "ok", response: resParam });
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -176,13 +174,13 @@ router.post('/username/insertNew/new', function (req, res) {
                     console.log("The user have been added succesfuly to the system.");
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to add the user to the system.');
+                    console.log('failed to add the user to the system.');
                     res.send({ status: "failed", response: resParam });
 
                 });
             }
         }).catch(function (resParam) {
-            console.log('Failed to add the user to the system.');
+            console.log('failed to add the user to the system.');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -223,13 +221,13 @@ router.put('/users/editUser/:username', function (req, res) {
                     console.log("updated succesufuly.")
                     res.send({ status: "ok", response: resParam });
                 }).catch(function (resParam) {
-                    console.log('Failed to update username.2');
+                    console.log('failed to update username.2');
                     res.send({ status: "failed", response: resParam });
                 });
 
             }
         }).catch(function (resParam) {
-            console.log('Failed to update username.3');
+            console.log('failed to update username.3');
             res.send({ status: "failed", response: resParam });
         });
     }
@@ -269,6 +267,26 @@ router.delete('/users/deleteUser/:username', function (req, res) {
             res.send({ status: "failed", response: resParam });
         });
     }
+});
+
+//return all the users from the table Users in DB
+router.get('/users/getUsers', function (req, res) {
+        //check if the username exist
+        let query = squel.select()
+            .from("Users")
+            .toString();
+        DBUtils.Select(query).then(function (resParam) {
+            if (resParam.length == 0) {
+                res.send({ status: "failed", response: "There are no users in the system" });
+            }
+            else {
+                res.send({ status: "ok", response: resParam });
+            }
+        }).catch(function (resParam) {
+            console.log('failed to excute');
+            res.send({ status: "failed", response: resParam });
+        });
+    
 });
 
 

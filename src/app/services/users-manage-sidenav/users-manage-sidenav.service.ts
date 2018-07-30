@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
-import { RoomDetails } from '../room/room.service';
 
 @Injectable()
-export class RoomSidenavService {
-    private subject = new Subject<any>();
+export class UsersManageSidenavService {
+
+  private subject = new Subject<any>();
  
-    sendData(data: RoomDetails) {
-        this.subject.next(data);
+    sendData() {
+        this.subject.next({
+            from: 'UsersManageComponent',
+            to: 'SidenavComponent',
+            data: {
+              header: 'ניהול משתמשים'
+            }
+          });
     }
 
     sendRoomNumbersData(data: any) {
@@ -22,4 +28,5 @@ export class RoomSidenavService {
     getData(): Observable<any> {
         return this.subject.asObservable();
     }
+
 }

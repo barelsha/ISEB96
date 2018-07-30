@@ -21,7 +21,7 @@ router.get('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
     let floorNum = req.param('floorId')
     let roomNum = req.param('roomId')
     if (!floorNum || !roomNum) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -44,17 +44,17 @@ router.get('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
                         const content = fs.readFileSync(path.join(__dirname, 'client_secret.json'));
                         CalendarGoogleAPI.authorize(JSON.parse(content), function (response) {
                             CalendarGoogleAPI.listEvents(/*day,*/ calId, response, function (events) {
-                                res.send({ status: "OK", response: events });
+                                res.send({ status: "ok", response: events });
                             });
                         });
                     } catch (err) {
-                        res.send({ status: "Failed", response: "Can't return events" });
+                        res.send({ status: "failed", response: "Can't return events" });
                         return console.log('Error loading client secret file:', err);
                     }
                 }
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -68,7 +68,7 @@ router.post('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
     let floorNum = req.param('floorId')
     let roomNum = req.param('roomId')
     if (!floorNum || !roomNum || !summary || /*!location ||*/ !start || !end) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -113,7 +113,7 @@ router.post('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
                             console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
                             //console.log(ans.data);
                             // ans.then(x=> console.log(x));
-                            res.send({ status: "OK", response: ans.data });
+                            res.send({ status: "ok", response: ans.data });
                         });
                     });
                 }
@@ -122,7 +122,7 @@ router.post('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
         function (err){
             console.log(err);
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -138,7 +138,7 @@ router.delete('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
     var roomNum = req.param('roomId')
     //var calID="aXNlOTZidWlsZGluZ0BnbWFpbC5jb20";
     if (!floorNum || !roomNum || !eId) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -167,13 +167,13 @@ router.delete('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
                             console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
                             //console.log(ans.data);
                             // ans.then(x=> console.log(x));
-                            res.send({ status: "OK", response: ans.data });
+                            res.send({ status: "ok", response: ans.data });
                         });
                     });
                 }
             }
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }
@@ -186,7 +186,7 @@ router.put('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
     let floorNum = req.param('floorId');
     let roomNum = req.param('roomId');
     if (!floorNum || !roomNum ||!event || !eId) {
-        res.send({ status: "Failed", response: "Invalid value" });
+        res.send({ status: "failed", response: "Invalid value" });
         res.end();
     }
     else {
@@ -208,7 +208,7 @@ router.put('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
                     const content = fs.readFileSync(path.join(__dirname, 'client_secret.json'));
                     CalendarGoogleAPI.authorize(JSON.parse(content), function (response) {
                         CalendarGoogleAPI.updateEvent(eId, calId, response, function (ans) {
-                            res.send({ status: "OK", response: ans.data });
+                            res.send({ status: "ok", response: ans.data });
                         });
                     });
                 }
@@ -217,7 +217,7 @@ router.put('/floors/:floorId/rooms/:roomId/schedule', function (req, res) {
         function (err){
             console.log(err);
         }).catch(function (resParam) {
-            console.log('Failed to excute');
+            console.log('failed to excute');
             res.send({ status: "`failed", response: resParam });
         });
     }

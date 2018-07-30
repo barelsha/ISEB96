@@ -19,7 +19,7 @@
 // // app.get('/floors/:floorId/equipment', function (req, res) {
 // //     var floorNum = req.param('floorId')
 // //     if (!floorNum) {
-// //         res.send({ status: "Failed", response: "Invalid value" });
+// //         res.send({ status: "failed", response: "Invalid value" });
 // //         res.end();
 // //     }
 // //     else {
@@ -31,10 +31,10 @@
 // //                 res.send({ status: "failed", response: "floor number doesn't exist." });
 // //             }
 // //             else {
-// //                 res.send({ status: "OK", response: resParam });
+// //                 res.send({ status: "ok", response: resParam });
 // //             }
 // //         }).catch(function (resParam) {
-// //             console.log('Failed to excute');
+// //             console.log('failed to excute');
 // //             res.send({ status: "`failed", response: resParam });
 // //         });
 // //     }
@@ -44,7 +44,7 @@
 // // app.get('/floors/:floorId/users', function (req, res) {
 // //     var floorNum = req.param('floorId')
 // //     if (!floorNum) {
-// //         res.send({ status: "Failed", response: "Invalid value" });
+// //         res.send({ status: "failed", response: "Invalid value" });
 // //         res.end();
 // //     }
 // //     else {
@@ -57,10 +57,10 @@
 // //                 res.send({ status: "failed", response: "floor number doesn't exist." });
 // //             }
 // //             else {
-// //                 res.send({ status: "OK", response: resParam });
+// //                 res.send({ status: "ok", response: resParam });
 // //             }
 // //         }).catch(function (resParam) {
-// //             console.log('Failed to excute');
+// //             console.log('failed to excute');
 // //             res.send({ status: "`failed", response: resParam });
 // //         });
 // //     }
@@ -104,7 +104,7 @@
 // //     var Id = req.body.ID;
 // //     var Email = req.body.Email;
 // //     if (!username || !firstName || !lastName || !password) {
-// //         res.send({ status: "Failed", response: "Invalid value." });
+// //         res.send({ status: "failed", response: "Invalid value." });
 // //         res.end();
 // //     }
 // //     else {
