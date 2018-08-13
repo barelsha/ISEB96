@@ -1,0 +1,28 @@
+<div class="dialog-header" mat-dialog-title>
+    <p mat-line>הוסף משתמש</p>
+    <div class="flex-spacer"></div>
+    <mat-icon class="exit-icon" (click)="onNoClick()">cancel</mat-icon>
+  </div>
+  <mat-divider></mat-divider>
+  
+  <form [formGroup]="addUserForm" mat-dialog-content>
+      <div class="inputs-container">
+        <mat-form-field>
+          <input dir="rtl" required matInput formControlName="username" placeholder="שם משתמש">
+          <mat-error *ngIf="addUserForm.controls.username.invalid">{{getUsernamerrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="123456789">
+          <input dir="rtl" required matInput formControlName="ID" placeholder="ת.ז">
+          <mat-error *ngIf="addUserForm.controls.ID.invalid">{{getIDErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="7">
+          <input matInput formControlName="permissionCode" placeholder="הרשאות">
+          <mat-error *ngIf="addUserForm.controls.permissionCode.invalid">{{getPerErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+  </form>
+  <mat-divider></mat-divider>
+  <div mat-dialog-actions>
+    <button [disabled]="checkFormStatus()" class="save-button" mat-button (click)="onSubmit()">שמור</button>
+  </div>
+  

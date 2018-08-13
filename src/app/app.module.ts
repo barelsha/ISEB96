@@ -1,5 +1,6 @@
 import './polyfills'
 import { BrowserModule } from '@angular/platform-browser';
+import { CdkTableModule } from '@angular/cdk/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, Component } from '@angular/core';
 import { MaterialsModule } from './modules/materials.module';
@@ -45,6 +46,9 @@ import { RemoveEventComponent } from './components/dialogs/remove-event/remove-e
 import { UsersManageSidenavService } from './services/users-manage-sidenav/users-manage-sidenav.service';
 import { UsersManageComponent } from './components/users-manage/users-manage.component';
 import { UsersManageService } from './services/users-manage/users-manage.service';
+import { EditUsernameComponent } from './components/dialogs/edit-username/edit-username.component';
+import { RemoveUsernameComponent } from './components/dialogs/remove-username/remove-username.component';
+import { AddUserComponent } from './components/dialogs/add-username/add-user.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +73,10 @@ import { UsersManageService } from './services/users-manage/users-manage.service
     AddEventComponent,
     EditEventComponent,
     RemoveEventComponent,
-    UsersManageComponent
+    UsersManageComponent,
+    EditUsernameComponent,
+    RemoveUsernameComponent,
+    AddUserComponent
   ],
   exports: [ ],
   imports: [
@@ -84,6 +91,7 @@ import { UsersManageService } from './services/users-manage/users-manage.service
     Ng2Webstorage,
     FullCalendarModule,
     AuthModule,
+    CdkTableModule,
     NgxPermissionsModule.forRoot()
   ],
   entryComponents: [
@@ -95,7 +103,10 @@ import { UsersManageService } from './services/users-manage/users-manage.service
     EditMemberComponent,
     EditEventComponent,
     AddEventComponent,
-    RemoveEventComponent
+    RemoveEventComponent,
+    EditUsernameComponent,
+    RemoveUsernameComponent,
+    AddUserComponent
   ],
   providers: [
     FloorService,

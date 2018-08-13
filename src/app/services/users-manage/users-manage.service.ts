@@ -13,9 +13,8 @@ export class UsersManageService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(url: string): Observable<HttpResponse<Response<Users>>> {
-    return this.http.get<Response<Users>>(url, { observe: 'response' }).pipe(retry(3), catchError(this.handleError));
-
+  getUsers(url: string): Observable<HttpResponse<Response<User>>> {
+    return this.http.get<Response<User>>(url, { observe: 'response' }).pipe(retry(3), catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -26,12 +25,38 @@ export class UsersManageService {
     }
     return new ErrorObservable('Something bad happened; please try again later.');
   }
+
+  putUser(url: string, user: User): Observable<HttpResponse<Response<any>>> {
+    return this.http.put<Response<any>>(
+      url, user ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }) }).pipe(retry(3), catchError(this.handleError));
+  }
+
+  deleteUser(url: string): Observable<Response<any>> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
+      // body: member
+    };
+    return this.http.delete<Response<any>>(
+      url , options).pipe(retry(3), catchError(this.handleError));
+  }
+
+  addUser(url: string, user: User): Observable<Response<any>> {
+    return this.http.post<Response<any>>(
+      url, user ,{ observe: 'response', headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }) }).pipe(/*retry(3),*/ catchError(this.handleError));
+  }
 }
 
-export interface Users {
+export interface User {
   Username: string,
+  ID: string
   PermissionCode: number,
-  ID: number
+  
 }
 
 export interface Response<T> {

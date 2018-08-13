@@ -1,0 +1,41 @@
+<div class="example-header">
+  <mat-form-field>
+    <input dir="rtl" matInput (keyup)="applyFilter($event.target.value)" placeholder="סנן">
+  </mat-form-field>
+  <mat-icon class="add" matTooltip="הוסף" (click)="openAddUserDialog(row)">add</mat-icon>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+  <mat-table dir="rtl" [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> שם משתמש </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.Username}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> תז </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.ID}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="permissions">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> הרשאות </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.PermissionCode}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+      <mat-cell *matCellDef="let row"> 
+        <mat-icon class="edit" matTooltip="ערוך" (click)="openEditUserDialog(row)">edit</mat-icon> 
+        <mat-icon class="delete" matTooltip="מחק" (click)="openDeleteUserDialog(row)">delete</mat-icon></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  
+</div>
