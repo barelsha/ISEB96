@@ -44,11 +44,11 @@ export class UsersManageService {
       url , options).pipe(retry(3), catchError(this.handleError));
   }
 
-  addUser(url: string, user: User): Observable<Response<any>> {
+  addUser(url: string, user: User):  Observable<HttpResponse<Response<any>>> {
     return this.http.post<Response<any>>(
       url, user ,{ observe: 'response', headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=UTF-8',
-      }) }).pipe(/*retry(3),*/ catchError(this.handleError));
+      })}).pipe(retry(3), catchError(this.handleError));
   }
 }
 

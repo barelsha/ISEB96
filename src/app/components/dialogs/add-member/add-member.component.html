@@ -20,7 +20,7 @@
           <input matInput formControlName="email" placeholder="אימייל">
           <mat-error *ngIf="addMemberForm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
         </mat-form-field>
-        <mat-checkbox>אחראי חדר</mat-checkbox>
+        <mat-checkbox formControlName="supervisor">אחראי חדר</mat-checkbox>
       </div>
   </form>
   <mat-divider></mat-divider>

@@ -67,6 +67,8 @@ export class FloorComponent implements OnInit, OnDestroy {
       rooms.forEach(room => {
         room.color = getRoomColor(room, floorDB);
         room.tooltip = getRoomTooltip(room, floorDB);
+        let temp =  floorDB.filter(x => x.Supervisor === 'yes' && x.RoomNum === room.RoomNumber);
+        room.Supervisor = temp.length > 0 ? temp[0].FirstName + ' ' + temp[0].LastName : "";
       }
     ));
     return floorTs;
@@ -101,8 +103,6 @@ export class FloorComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
     this.floorSidenavService.clearData();
   }
-
-
 }
 
 /**
@@ -234,5 +234,6 @@ export interface Room {
   Rows: number, 
   color: Observable<string>,
   tooltip: string,
+  Supervisor: string,
   faultyEquip: Observable<FloorEquipmentDBData[]>
 }

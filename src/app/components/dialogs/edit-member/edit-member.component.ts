@@ -30,7 +30,8 @@ export class EditMemberComponent implements OnInit {
   
     createForm() {
       this.editMemberForm = this.fb.group({
-        email: [this.member.Email, [Validators.required, Validators.email]]
+        email: [this.member.Email, [Validators.required, Validators.email]],
+        supervisor: this.member.Supervisor
       });
     }
     
@@ -58,7 +59,7 @@ export class EditMemberComponent implements OnInit {
       let saveMember: Member = {
         FirstName: oldMember.FirstName,
         LastName: oldMember.LastName,
-        Supervisor: "no",
+        Supervisor: formModel.supervisor ? 'yes' : 'no',
         Email: formModel.email
       };
       return saveMember;

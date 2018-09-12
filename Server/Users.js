@@ -181,7 +181,7 @@ router.post('/username/insertNew/new', function (req, res) {
             }
         }).catch(function (resParam) {
             console.log('failed to add the user to the system.');
-            res.send({ status: "failed", response: resParam });
+            res.send({ status: "failed testttttttttttttttttt", response: resParam });
         });
     }
 });

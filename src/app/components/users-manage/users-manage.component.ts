@@ -5,6 +5,7 @@ import { UsersManageService, User } from '../../services/users-manage/users-mana
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { EditUsernameComponent } from '../dialogs/edit-username/edit-username.component';
 import { RemoveUsernameComponent } from '../dialogs/remove-username/remove-username.component';
+import { AddUserComponent } from '../dialogs/add-username/add-user.component';
 
 @Component({
   selector: 'app-users-manage',
@@ -88,7 +89,19 @@ export class UsersManageComponent implements OnInit {
   }
 
   openAddUserDialog(){
-    console.log('test');
+    let dialogRef = this.dialog.open(AddUserComponent, {
+      width: '500px'
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if(res && res.resp === "ok" && res.newMember){
+        let data = this.dataSource.data;
+        data.push(res.newMember);
+        this.dataSource.data = data;
+      }
+      else{
+
+      }
+    });
   }
 
   sendData() {

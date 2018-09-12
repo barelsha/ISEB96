@@ -24,7 +24,7 @@ export class AddUserComponent implements OnInit {
     private UsersManageService: UsersManageService) { 
       //this.url = data.url;
       //shoulg give me all the users
-      this.users = data.users;
+      //this.users = data.users;
     }
 
   ngOnInit() {
@@ -47,7 +47,9 @@ export class AddUserComponent implements OnInit {
     this.user = this.prepareAddUser();
     this.UsersManageService.addUser('/username/insertNew/new', this.user)
     .subscribe(resp => {
-      this.dialogRef.close({resp: resp, newUser: this.user});
+      console.log(resp);
+      this.dialogRef.close({resp: resp.body.status,
+        newMember: this.user});
     }, err =>{
       this.openSnackBar('test', 'test');
     });
@@ -56,7 +58,7 @@ export class AddUserComponent implements OnInit {
   prepareAddUser(): User {
     let formModel = this.addUserForm.value;
     let saveMember: User = {
-      Username: formModel.userName,
+      Username: formModel.username,
       ID:formModel.ID,
       PermissionCode:formModel.permissionCode
     };
@@ -72,15 +74,15 @@ export class AddUserComponent implements OnInit {
 
 
   getUsernamerrorMessage(){
-    return this.addUserForm.controls.firstName.hasError('required') ? 'הנך חייב להזין שם משתמש' : '';
+    return this.addUserForm.controls.username.hasError('required') ? 'הנך חייב להזין שם משתמש' : '';
   }
 
   getIDErrorMessage(){
-    return this.addUserForm.controls.lastName.hasError('required') ? 'הנך חייב להזין ת.ז' : '';
+    return this.addUserForm.controls.ID.hasError('required') ? 'הנך חייב להזין ת.ז' : '';
     
   }
   getPerErrorMessage(){
-    return this.addUserForm.controls.lastName.hasError('required') ? 'הנך חייב להזין הרשאות למשתמש' : '';
+    return this.addUserForm.controls.permissionCode.hasError('required') ? 'הנך חייב להזין הרשאות למשתמש' : '';
     
   }
 

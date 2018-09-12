@@ -15,6 +15,7 @@ import { isType } from '@angular/core/src/type';
   styleUrls: ['./member.component.scss']
 })
 export class MemberComponent implements OnInit {
+  
 
   room: number;
   floor: number;
@@ -58,22 +59,32 @@ export class MemberComponent implements OnInit {
         }
     });
     dialogRef.afterClosed().subscribe(res => {
-      this.openSnackBar('sdf', 'sdf');
+      //this.openSnackBar('sdf', 'sdf');
       if(res && res.resp.body.status === "ok"){
-        this.peopleInRoom.push({
-          FloorNum: this.floor,
-          RoomNum: this.room,
-          FirstName: res.newMember.FirstName,
-          LastName: res.newMember.LastName,
-          Supervisor: res.newMember.Supervisor,
-          Email: res.newMember.Email
-        });
+        if(this.checkIfThereIsMoreThanOneSupervisor(res.newMember.Supervisor)){
+          this.peopleInRoom.push({
+            FloorNum: this.floor,
+            RoomNum: this.room,
+            FirstName: res.newMember.FirstName,
+            LastName: res.newMember.LastName,
+            Supervisor: res.newMember.Supervisor,
+            Email: res.newMember.Email
+          });
+        }
+        else{
+          this.openSnackBar('יש כבר אחראי חדר','שגיאה');
+        }
       }
       else{
       }
     }, err =>{
-      this.openSnackBar(err.toString(), 'sdf');
+      this.openSnackBar(err.toString(), 'שגיאה');
     });
+  }
+
+  checkIfThereIsMoreThanOneSupervisor(isSupervisorMarked: any): any {
+    if(!isSupervisorMarked) return true;
+    return this.peopleInRoom.filter(member => member.Supervisor === 'yes').length > 1;
   }
 
   openRemoveMemberDialog(member): void {

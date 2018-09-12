@@ -14,7 +14,12 @@
       </button>
       <mat-menu #menu="matMenu">
         <span>
-          <a mat-button routerLink="/userManage" RouterLinkActive="active">ניהול משתמשים</a>
+            <ng-template ngxPermissionsOnly="ADMIN">
+                <a mat-button routerLink="/userManage" RouterLinkActive="active">ניהול משתמשים</a>
+            </ng-template>
+            <a mat-button routerLink="/" RouterLinkActive="active">חיפוש ציוד</a>
+            <a mat-button routerLink="/" RouterLinkActive="active">חיפוש אנשים</a>
+          
         </span>
         <!-- 
           <button mat-menu-item routerLink="/userManage" RouterLinkActive="active">

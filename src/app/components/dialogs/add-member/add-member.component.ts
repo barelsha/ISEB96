@@ -17,6 +17,8 @@ export class AddMemberComponent implements OnInit {
   url: string;
   members: PeopleRoom[];
 
+  //#ffd740
+
   constructor(
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddMemberComponent>,
@@ -35,6 +37,7 @@ export class AddMemberComponent implements OnInit {
     this.addMemberForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      supervisor: false,
       email: ['', [Validators.email, Validators.required]]
     });
   }
@@ -58,9 +61,10 @@ export class AddMemberComponent implements OnInit {
     let saveMember: Member = {
       FirstName: formModel.firstName,
       LastName: formModel.lastName,
-      Supervisor: "no",
+      Supervisor: formModel.supervisor ? 'yes' : 'no',
       Email: formModel.email
     };
+    console.log(formModel.supervisor);
     return saveMember;
   }
 
