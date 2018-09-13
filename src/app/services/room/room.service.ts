@@ -102,7 +102,8 @@ export interface PeopleRoom {
     FirstName: string,
     LastName: string,
     Supervisor: string,
-    Email: string
+    Email: string,
+    Title: string
 }
 
 export interface RoomDetails {
@@ -128,7 +129,8 @@ export interface Member {
   FirstName: string,
   LastName: string,
   Supervisor: string,
-  Email: string
+  Email: string,
+  Title: string
 }
 
 export interface Equipment {

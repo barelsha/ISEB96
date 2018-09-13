@@ -48,7 +48,8 @@ export interface FloorPeopleDBData {
   RoomType: string,
   Rows: number,
   Supervisor: string,
-  Tel: string
+  Tel: string,
+  Title: string
 }
 
 export interface FloorEquipmentDBData {

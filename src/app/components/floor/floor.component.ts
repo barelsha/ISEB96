@@ -68,7 +68,8 @@ export class FloorComponent implements OnInit, OnDestroy {
         room.color = getRoomColor(room, floorDB);
         room.tooltip = getRoomTooltip(room, floorDB);
         let temp =  floorDB.filter(x => x.Supervisor === 'yes' && x.RoomNum === room.RoomNumber);
-        room.Supervisor = temp.length > 0 ? temp[0].FirstName + ' ' + temp[0].LastName : "";
+        let title = temp.length > 0 && temp[0].Title ? temp[0].Title : '';
+        room.Supervisor = temp.length > 0 ? title + ' ' + temp[0].FirstName + ' ' + temp[0].LastName : "";
       }
     ));
     return floorTs;
@@ -89,8 +90,7 @@ export class FloorComponent implements OnInit, OnDestroy {
       let onlyRoomNumbers = floorParts.map(room => room.RoomNumber);
       let onlyRoomNumbersWithoutNulls = onlyRoomNumbers.filter(room => room);
       this.floorSidenavService.sendData(onlyRoomNumbersWithoutNulls.reverse());
-    })
-    
+    });
   }
 
   clearData(){

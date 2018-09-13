@@ -8,8 +8,9 @@
             <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar><mat-icon mat-list-icon>person</mat-icon></div>
-                    <mat-card-title>{{member.FirstName}} {{member.LastName}}</mat-card-title>
+                    <mat-card-title>{{member.Title}} {{member.FirstName}} {{member.LastName}}</mat-card-title>
                     <mat-card-subtitle>{{member.Email}}</mat-card-subtitle>
+                    <p *ngIf="member.Supervisor === 'yes'" mat-card-header dir="rtl" class="status">אחראי חדר</p>
                     <div class="flex-spacer"></div>
                 </mat-card-header>
                 <img mat-card-image>

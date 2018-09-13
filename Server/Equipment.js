@@ -406,6 +406,24 @@ router.delete('/floors/:floorId/rooms/:roomId/deleteEquiInRoom/:invent', functio
     }
 });
 
+//return all the equipment in building
+router.get('/equipment', function (req, res) {
+    var query = squel.select().from("EquipmentInRoom")
+        .toString();
+    DBUtils.Select(query).then(function (resParam) {
+        if (resParam.length == 0) {
+            res.send({ status: "failed", response: "no equipment." });
+        }
+        else {
+            resParam = help.changeJSON(resParam);
+            res.send({ status: "ok", response: resParam });
+        }
+    }).catch(function (resParam) {
+        console.log('failed to excute');
+        res.send({ status: "`failed", response: resParam });
+    });
+});
+
 module.exports = router;
 
 

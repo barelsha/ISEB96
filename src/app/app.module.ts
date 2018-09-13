@@ -49,6 +49,15 @@ import { UsersManageService } from './services/users-manage/users-manage.service
 import { EditUsernameComponent } from './components/dialogs/edit-username/edit-username.component';
 import { RemoveUsernameComponent } from './components/dialogs/remove-username/remove-username.component';
 import { AddUserComponent } from './components/dialogs/add-username/add-user.component';
+import { EquipSearchComponent } from './components/equip-search/equip-search.component';
+import { EquipSearchService } from './services/equip-search/equip-search.service';
+import { PeopleSearchService } from './services/people-search/people-search.service';
+import { PeopleSearchComponent } from './components/people-search/people-search.component';
+import { EditRoomComponent } from './components/dialogs/edit-room/edit-room.component';
+import { RoomManageComponent } from './components/room-manage/room-manage.component';
+import { RoomManageService } from './services/room-manage/room-manage.service';
+
+
 
 @NgModule({
   declarations: [
@@ -76,7 +85,11 @@ import { AddUserComponent } from './components/dialogs/add-username/add-user.com
     UsersManageComponent,
     EditUsernameComponent,
     RemoveUsernameComponent,
-    AddUserComponent
+    AddUserComponent,
+    EquipSearchComponent,
+    PeopleSearchComponent,
+    EditRoomComponent,
+    RoomManageComponent
   ],
   exports: [ ],
   imports: [
@@ -106,7 +119,8 @@ import { AddUserComponent } from './components/dialogs/add-username/add-user.com
     RemoveEventComponent,
     EditUsernameComponent,
     RemoveUsernameComponent,
-    AddUserComponent
+    AddUserComponent,
+    EditRoomComponent
   ],
   providers: [
     FloorService,
@@ -118,7 +132,10 @@ import { AddUserComponent } from './components/dialogs/add-username/add-user.com
     LoginService,
     ScheduleService,
     LoginGuardService,
-    UsersManageService
+    UsersManageService,
+    EquipSearchService,
+    PeopleSearchService,
+    RoomManageService
   ],
   bootstrap: [AppComponent]
 })

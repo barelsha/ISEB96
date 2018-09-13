@@ -17,10 +17,19 @@
             <ng-template ngxPermissionsOnly="ADMIN">
                 <a mat-button routerLink="/userManage" RouterLinkActive="active">ניהול משתמשים</a>
             </ng-template>
-            <a mat-button routerLink="/" RouterLinkActive="active">חיפוש ציוד</a>
-            <a mat-button routerLink="/" RouterLinkActive="active">חיפוש אנשים</a>
-          
         </span>
+        <span>
+            <a mat-button routerLink="/EquipSearch" RouterLinkActive="active">חיפוש ציוד</a>
+        </span>
+        <span>
+            <a mat-button routerLink="/PeopleSearch" RouterLinkActive="active">חיפוש אנשים</a>
+          </span>
+          <span>
+              <a mat-button routerLink="/RoomManage" RouterLinkActive="active">ניהול חדרים</a>
+          </span>
+          
+        
+        
         <!-- 
           <button mat-menu-item routerLink="/userManage" RouterLinkActive="active">
             <span>ניהול משתמשים</span>

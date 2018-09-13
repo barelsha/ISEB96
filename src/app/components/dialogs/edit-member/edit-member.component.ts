@@ -13,6 +13,8 @@ export class EditMemberComponent implements OnInit {
   editMemberForm: FormGroup;
   member: any;
   url: string;
+  titles: any[] = ["פרופסור", 'דוקטור', "מר", "גברת" ];
+  isChecked: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<EditMemberComponent>,
@@ -21,17 +23,18 @@ export class EditMemberComponent implements OnInit {
     private roomService: RoomService) {
       this.member = data.member;
       this.url = data.url;
-     }
+      this.isChecked = this.member.Supervisor === 'no' ? false : true;
+    }
 
-     ngOnInit() {
+    ngOnInit() {
       this.createForm();
-      
     }
   
     createForm() {
       this.editMemberForm = this.fb.group({
         email: [this.member.Email, [Validators.required, Validators.email]],
-        supervisor: this.member.Supervisor
+        supervisor: this.isChecked,
+        title: [this.member.Title, Validators.required]
       });
     }
     
@@ -42,16 +45,25 @@ export class EditMemberComponent implements OnInit {
     onSubmit(){
       let oldMember = this.member;
       this.member = this.prepareAddMember(oldMember);
-      this.roomService.putMember(this.url + '/editRoomPeople/'+ oldMember.FirstName
-       +'/' + oldMember.LastName + '/' + oldMember.Email, this.member)
-      .subscribe(resp => {
-          this.dialogRef.close(
-            {
-              resp: resp.body.status, 
-              editedMember: this.member,
-              oldMember: oldMember
-            });
-      });
+      if(this.member.Supervisor ==='no' && this.checkIfThereIsMoreThanOneSupervisor(this.member.Supervisor === 'yes')){
+        this.roomService.putMember(this.url + '/editRoomPeople/'+ oldMember.FirstName
+        +'/' + oldMember.LastName + '/' + oldMember.Email, this.member)
+        .subscribe(resp => {
+            this.dialogRef.close({resp: resp, editedMember: this.member, oldMember: oldMember, bool: true});
+        });
+      }
+      else{
+        this.dialogRef.close({bool: false});
+      }
+    }
+
+    checkIfThereIsMoreThanOneSupervisor(isSupervisorMarked: any): any {
+      if(!isSupervisorMarked) return true;
+      return this.data.members.filter(member => member.Supervisor === 'yes').length < 1;
+    }
+
+    OnChange(event){
+      this.editMemberForm.controls.supervisor = event.checked;
     }
 
     prepareAddMember(oldMember): Member {
@@ -60,7 +72,8 @@ export class EditMemberComponent implements OnInit {
         FirstName: oldMember.FirstName,
         LastName: oldMember.LastName,
         Supervisor: formModel.supervisor ? 'yes' : 'no',
-        Email: formModel.email
+        Email: formModel.email,
+        Title: formModel.title
       };
       return saveMember;
     }
@@ -68,6 +81,10 @@ export class EditMemberComponent implements OnInit {
     getEmailErrorMessage(){
       return this.editMemberForm.controls.email.hasError('required') ? 'הנך חייב להזין אימייל' : 
       this.editMemberForm.controls.email.hasError('email') ? 'האימייל שהזנת אינו תקין' : '';
+    }
+
+    getTitleErrorMessage(){
+      return this.editMemberForm.controls.title.hasError('required') ? 'הנך חייב להזין תואר' : '';
     }
 
     checkFormStatus(){

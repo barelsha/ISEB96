@@ -12,6 +12,10 @@ import { HomeComponent } from '../../components/home/home.component';
 import { LoginComponent } from '../../components/login/login.component';
 import { LoginGuardService } from '../../services/login-guard/login-guard.service';
 import { UsersManageComponent } from '../../components/users-manage/users-manage.component';
+import { EquipSearchComponent } from '../../components/equip-search/equip-search.component';
+import { PeopleSearchComponent } from '../../components/people-search/people-search.component';
+import { RoomManageComponent } from '../../components/room-manage/room-manage.component';
+
 
 
 const routes: Routes = [
@@ -25,6 +29,36 @@ const routes: Routes = [
           {
             path:'',
             component: UsersManageComponent
+          }
+        ]
+      },
+      {
+        path:'EquipSearch',
+        component:SidenavComponent,
+        children: [
+          {
+            path:'',
+            component: EquipSearchComponent
+          }
+        ]
+      },
+      {
+        path:'PeopleSearch',
+        component:SidenavComponent,
+        children: [
+          {
+            path:'',
+            component: PeopleSearchComponent
+          }
+        ]
+      },
+      {
+        path:'RoomManage',
+        component:SidenavComponent,
+        children: [
+          {
+            path:'',
+            component: RoomManageComponent
           }
         ]
       },
@@ -63,10 +97,6 @@ const routes: Routes = [
           }
         ]
       },
-      
-
-    
-
       { path: '', redirectTo:'floors/0', pathMatch: 'full' }
     ]
   },

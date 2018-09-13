@@ -141,8 +141,9 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
     var lastName = req.body.LastName;
     var supervisor = req.body.Supervisor;
     var email = req.body.Email;
+    var title = req.body.Title;
 
-    if (!floorNum || !roomNum || !firstName || !lastName || !supervisor || !email) {
+    if (!floorNum || !roomNum || !firstName || !lastName || !supervisor || !email || !title) {
         res.send({ status: "failed", response: "failed to add the person to the room." });
         res.end();
     }
@@ -155,6 +156,7 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
             .where("FirstName='" + '$'+firstName + "'")
             .where("LastName='" + '$'+lastName + "'")
             .where("Email='" + email + "'")
+            .where("Title='" + '$'+title + "'")
             .toString();
 
         DBUtils.Select(query).then(function (resParam) {
@@ -192,8 +194,10 @@ router.post('/floors/:floorId/rooms/:roomId/addPerson', function (req, res) {
                             .set("LastName", '$'+lastName)
                             .set("Supervisor", supervisor)
                             .set("Email", email)
+                            .set("Title", '$'+title)
                             .toString());
                         DBUtils.Insert(query4).then(function (resParam) {
+                            console.log(resParam);
                             console.log("The person been added to the room.");
                             res.send({ status: "ok", response: resParam });
                         }).catch(function (resParam) {
@@ -293,8 +297,9 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
     var lastNameNew = req.body.LastName;
     var supervisorNew = req.body.Supervisor;
     var emailNew = req.body.Email;
+    var title = req.body.Title;
 
-    if (!floorNum || !roomNum || !firstName || !lastName  || !firstNameNew || !lastNameNew || !supervisorNew || !emailNew) {
+    if (!floorNum || !roomNum || !firstName || !lastName  || !firstNameNew || !lastNameNew || !supervisorNew || !emailNew || !title) {
         res.send({ status: "failed", response: "Invalid value." });
     }
     else {
@@ -307,7 +312,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
             //check if the person exist in the room
         console.log(query);
         DBUtils.Select(query).then(function (resParam) {
-            if (resParam.length == 0) {
+            if (resParam.length == 0){
                 console.log("Person doesn't exist in the room.");
                 res.send({ status: "failed", response: "Person doesn't exist in the room." });
             }
@@ -317,10 +322,11 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
                         .table("PeopleInRoom").where("FirstName='" + '$'+firstName + "'")
                         .where("LastName='"+'$'+lastName+"'")
                         .where("Email='"+email+"'")
-                        .set("FirstName",'$'+ firstNameNew)
+                        .set("FirstName",'$'+firstNameNew)
                         .set("LastName", '$'+lastNameNew)
                         .set("Supervisor", supervisorNew)
                         .set("Email", emailNew)
+                        .set("Title", '$'+title)
                         .toString()
                 );
                 console.log(query);
@@ -331,9 +337,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomPeople/:first/:last/:email', 
                     console.log('failed to update the person in the room.2');
                     res.send({ status: "failed", response: resParam });
                 });
-
             }
-
         }).catch(function (resParam) {
             console.log('failed to update the person in the room3');
             res.send({ status: "failed", response: resParam });
@@ -476,10 +480,11 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res)
 
 
 
-    if (!floorNum || !roomNum || !roomNumNew || !floorNumNew  || !roomTypeNew || !maxOccNew) {
-        res.send({ status: "failed", response: "Invalid value." });
-    }
-    else {
+    // if (floorNum === undefined || roomNum === undefined || !roomNumNew || !floorNumNew  || !roomTypeNew || maxOccNew === undefined) {
+    //     console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    //     res.send({ status: "failed", response: "Invalid value." });
+    // }
+    // else {
         var query = squel.select()
             .from("Rooms")
             .where("FloorNumber='" + floorNum + "'")
@@ -491,6 +496,7 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res)
                 res.send({ status: "failed", response: "Room doesn't exist in the system." });
             }
             else {
+                
                 var query = (
                     squel.update()
                         .table("Rooms").where("RoomNumber='" + roomNum + "'")
@@ -518,7 +524,52 @@ router.put('/floors/:floorId/rooms/:roomId/editRoomDetails', function (req, res)
             console.log('failed to update the room details.');
             res.send({ status: "failed", response: resParam });
         });
-    }
+    // }
+});
+
+router.get('/peopleInBuild', function (req, res) {
+    var query = squel.select().from("PeopleInRoom")
+        .toString();
+    DBUtils.Select(query).then(function (resParam) {
+        if (resParam.length == 0) {
+            res.send({ status: "failed", response: "no people at the building." });
+        }
+        else {
+            resParam=help.changeJSON(resParam);
+            res.send({ status: "ok", response: resParam });
+        }
+    }).catch(function (resParam) {
+        console.log('failed to excute');
+        res.send({ status: "`failed", response: resParam });
+    });
+});
+
+//return room detailes from "Rooms" table of all building
+// "response": [
+//     {
+//         "RoomNumber": 1,
+//         "FloorNumber": 1,
+//         "RoomName": "prof", -can be NULL
+//         "Tel": 111, -can be NULL
+//         "RoomType": "Sminar",
+//         "MaxOccupancy": 2
+//     }
+router.get('/roomsBuildDetails', function (req, res) {
+    var query = squel.select().from("Rooms")
+        .toString();
+    DBUtils.Select(query).then(function (resParam) {
+        if (resParam.length == 0) {
+            res.send({ status: "failed", response: "no details." });
+        }
+        else {
+            //           console.log(resParam[0]["MaxOccupancy"]);
+            resParam = help.changeJSON(resParam);
+            res.send({ status: "ok", response: resParam });
+        }
+    }).catch(function (resParam) {
+        console.log('failed to excute');
+        res.send({ status: "`failed", response: resParam });
+    });
 });
 
 module.exports = router;

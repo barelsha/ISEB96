@@ -1,0 +1,50 @@
+<div class="example-header">
+    <mat-form-field>
+      <input dir="rtl" matInput (keyup)="applyFilter($event.target.value)" placeholder="סנן">
+    </mat-form-field>
+    <!-- <mat-icon class="add" matTooltip="הוסף" (click)="openAddUserDialog(row)">add</mat-icon> -->
+  </div>
+  
+  <div class="example-container mat-elevation-z8">
+  
+    <mat-table dir="rtl" [dataSource]="dataSource" matSort>
+  
+      <ng-container matColumnDef="floor">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר קומה </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.FloorNum}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="room">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר חדר </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.RoomNum}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> תואר</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Title}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> שם פרטי </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.FirstName}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> שם משפחה </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.LastName}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מייל </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Email}}</mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    
+  </div>
+  

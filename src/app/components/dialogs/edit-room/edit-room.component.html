@@ -1,0 +1,27 @@
+
+<div class="dialog-header" mat-dialog-title>
+    <p mat-line>{{room.RoomNumber}} :חדר מספר</p>
+    <div class="flex-spacer"></div>
+    <mat-icon class="exit-icon" (click)="onNoClick()">cancel</mat-icon>
+  </div>
+  <mat-divider></mat-divider>
+  
+  <form [formGroup]="editRoomForm" mat-dialog-content>
+      <div class="inputs-container">
+        <mat-form-field>
+        <!-- <mat-form-field hintLabel="7"> -->
+          <input required matInput formControlName="roomName" placeholder="שם חדר">
+         <!-- <mat-error *ngIf="editMemberForm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error> -->
+        </mat-form-field>
+          <mat-form-field>
+            <!-- <mat-form-field hintLabel="7"> -->
+              <input required matInput formControlName="maxOccupancy" placeholder="תפוסה מקסימלית">
+             <!-- <mat-error *ngIf="editMemberForm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error> -->
+            </mat-form-field>
+  
+      </div>
+  </form>
+  <mat-divider></mat-divider>
+  <div mat-dialog-actions>
+    <button [disabled]="checkFormStatus()" class="save-button" mat-button (click)="onSubmit()">שמור</button>
+  </div>

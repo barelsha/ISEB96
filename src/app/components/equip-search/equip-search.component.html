@@ -1,0 +1,57 @@
+<div class="example-header">
+    <mat-form-field>
+      <input dir="rtl" matInput (keyup)="applyFilter($event.target.value)" placeholder="סנן">
+    </mat-form-field>
+    <!-- <mat-icon class="add" matTooltip="הוסף" (click)="openAddUserDialog(row)">add</mat-icon> -->
+  </div>
+  
+  <div class="example-container mat-elevation-z8">
+  
+    <mat-table dir="rtl" [dataSource]="dataSource" matSort>
+  
+      <ng-container matColumnDef="floor">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר קומה </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.FloorNum}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="room">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר חדר </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.RoomNum}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> שם הציוד </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.EquipName}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="inventor">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> אינוונטר </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Inventor}}</mat-cell>
+      </ng-container>
+  
+  
+  
+      <ng-container matColumnDef="warranty">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> תאריך תפוגה </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Warranty}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> סטטוס </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{getStatus(row.Status)}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> תיאור התקלה </mat-header-cell>
+        <mat-cell *matCellDef="let row"><span *ngIf="row.Description !== 'undefined'"> {{row.Description}}</span></mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [style.background-color]="getColor(row.Status)">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    
+  </div>
+  

@@ -1,0 +1,46 @@
+<div class="example-header">
+    <mat-form-field>
+      <input dir="rtl" matInput (keyup)="applyFilter($event.target.value)" placeholder="סנן">
+    </mat-form-field>
+    <!-- <mat-icon class="add" matTooltip="הוסף" (click)="openAddUserDialog(row)">add</mat-icon> -->
+  </div>
+  
+  <div class="example-container mat-elevation-z8">
+  
+    <mat-table dir="rtl" [dataSource]="dataSource" matSort>
+  
+      <ng-container matColumnDef="floorNumber">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר קומה </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.FloorNumber}} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="roomNumber">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> מספר חדר </mat-header-cell>
+        <mat-cell *matCellDef="let row" dir="rtl"> {{row.RoomNumber}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="roomName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> שם חדר </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.RoomName}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="maxOccupancy">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> תפוסה מקסימלית </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.MaxOccupancy}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-icon class="edit" matTooltip="ערוך" (click)="openEditRoomDialog(row)">edit</mat-icon>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  
+  </div>

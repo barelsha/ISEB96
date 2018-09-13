@@ -16,6 +16,8 @@ export class AddMemberComponent implements OnInit {
   member: Member;
   url: string;
   members: PeopleRoom[];
+  IsChecked: boolean;
+  titles: any[] = ["פרופסור", 'דוקטור', "מר", "גברת" ];
 
   //#ffd740
 
@@ -26,6 +28,7 @@ export class AddMemberComponent implements OnInit {
     private fb: FormBuilder,
     private roomService: RoomService) {
       this.url = data.url;
+      this.IsChecked = false;
       this.members = data.members;
   }
 
@@ -38,7 +41,8 @@ export class AddMemberComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       supervisor: false,
-      email: ['', [Validators.email, Validators.required]]
+      email: ['', [Validators.email, Validators.required]],
+      title: ['', Validators.required]
     });
   }
   
@@ -48,12 +52,26 @@ export class AddMemberComponent implements OnInit {
 
   onSubmit(){
     this.member = this.prepareAddMember();
-    this.roomService.addMember(this.url + '/addPerson', this.member)
-    .subscribe(resp => {
-      this.dialogRef.close({resp: resp, newMember: this.member});
-    }, err =>{
-      this.openSnackBar('test', 'test');
-    });
+    if(this.checkIfThereIsMoreThanOneSupervisor(this.member.Supervisor === 'yes')){
+      this.roomService.addMember(this.url + '/addPerson', this.member)
+      .subscribe(resp => {
+        this.dialogRef.close({resp: resp, newMember: this.member, bool: true});
+      }, err =>{
+        this.openSnackBar('test', 'test');
+      });
+    }
+    else{
+      this.dialogRef.close({bool: false});
+    }
+  }
+
+  OnChange(event){
+    this.addMemberForm.controls.supervisor = event.checked;
+  }
+
+  checkIfThereIsMoreThanOneSupervisor(isSupervisorMarked: any): any {
+    if(!isSupervisorMarked) return true;
+    return this.members.filter(member => member.Supervisor === 'yes').length < 1;
   }
 
   prepareAddMember(): Member {
@@ -62,9 +80,9 @@ export class AddMemberComponent implements OnInit {
       FirstName: formModel.firstName,
       LastName: formModel.lastName,
       Supervisor: formModel.supervisor ? 'yes' : 'no',
-      Email: formModel.email
+      Email: formModel.email,
+      Title: formModel.title
     };
-    console.log(formModel.supervisor);
     return saveMember;
   }
 
@@ -82,6 +100,11 @@ export class AddMemberComponent implements OnInit {
   getFirstNameErrorMessage(){
     return this.addMemberForm.controls.firstName.hasError('required') ? 'הנך חייב להזין שם פרטי' : '';
   }
+
+  getTitleErrorMessage(){
+    return this.addMemberForm.controls.title.hasError('required') ? 'הנך חייב להזין תואר' : '';
+  }
+
 
   getLastNameErrorMessage(){
     return this.addMemberForm.controls.lastName.hasError('required') ? 'הנך חייב להזין שם משפחה' : '';

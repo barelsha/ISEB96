@@ -42,6 +42,7 @@ export class MemberComponent implements OnInit {
   getPeopleInRoom() {
     this.roomService.getPeopleInRoom(this.url)
     .subscribe(resp => {
+      console.log(resp);
         this.peopleInRoom = this.isPeopleRoomArray(resp.body.response) ? resp.body.response : [];
         this.loading = false;
       }, error => {
@@ -59,32 +60,25 @@ export class MemberComponent implements OnInit {
         }
     });
     dialogRef.afterClosed().subscribe(res => {
-      //this.openSnackBar('sdf', 'sdf');
-      if(res && res.resp.body.status === "ok"){
-        if(this.checkIfThereIsMoreThanOneSupervisor(res.newMember.Supervisor)){
+      if(res && res.bool){
+        if(res && res.resp.body.status === "ok"){
           this.peopleInRoom.push({
             FloorNum: this.floor,
             RoomNum: this.room,
             FirstName: res.newMember.FirstName,
             LastName: res.newMember.LastName,
             Supervisor: res.newMember.Supervisor,
-            Email: res.newMember.Email
+            Email: res.newMember.Email,
+            Title: res.newMember.Title
           });
-        }
-        else{
-          this.openSnackBar('יש כבר אחראי חדר','שגיאה');
         }
       }
       else{
+        if(res !== undefined) this.openSnackBar('יש כבר אחראי חדר','שגיאה');
       }
     }, err =>{
       this.openSnackBar(err.toString(), 'שגיאה');
     });
-  }
-
-  checkIfThereIsMoreThanOneSupervisor(isSupervisorMarked: any): any {
-    if(!isSupervisorMarked) return true;
-    return this.peopleInRoom.filter(member => member.Supervisor === 'yes').length > 1;
   }
 
   openRemoveMemberDialog(member): void {
@@ -92,7 +86,8 @@ export class MemberComponent implements OnInit {
       width: '500px',
       data: {
         member: member,
-        url: this.url
+        url: this.url,
+        members: this.peopleInRoom
       }
     });
     dialogRef.afterClosed().subscribe(res => {
@@ -111,25 +106,32 @@ export class MemberComponent implements OnInit {
       width: '500px',
       data: {
         member: member,
-        url: this.url
+        url: this.url,
+        members: this.peopleInRoom
       }
     });
     dialogRef.afterClosed().subscribe(res => {
-      if(res && res.resp === "ok" && res.editedMember){
-        this.peopleInRoom.forEach(member =>{
-          if(member.Email === res.oldMember.Email &&
-          member.FirstName === res.oldMember.FirstName &&
-          member.LastName === res.oldMember.LastName &&
-          member.Supervisor === res.oldMember.Supervisor){
-            member.FirstName = res.editedMember.FirstName;
-            member.Email = res.editedMember.Email;
-            member.LastName = res.editedMember.LastName;
-            member.Supervisor = res.editedMember.Supervisor;
-          }
-        });
+      if(res && res.bool){
+        if(res && res.resp.body.status === "ok"){
+          this.peopleInRoom.forEach(member =>{
+            if(member.Email === res.oldMember.Email &&
+            member.FirstName === res.oldMember.FirstName &&
+            member.LastName === res.oldMember.LastName &&
+            member.Supervisor === res.oldMember.Supervisor){
+              member.FirstName = res.editedMember.FirstName;
+              member.Email = res.editedMember.Email;
+              member.LastName = res.editedMember.LastName;
+              member.Supervisor = res.editedMember.Supervisor;
+              member.Title = res.editedMember.Title;
+            }
+          });
+        }
       }
       else{
+        if(res !== undefined) this.openSnackBar('יש כבר אחראי חדר','שגיאה');
       }
+    }, err =>{
+      this.openSnackBar(err.toString(), 'שגיאה');
     });
   }
 

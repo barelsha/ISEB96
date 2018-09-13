@@ -9,6 +9,16 @@
   <form [formGroup]="addMemberForm" mat-dialog-content>
       <div class="inputs-container">
         <mat-form-field>
+          <mat-select dir="rtl" formControlName="title" placeholder="תואר">
+            <mat-option>--</mat-option>
+            <mat-option dir="rtl" *ngFor="let title of titles" [value]="title">
+              {{title}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addMemberForm.controls.title.invalid">{{getTitleErrorMessage()}}</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field>
           <input dir="rtl" required matInput formControlName="firstName" placeholder="שם פרטי">
           <mat-error *ngIf="addMemberForm.controls.firstName.invalid">{{getFirstNameErrorMessage()}}</mat-error>
         </mat-form-field>
@@ -20,7 +30,8 @@
           <input matInput formControlName="email" placeholder="אימייל">
           <mat-error *ngIf="addMemberForm.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
         </mat-form-field>
-        <mat-checkbox formControlName="supervisor">אחראי חדר</mat-checkbox>
+        <mat-checkbox [(ngModel)]="isChecked" (change)="OnChange($event)" formControlName="supervisor">אחראי חדר</mat-checkbox>
+        
       </div>
   </form>
   <mat-divider></mat-divider>
