@@ -45,7 +45,8 @@ export class EditMemberComponent implements OnInit {
     onSubmit(){
       let oldMember = this.member;
       this.member = this.prepareAddMember(oldMember);
-      if(this.member.Supervisor ==='no' && this.checkIfThereIsMoreThanOneSupervisor(this.member.Supervisor === 'yes')){
+      console.log(this.member);
+      if(oldMember.Supervisor ==='no' && this.checkIfThereIsMoreThanOneSupervisor(this.member.Supervisor === 'yes')){
         this.roomService.putMember(this.url + '/editRoomPeople/'+ oldMember.FirstName
         +'/' + oldMember.LastName + '/' + oldMember.Email, this.member)
         .subscribe(resp => {

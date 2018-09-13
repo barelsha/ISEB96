@@ -11,22 +11,22 @@
   
       <ng-container matColumnDef="floorNumber">
         <mat-header-cell *matHeaderCellDef mat-sort-header> מספר קומה </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.FloorNumber}} </mat-cell>
+        <mat-cell *matCellDef="let row" > {{row.FloorNumber}} </mat-cell>
       </ng-container>
       
       <ng-container matColumnDef="roomNumber">
         <mat-header-cell *matHeaderCellDef mat-sort-header> מספר חדר </mat-header-cell>
-        <mat-cell *matCellDef="let row" dir="rtl"> {{row.RoomNumber}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.RoomNumber}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="roomName">
         <mat-header-cell *matHeaderCellDef mat-sort-header> שם חדר </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.RoomName}}</mat-cell>
+        <mat-cell *matCellDef="let row" > {{row.RoomName}}</mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="maxOccupancy">
         <mat-header-cell *matHeaderCellDef mat-sort-header> תפוסה מקסימלית </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.MaxOccupancy}}</mat-cell>
+        <mat-cell *matCellDef="let row" > {{row.MaxOccupancy}}</mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="actions">
