@@ -39,7 +39,6 @@ export class UsersManageComponent implements OnInit {
 
   getUsers() {
     this.usersService.getUsers(this.url).subscribe(resp => {
-      console.log(resp.body.response);
       this.dataSource.data = resp.body.response;
       this.dataSource.sort = this.sort;
 

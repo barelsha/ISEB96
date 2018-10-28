@@ -37,7 +37,6 @@ export class RoomManageComponent implements OnInit {
 
   getRooms() {
     this.roomService.getRooms(this.url).subscribe(resp => {
-      console.log(resp.body.response);
       this.dataSource.data = resp.body.response;
       this.dataSource.sort = this.sort;
 

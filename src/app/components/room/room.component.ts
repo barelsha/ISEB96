@@ -33,7 +33,6 @@ export class RoomComponent implements OnInit {
 
   getFloor(){
     let floorNum = +this.route.parent.snapshot.url.toString().split(',')[1];
-    console.log(floorNum);
     return floors[floorNum+1];
   }
 

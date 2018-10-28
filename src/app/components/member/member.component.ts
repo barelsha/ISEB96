@@ -42,7 +42,6 @@ export class MemberComponent implements OnInit {
   getPeopleInRoom() {
     this.roomService.getPeopleInRoom(this.url)
     .subscribe(resp => {
-      console.log(resp);
         this.peopleInRoom = this.isPeopleRoomArray(resp.body.response) ? resp.body.response : [];
         this.loading = false;
       }, error => {

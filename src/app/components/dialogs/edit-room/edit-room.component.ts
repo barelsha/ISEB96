@@ -20,7 +20,6 @@ export class EditRoomComponent implements OnInit {
     private fb: FormBuilder,
     private RoomManageService: RoomManageService) {
       //should get user??
-    console.log(this.data)
     this.room = this.data;
     //this.url = data.url;
   }
@@ -40,9 +39,7 @@ export class EditRoomComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.room);
     let oldRoom = this.room;
-    console.log(oldRoom);
 
    // this.user = this.prepareAddUser(oldUser);
    this.room=this.prepareAddRoom(oldRoom);
@@ -59,9 +56,7 @@ export class EditRoomComponent implements OnInit {
 
   // prepareAddUser(oldMember): User {
     prepareAddRoom(oldRoom): Room {
-      console.log(oldRoom);
       let formModel = this.editRoomForm.value;
-      console.log(oldRoom);
       let saveRoom: Room = {
         RoomNumber:oldRoom.RoomNumber,
         // floorNumber:formModel.floorNumber,
@@ -76,7 +71,6 @@ export class EditRoomComponent implements OnInit {
         // var roomTypeNew = req.body.RoomType;
         // var maxOccNew = req.body.MaxOccupancy;
       };
-      console.log(saveRoom);
       return saveRoom;
     }
 

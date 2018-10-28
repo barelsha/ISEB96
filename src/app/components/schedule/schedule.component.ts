@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
-import { ScheduleService, FullCalendarEvent } from './../../services/schedule/schedule.service';
+import { ScheduleService, FullCalendarEvent, getEventsPerDay, dateRangeOverlaps } from './../../services/schedule/schedule.service';
 import{ AddEventComponent } from '../dialogs/add-event/add-event.component';
 import{ EditEventComponent } from '../dialogs/edit-event/edit-event.component';
 import { ActivatedRoute } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import * as moment from "moment";
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-schedule',
@@ -22,19 +23,21 @@ export class ScheduleComponent implements OnInit {
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(private scheduleService: ScheduleService,
+    public snackBar: MatSnackBar,
     public dialog: MatDialog,
     private route: ActivatedRoute) {
       this.setUrl();
   }
 
   ngOnInit() {
-    this.scheduleService.getEvents(this.url).subscribe(data => {
+    this.scheduleService
+    .getEvents(this.url)
+    .subscribe(data => {
       this.calendarOptions = {
         defaultView: 'agendaWeek',
         editable: true,
         locale: 'he',
         timezone: 'local',
-        
         isRTL: true,
         eventLimit: false,
         header: {
@@ -70,7 +73,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   loadAgain() {
-    this.scheduleService.getEvents(this.url).subscribe(data => {
+    this.scheduleService
+    .getEvents(this.url)
+    .subscribe(data => {
       this.events = data;
     });
   }
@@ -111,40 +116,64 @@ export class ScheduleComponent implements OnInit {
   }
 
   openAddEventDialog(model: any): void {
-    let dialogRef = this.dialog.open(AddEventComponent, {
+    this.dialog
+    .open(AddEventComponent, this.getModalData(model))
+    .afterClosed()
+    .subscribe(this.addEventToDBAndToView(),this.getErrorAfterAddEvent());
+  }
+
+  private addEventToDBAndToView(): (value: any) => void {
+    return event => {
+      if (event !== undefined) {
+        let { fullCalendarEvent, startDateTime, endDateTime }: {
+          fullCalendarEvent: FullCalendarEvent;
+          startDateTime: string;
+          endDateTime: string;
+        } = setEvent(event);
+        if(!this.checkForOverlapping(fullCalendarEvent)) this.scheduleService
+        .addEvent(this.url, fullCalendarEvent)
+        .subscribe(this.addEvent(event, startDateTime, endDateTime), this.getErrorAfterAddEvent());
+        else this.openSnackBar("קיימת חפיפה עם אירוע אחר", "שגיאה");
+      }
+    };
+  }
+
+  checkForOverlapping(fullCalendarEvent: FullCalendarEvent){
+    let startDate = new Date(fullCalendarEvent.start);
+    let endDate = new Date(fullCalendarEvent.end);
+    let eventsOfDay = getEventsPerDay(this.events, fullCalendarEvent);
+    let result = eventsOfDay.filter((event: FullCalendarEvent) => dateRangeOverlaps(new Date (event.start), new Date (event.end), new Date (startDate), new Date (endDate)));
+    return result.length > 0;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+  private getErrorAfterAddEvent(): (error: any) => void {
+    return err => {
+    };
+  }
+
+  private getModalData(model: any) {
+    return {
       width: '500px',
       data: model
-    });
-    dialogRef.afterClosed().subscribe(event => {
-      if(event !== undefined){
-        let date = moment(event.date).format('YYYY-MM-DD');
-        let startTime = event.start;
-        let endTime = event.end;
-        let endDateTime = moment(date + ' ' + endTime, 'YYYY-MM-DD HH:mm').format();
-        let startDateTime = moment(date + ' ' + startTime, 'YYYY-MM-DD HH:mm').format();
-        let fullCalendarEvent: FullCalendarEvent = {
-          title: event.title,
-          start: startDateTime,
-          end: endDateTime,
-          id: event.id
-        };
-        this.scheduleService.addEvent(this.url, fullCalendarEvent).subscribe(
-          x=> {
-            this.events.push(
-              {
-                title: event.title,
-                start: startDateTime,
-                end: endDateTime,
-                id: x.body.response.id
-              }
-            );
-            this.ucCalendar.renderEvents(this.events);
-        });
-      }
-    }, 
-    err =>{
-      console.log('error adding event');
-    });
+    };
+  }
+
+  private addEvent(event: any, startDateTime: string, endDateTime: string) {
+    return x => {
+      this.events.push({
+        title: event.title,
+        start: startDateTime,
+        end: endDateTime,
+        id: x.id
+      });
+      this.ucCalendar.renderEvents(this.events);
+    };
   }
 
   openEditEventDialog(model: any): void {
@@ -166,4 +195,19 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
+}
+
+function setEvent(event: any) {
+  let date = moment(event.date).format('YYYY-MM-DD');
+  let startTime = event.start;
+  let endTime = event.end;
+  let endDateTime = moment(date + ' ' + endTime, 'YYYY-MM-DD HH:mm').format();
+  let startDateTime = moment(date + ' ' + startTime, 'YYYY-MM-DD HH:mm').format();
+  let fullCalendarEvent: FullCalendarEvent = {
+    title: event.title,
+    start: startDateTime,
+    end: endDateTime,
+    id: event.id
+  };
+  return { fullCalendarEvent, startDateTime, endDateTime };
 }

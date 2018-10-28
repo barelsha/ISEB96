@@ -16,8 +16,7 @@ export class AddEventComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddEventComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
-    private scheduleService: ScheduleService) { }
+    private fb: FormBuilder) { }
 
   ngOnInit() {
     this.createForm(this.data);

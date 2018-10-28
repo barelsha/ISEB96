@@ -40,7 +40,6 @@ export class EquipSearchComponent implements OnInit {
 
   getEquip() {
     this.equipSearch.getEquip(this.url).subscribe(resp => {
-      console.log(resp.body.response);
       this.dataSource.data = resp.body.response;
       this.dataSource.sort = this.sort;
 

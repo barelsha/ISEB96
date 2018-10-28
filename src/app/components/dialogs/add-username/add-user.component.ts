@@ -47,7 +47,6 @@ export class AddUserComponent implements OnInit {
     this.user = this.prepareAddUser();
     this.UsersManageService.addUser('/username/insertNew/new', this.user)
     .subscribe(resp => {
-      console.log(resp);
       this.dialogRef.close({resp: resp.body.status,
         newMember: this.user});
     }, err =>{

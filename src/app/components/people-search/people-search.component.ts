@@ -35,7 +35,6 @@ export class PeopleSearchComponent implements OnInit {
 
   getEquip() {
     this.peopleSearch.getPeople(this.url).subscribe(resp => {
-      console.log(resp.body.response);
       this.dataSource.data = resp.body.response;
       this.dataSource.sort = this.sort;
 
